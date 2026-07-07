@@ -525,9 +525,64 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     </div>
 
   </div></section>
-  <section class="view" id="resources"><div class="view-inner"><h1 class="t-h1">种质资源</h1></div></section>
-  <section class="view" id="databases"><div class="view-inner"><h1 class="t-h1">数据库</h1></div></section>
-  <section class="view" id="analysis"><div class="view-inner"><h1 class="t-h1">遗传分析</h1></div></section>
+  <section class="view" id="resources"><div class="view-inner">
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">GERMPLASM RESOURCES</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">主营品种 · 种质资源矩阵</h1>
+      </div>
+      <p class="t-body sec-note">黄渤海主养海珍品六大主营品种，活体保育、重测序与 SNP 数据一体化档案，点击卡片查看完整种质基因组指标。</p>
+    </div>
+    <div class="spx-grid" id="spxGrid"></div>
+
+    <div class="sec-head reserve-head">
+      <div>
+        <div class="t-cap">STRATEGIC RESERVE</div>
+        <h2 class="t-h2 sec-title" style="margin-top:8px">战略储备品种</h2>
+      </div>
+      <p class="t-body sec-note">面向未来良种选育与种质多样性布局的储备品种清单，随建库进度逐步纳入正式档案。</p>
+    </div>
+    <div class="reserve-wrap" id="reserveWrap"></div>
+
+  </div></section>
+  <section class="view" id="databases"><div class="view-inner">
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">DATABASES</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">数据库总览</h1>
+      </div>
+      <p class="t-body sec-note">活体、基因组重测序、SNP 变异与群体分化分析四库贯通，构成种质数据从采集到分析的完整链路。</p>
+    </div>
+    <div class="lib-grid" id="libGrid"></div>
+
+    <div class="glass" id="libWip" tabindex="0" role="note" aria-label="转录组库 · 建设中" title="该数据库建设中，敬请期待"
+      style="margin-top:2px;padding:clamp(30px,4vw,54px);cursor:not-allowed;opacity:.55">
+      <div style="font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-faint)">DB·05</div>
+      <div style="font-family:var(--f-disp);font-weight:600;font-size:clamp(22px,2.6vw,30px);line-height:1.05;margin-top:16px;color:var(--ink-dim)">转录组库 <span class="tb-badge badge--wip" style="vertical-align:middle;margin-left:8px">建设中</span></div>
+      <div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-faint);margin-top:8px;text-transform:uppercase">TRANSCRIPTOME LIBRARY</div>
+      <p style="color:var(--ink-faint);font-size:14.5px;margin-top:18px;line-height:1.7;max-width:42ch">该数据库建设中，敬请期待。规划纳入主营品种关键性状表达谱数据。</p>
+    </div>
+
+  </div></section>
+  <section class="view" id="analysis"><div class="view-inner">
+
+    <div class="glass" style="padding:14px 22px;border-left:2px solid var(--warn);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:clamp(32px,5vh,56px)">
+      <span class="tb-badge badge--beta">试运行 · 示例数据</span>
+      <span class="t-body" style="font-size:14px;color:var(--ink-dim)">本模块为试运行版本，展示内容基于示例（DEMO）数据，不代表真实测序或分析结果。</span>
+    </div>
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">POPULATION DIFFERENTIATION</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">群体分化与产地溯源</h1>
+      </div>
+      <p class="t-body sec-note">以仿刺参长海四海区为例，展示海区两两 Fst 分化矩阵与各海区溯源特征，为种源鉴定提供参照框架。</p>
+    </div>
+    <div id="analysisBody"></div>
+
+  </div></section>
   <section class="view" id="search"><div class="view-inner"><h1 class="t-h1">数据检索</h1></div></section>
   <section class="view" id="standards"><div class="view-inner"><h1 class="t-h1">标准规范</h1></div></section>
   <section class="view" id="about"><div class="view-inner"><h1 class="t-h1">关于</h1></div></section>
@@ -945,7 +1000,8 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       '<p class="mnote" style="margin:0 0 14px">以仿刺参长海四海区为例——各海区以自然海峡相隔，遗传背景各异，构成种源鉴定与产地溯源的参照框架。</p>'+
       '<div class="msub" style="font-size:12px;opacity:.8">海区两两分化 · PAIRWISE Fst</div>'+
       heatmap(REG_LABELS,FST,{color:'red',cap:'长海四海区加权 Fst 热力图 · 值越高分化越强 · 示例'})+
-      '<div class="geo-grid">'+reg+'</div>';}
+      '<div class="geo-grid">'+reg+'</div>'+
+      '<a href="#analysis" onclick="closeModal()" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:'+ACC.red+'">前往遗传分析 →</a>';}
 
   function libChart(key,d){
     if(key==='live'){ // 各品种保育个体数
@@ -991,6 +1047,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     grid.innerHTML=html;
     $$('.spx',grid).forEach(function(el){function op(){openModal(speciesModal(SPECIES[+el.getAttribute('data-sp')]));}
       el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
+
+  // #analysis 视图：复用 geoBlock() 渲染完整群体分化内容
+  function renderAnalysis(){var body=document.getElementById('analysisBody');if(!body)return;body.innerHTML=geoBlock();}
 
   // 战略储备品种（轻量清单式）
   function initReserve(){var wrap=document.getElementById('reserveWrap');if(!wrap)return;
@@ -1160,7 +1219,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     bind();window.__bindCursor=bind;}
 
   window.addEventListener('DOMContentLoaded',function(){
-    initSpecies();initReserve();initLibraries();initCursor();
+    initSpecies();initReserve();initLibraries();renderAnalysis();initCursor();
     if(window.__obsCount)window.__obsCount();
     runLoader(function(){});initMotion();
     // re-observe dynamically-added counters (SNP lib metric) and rebind cursor
