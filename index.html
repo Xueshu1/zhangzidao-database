@@ -4,16 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>黄渤海海珍品 · 种质资源数字平台 | 獐子岛集团</title>
-<meta name="description" content="覆盖虾夷扇贝·仿刺参·香螺·海胆·皱纹盘鲍·长牡蛎六大主营品种，兼顾战略储备品种，整合活体库、基因库重测序、SNP库与差异性分析的黄渤海海珍品种质资源数字平台。" />
+<meta name="description" content="覆盖虾夷扇贝·仿刺参·香螺·海胆·皱纹盘鲍·长牡蛎六大主营品种，兼顾战略储备品种，整合活体库、基因库重测序、SNP库与群体分化分析的黄渤海海珍品种质资源数字平台。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@200;300;400;500;700&family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --abyss:#04060d;--abyss-2:#070b17;--panel:#0a0f1e;
+  --abyss:#070b14;--abyss-2:#0a1120;--panel:#0e1626;
   --line:rgba(150,185,215,.12);--line-2:rgba(150,185,215,.26);
   --ink:#eaf2f6;--ink-dim:#93a6b8;--ink-faint:#586a7b;
   --cyan:#2fe4d6;--red:#ff4d6d;--purple:#ab84ff;--teal:#3fe0b0;--steel:#7fb8e6;--amber:#ffb347;--rose:#ff8fb0;
+  --ocean:#22d3ee;--gene:#8b7bf0;--warn:#f5a524;
   --acc:#2fe4d6;--maxw:1320px;--ease:cubic-bezier(.22,.61,.36,1);
   --f-disp:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;
   --f-body:'Noto Sans SC','Space Grotesk',system-ui,sans-serif;
@@ -21,8 +22,8 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--abyss);color:var(--ink);font-family:var(--f-body);font-weight:300;line-height:1.6;
-  overflow-x:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+body{background:var(--abyss);color:var(--ink);font-family:var(--f-body);font-weight:400;line-height:1.6;
+  overflow-x:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
 body.locked{overflow:hidden;height:100vh}
 body.modal-open{overflow:hidden}
 a{color:inherit;text-decoration:none}
@@ -32,6 +33,33 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb:hover{background:rgba(120,180,215,.4)}
 
 #scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+
+#bg-stack{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--abyss)}
+.bg-mesh{position:absolute;inset:0;
+  background:
+    radial-gradient(38% 44% at 22% 28%,rgba(34,211,238,.14),transparent 70%),
+    radial-gradient(34% 40% at 78% 22%,rgba(139,123,240,.12),transparent 70%),
+    radial-gradient(46% 50% at 60% 82%,rgba(34,211,238,.08),transparent 72%)}
+.bg-grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(120,180,220,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(120,180,220,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%);
+  mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%)}
+.bg-noise{position:absolute;inset:0;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion:reduce){#scene{display:none}}
+
+.glass{background:rgba(18,26,42,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(120,180,220,.12);border-radius:16px}
+.glass--solid{background:rgba(14,22,38,.72)}
+.t-h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(40px,6vw,72px);line-height:1.08;letter-spacing:-.02em}
+.t-h2{font-family:var(--f-disp);font-weight:600;font-size:clamp(28px,4vw,36px);line-height:1.15;letter-spacing:-.01em}
+.t-h3{font-family:var(--f-disp);font-weight:600;font-size:clamp(20px,2.4vw,24px);line-height:1.2}
+.t-body{font-size:clamp(16px,1.5vw,18px);font-weight:400;line-height:1.6;color:var(--ink-dim)}
+.t-cap{font-family:var(--f-mono);font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.t-num{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
 .scene-fb{position:fixed;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(45% 55% at 50% 42%,rgba(47,228,214,.12),transparent 70%),
     radial-gradient(30% 40% at 66% 60%,rgba(255,77,109,.10),transparent 70%),
@@ -59,47 +87,92 @@ a{color:inherit;text-decoration:none}
   letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase}
 
 /* HEADER / TOP NAV */
-.header{position:fixed;top:0;left:0;right:0;z-index:56;display:flex;align-items:center;justify-content:space-between;
-  padding:clamp(16px,2.4vw,26px) clamp(18px,3vw,40px);pointer-events:none}
-.header a,.header button{pointer-events:auto}
-.wordmark{display:flex;align-items:center;gap:11px;color:var(--ink);font-family:var(--f-mono);font-size:12px;
-  letter-spacing:.18em;text-transform:uppercase}
-.wordmark .dot{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc);
-  animation:pulse 2.6s var(--ease) infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.7)}}
-.topnav{display:flex;gap:clamp(18px,2.4vw,34px);align-items:center}
-.topnav a{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);
-  position:relative;transition:color .3s}
-.topnav a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;background:var(--acc);
-  transition:right .3s var(--ease)}
-.topnav a:hover{color:var(--ink)}.topnav a:hover::after{right:0}
-.progress-line{position:fixed;top:0;left:0;height:2px;width:0%;z-index:60;
-  background:linear-gradient(90deg,var(--purple),var(--cyan),var(--red));box-shadow:0 0 14px rgba(47,228,214,.5)}
-.chrome{position:fixed;z-index:55;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);pointer-events:none}
-.chrome--bl{bottom:clamp(18px,3vw,30px);left:clamp(18px,3vw,40px);display:flex;align-items:center;gap:14px}
-.counter b{color:var(--acc);font-weight:500}
-.demo-tag{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--amber);border:1px solid rgba(255,179,71,.4);
-  border-radius:100px;padding:3px 9px}
 
-/* NAV COMMAND BAR */
-.nav-cmd{position:fixed;z-index:58;left:50%;transform:translateX(-50%);bottom:clamp(20px,3.4vw,34px);
-  width:min(560px,calc(100% - 40px));transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.nav-cmd.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}
-.nav-shell{display:flex;align-items:center;gap:12px;background:rgba(7,11,23,.72);backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);border:1px solid var(--line-2);border-radius:100px;padding:11px 12px 11px 20px;
-  box-shadow:0 12px 44px rgba(0,0,0,.5)}
-.nav-shell .pfx{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc);flex:none;animation:pulse 2.6s var(--ease) infinite}
-.nav-shell input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:var(--f-body);font-size:15px;font-weight:300}
-.nav-shell input::placeholder{color:var(--ink-faint)}
-.nav-go{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--abyss);background:var(--acc);padding:9px 16px;border-radius:100px;transition:filter .3s}
-.nav-go:hover{filter:brightness(1.15)}
-.nav-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:11px}
-.nav-chip{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-dim);
-  border:1px solid var(--line);border-radius:100px;padding:5px 12px;background:rgba(7,11,23,.55);transition:.25s var(--ease)}
-.nav-chip:hover{color:var(--ink);border-color:var(--acc);box-shadow:0 0 14px rgba(47,228,214,.15)}
-.nav-flash{position:fixed;inset:0;z-index:57;pointer-events:none;opacity:0;
-  background:radial-gradient(60% 60% at 50% 50%,var(--acc),transparent 70%);mix-blend-mode:screen}
+/* TOPBAR (fixed nav shell) */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:56;display:flex;align-items:center;gap:clamp(16px,3vw,40px);
+  padding:0 clamp(18px,3vw,40px);height:64px;
+  background:rgba(7,11,20,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(120,180,220,.12)}
+.tb-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:14px;font-weight:500;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
+.tb-logo .dot{width:9px;height:9px;border-radius:50%;background:var(--ocean);box-shadow:0 0 12px var(--ocean);animation:pulse 2.6s var(--ease) infinite}
+.tb-nav{display:flex;gap:clamp(10px,1.6vw,22px);align-items:center;flex:1}
+.tb-nav a{position:relative;font-size:15px;font-weight:400;color:var(--ink-dim);transition:color .25s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tb-nav a:hover{color:var(--ink)}
+.tb-nav a.active{color:var(--ink)}
+.tb-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:2px;background:var(--ocean);box-shadow:0 0 10px var(--ocean)}
+.tb-badge{font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:100px;border:1px solid currentColor;line-height:1}
+.badge--live{color:var(--ocean)}.badge--beta{color:var(--warn)}.badge--wip{color:var(--ink-faint)}
+.tb-search{display:flex;align-items:center;gap:8px;background:rgba(18,26,42,.6);border:1px solid rgba(120,180,220,.16);
+  border-radius:100px;padding:7px 14px;color:var(--ink-faint);font-size:13px;cursor:pointer;transition:.25s;white-space:nowrap}
+.tb-search:hover{border-color:var(--ocean);color:var(--ink-dim)}
+@media(max-width:960px){.tb-nav{overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}.tb-nav::-webkit-scrollbar{display:none}.tb-search span{display:none}}
+
+/* VIEW CONTAINERS (hash-routed) */
+.view{display:none;padding-top:64px}
+.view.active{display:block}
+.view-inner{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vh,96px) clamp(20px,5vw,64px)}
+
+/* WIP PLACEHOLDER PAGES (#search, #standards) */
+.wip-page{text-align:center;padding:clamp(60px,12vh,140px) 0}
+.wip-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--warn);border:1px solid rgba(245,165,36,.4);border-radius:100px;padding:6px 14px;margin-bottom:24px}
+.wip-plan{max-width:640px;margin:32px auto 0;text-align:left;display:grid;gap:12px}
+.wip-item{display:flex;gap:14px;padding:16px 20px;border-radius:12px;background:rgba(14,22,38,.5);border:1px solid rgba(120,180,220,.1)}
+
+/* HOME — hero + stat band */
+.hero{position:relative;padding:clamp(70px,12vh,130px) 0 clamp(48px,7vh,80px);text-align:left}
+.hero .lead{max-width:20ch;margin-bottom:22px}
+.hero .mission{max-width:52ch;margin:0 0 34px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{background:var(--ocean);color:var(--abyss);font-weight:600;font-size:15px;padding:13px 26px;border-radius:100px;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;transition:filter .25s;box-shadow:0 0 30px rgba(34,211,238,.3)}
+.btn-primary:hover{filter:brightness(1.12)}
+.btn-ghost{background:rgba(18,26,42,.5);color:var(--ink);font-size:15px;padding:13px 24px;border-radius:100px;border:1px solid rgba(120,180,220,.18);cursor:pointer;transition:.25s}
+.btn-ghost:hover{border-color:var(--ocean)}
+.stat-band{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:8px;border:1px solid rgba(120,180,220,.12);border-radius:16px;overflow:hidden}
+.stat{padding:clamp(22px,3vw,34px);background:rgba(14,22,38,.55)}
+.stat .v{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;font-size:clamp(30px,4.4vw,56px);line-height:1;color:var(--ink)}
+.stat .v .u{font-size:.36em;color:var(--ocean);margin-left:.3em}
+.stat .k{font-size:13px;color:var(--ink-faint);margin-top:10px;letter-spacing:.04em}
+@media(max-width:760px){.stat-band{grid-template-columns:repeat(2,1fr)}}
+
+/* HOME — bento + species/library cards */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.tile{position:relative;padding:clamp(20px,2.4vw,30px);border-radius:16px;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);overflow:hidden;cursor:pointer;transition:.3s var(--ease);min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.tile:hover{transform:translateY(-4px);border-color:var(--ocean);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.tile.flagship{grid-row:span 2;grid-column:span 1}
+.tile .th{font-family:var(--f-disp);font-weight:600;font-size:19px}
+.tile .td{font-size:14px;color:var(--ink-dim);margin-top:8px;line-height:1.55}
+.spx-card{cursor:pointer;border-radius:16px;overflow:hidden;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);transition:.3s var(--ease);display:flex;flex-direction:column}
+.spx-card:hover{transform:translateY(-4px);border-color:var(--sp);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.spx-card:focus-visible{outline:2px solid var(--sp);outline-offset:-2px}
+.spx-card .ph{aspect-ratio:4/3;background-size:cover;background-position:center;position:relative;overflow:hidden}
+.spx-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.spx-card .body{padding:18px 20px}
+.spx-card .cn{font-family:var(--f-disp);font-weight:700;font-size:22px}
+.spx-card .la{font-family:var(--f-mono);font-style:italic;font-size:12px;color:var(--sp);margin-top:4px}
+.dot-matrix{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.dm{font-family:var(--f-mono);font-size:10px;letter-spacing:.04em;padding:3px 8px;border-radius:100px;border:1px solid var(--line-2);color:var(--ink-faint)}
+.dm.on{border-color:var(--sp);color:var(--sp);background:color-mix(in srgb,var(--sp) 12%,transparent)}
+.libcard{cursor:pointer;padding:clamp(24px,3vw,38px);border-radius:16px;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);transition:.3s var(--ease);display:flex;flex-direction:column}
+.libcard:hover{transform:translateY(-4px);border-color:var(--lc);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.libcard:focus-visible{outline:2px solid var(--lc);outline-offset:-2px}
+.libcard .lc-code{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--lc);margin-bottom:16px}
+.libcard .lc-t{font-family:var(--f-disp);font-weight:600;font-size:clamp(20px,2.4vw,26px);line-height:1.1}
+.libcard .lc-en{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;color:var(--ink-faint);margin-top:6px;text-transform:uppercase}
+.libcard .lc-desc{color:var(--ink-dim);font-size:14px;margin-top:16px;line-height:1.65;flex:1}
+.libcard .lc-metric{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.libcard .lc-mv{font-family:var(--f-mono);font-size:clamp(15px,1.8vw,20px);color:var(--lc);font-variant-numeric:tabular-nums}
+.libcard .lc-mk{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.homegrid-spx{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.homegrid-lib{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.home-sec{margin-top:clamp(64px,9vh,110px)}
+.partner-wall{margin-top:clamp(64px,9vh,110px);padding:clamp(26px,3.4vw,40px);display:flex;flex-direction:column;gap:14px}
+.partner-wall .pw-row{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center}
+.partner-wall .pw-item{font-family:var(--f-disp);font-size:clamp(15px,1.7vw,18px);color:var(--ink)}
+.partner-wall .pw-note{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint)}
+@media(max-width:860px){.bento{grid-template-columns:1fr 1fr}.tile.flagship{grid-column:span 2;grid-row:span 1}}
+@media(max-width:900px){.homegrid-spx{grid-template-columns:1fr 1fr}.homegrid-lib{grid-template-columns:1fr}}
+@media(max-width:560px){.homegrid-spx{grid-template-columns:1fr}}
 
 /* CURSOR */
 .cursor{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid rgba(120,180,215,.55);border-radius:50%;
@@ -111,11 +184,10 @@ a{color:inherit;text-decoration:none}
 @media (pointer:fine){.cursor,.cursor-dot{display:block}}
 
 /* LAYOUT */
-main{position:relative;z-index:10}
+main{position:relative;z-index:10;flex:1 0 auto}
+.site-footer{position:relative;z-index:10}
 section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .wrap{max-width:var(--maxw);margin:0 auto;width:100%}
-.veil{background:linear-gradient(180deg,rgba(4,6,13,.68),rgba(4,6,13,.9) 30%,rgba(4,6,13,.9) 70%,rgba(4,6,13,.68))}
-.solid{background:rgba(4,6,13,.93)}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);
   display:flex;align-items:center;gap:14px;margin-bottom:26px;transition:color .6s var(--ease)}
 .eyebrow::before{content:"";width:34px;height:1px;background:var(--acc);opacity:.6;transition:background .6s var(--ease)}
@@ -138,10 +210,6 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .hsp{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--ink-dim);border:1px solid var(--line);
   border-radius:100px;padding:6px 13px;transition:.3s var(--ease)}
 .hsp:hover{color:var(--ink);border-color:var(--acc)}
-.scroll-hint{position:absolute;left:50%;bottom:calc(clamp(20px,3.4vw,34px) + 76px);transform:translateX(-50%);
-  font-family:var(--f-mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);
-  display:flex;flex-direction:column;align-items:center;gap:10px}
-.scroll-hint .bar{width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);animation:scrolldown 2.2s var(--ease) infinite}
 @keyframes scrolldown{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 /* SECTION HEAD */
@@ -229,6 +297,15 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .footline{margin-top:60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
 .disclaimer{margin-top:22px;font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-faint);opacity:.8}
 
+/* SITE FOOTER (outside .view — visible under all views) */
+.site-footer{border-top:1px solid rgba(120,180,220,.12);background:rgba(7,11,20,.6);margin-top:60px}
+.footer-inner{max-width:var(--maxw);margin:0 auto;padding:48px clamp(20px,5vw,64px) 32px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.footer-inner .col h4{font-size:13px;color:var(--ink);margin-bottom:14px}
+.footer-inner .col a{display:block;font-size:13px;color:var(--ink-faint);margin-bottom:8px;transition:color .2s}
+.footer-inner .col a:hover{color:var(--ocean)}
+.footer-bottom{border-top:1px solid rgba(120,180,220,.08);padding:18px clamp(20px,5vw,64px);font-size:12px;color:var(--ink-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:760px){.footer-inner{grid-template-columns:1fr 1fr}}
+
 /* MODAL */
 .modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px)}
 .modal.open{display:flex}
@@ -273,7 +350,6 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 /* RESPONSIVE */
 @media (max-width:1100px){.spx-grid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:900px){
-  .topnav{display:none}
   .spx-grid{grid-template-columns:1fr 1fr}
   .lib-grid{grid-template-columns:1fr}
   .reg-wrap{grid-template-columns:1fr}
@@ -285,12 +361,10 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 @media (max-width:560px){
   .spx-grid{grid-template-columns:1fr 1fr}
   .credits{grid-template-columns:1fr}
-  .nav-chips .nav-chip:nth-child(n+5){display:none}
-  .wordmark span{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;transition-duration:.15s!important}
-  .scroll-hint,.wordmark .dot,.nav-shell .pfx,.lib-live .d,.flicker{animation:none}
+  .lib-live .d,.flicker{animation:none}
 }
 
 /* ============ 视频封面英雄区（液态玻璃） ============ */
@@ -384,9 +458,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 <body class="locked">
 
 <canvas id="scene"></canvas>
+<div id="bg-stack"><div class="bg-mesh"></div><div class="bg-grid"></div><div class="bg-noise"></div></div>
 <div class="vignette"></div>
 <div class="grain"></div>
-<div class="nav-flash" id="navFlash"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
@@ -402,121 +476,204 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 </div>
 
 <!-- HEADER -->
-<div class="progress-line" id="progress"></div>
-<header class="header">
-  <a class="wordmark" href="#cover"><span class="dot"></span><span>海珍 · 种质平台</span></a>
-  <nav class="topnav">
-    <a href="#species">物种</a><a href="#libraries">数据库</a><a href="#outro">关于</a>
+<header class="topbar">
+  <a class="tb-logo" href="#home"><span class="dot"></span>海珍 · 种质平台</a>
+  <nav class="tb-nav">
+    <a href="#home">首页</a>
+    <a href="#resources">种质资源<span class="tb-badge badge--live">已上线</span></a>
+    <a href="#databases">数据库<span class="tb-badge badge--live">部分</span></a>
+    <a href="#analysis">遗传分析<span class="tb-badge badge--beta">示例</span></a>
+    <a href="#search">数据检索<span class="tb-badge badge--wip">建设中</span></a>
+    <a href="#standards">标准规范<span class="tb-badge badge--wip">整理中</span></a>
+    <a href="#about">关于</a>
   </nav>
+  <div class="tb-search" id="tbSearch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>全局检索…</span></div>
 </header>
-<div class="chrome chrome--bl"><span class="counter"><b id="secNow">01</b> / 04</span><span class="demo-tag">示例数据 DEMO</span></div>
-
-<!-- NAV COMMAND BAR -->
-<div class="nav-cmd hidden" id="navCmd">
-  <div class="nav-shell"><span class="pfx"></span>
-    <input id="navInput" type="text" placeholder="问我去哪 — 试试「看看虾夷扇贝」「SNP 库」「差异性」…" autocomplete="off" />
-    <button class="nav-go" id="navGo">GO</button>
-  </div>
-  <div class="nav-chips">
-    <button class="nav-chip" data-cmd="species">六大物种</button>
-    <button class="nav-chip" data-cmd="live">活体库</button>
-    <button class="nav-chip" data-cmd="genome">基因库</button>
-    <button class="nav-chip" data-cmd="snp">SNP库</button>
-    <button class="nav-chip" data-cmd="diff">差异性</button>
-    <button class="nav-chip" data-cmd="hero">首页</button>
-  </div>
-</div>
 
 <main>
-  <!-- ======= 视频封面（电影感首屏 · 01 首页） ======= -->
-  <section id="cover" data-sec="01" data-morph="hero" data-acc="cyan">
-    <video class="cover-video" id="coverVideo"
-      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
-      autoplay muted playsinline preload="auto"></video>
-    <div class="cover-inner">
-      <div class="cv-body">
-        <div class="cv-badge liquid-glass">
-          <span class="new">上线</span>
-          <span class="txt">黄渤海海珍品 · 种质资源数字平台 2026</span>
-        </div>
-        <h1 class="cv-title" id="cvTitle" data-text="黄渤海海珍品 种质基因组"></h1>
-        <p class="cv-sub" id="cvSub">六大主营品种 · 战略储备品种 · 活体库 · 基因库重测序 · SNP 库 · 差异性分析。覆盖虾夷扇贝、海参、香螺、海胆、鲍鱼、牡蛎，一体化的种质数据底座。</p>
-        <div class="cv-ctas" id="cvCtas">
-          <button class="cv-primary liquid-glass-strong" data-goto="#species">进入平台
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-          </button>
-          <button class="cv-secondary" data-goto="#libraries">了解数据库
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-          </button>
-        </div>
-        <div class="cv-stats" id="cvStats">
-          <div class="cv-card liquid-glass">
-            <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-            <div class="val">14.3M+</div>
-            <div class="lab">高质量 SNP 位点</div>
-          </div>
-          <div class="cv-card liquid-glass">
-            <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 3.9 6 4 9-.1 3-1.5 6.3-4 9-2.5-2.7-3.9-6-4-9 .1-3 1.5-6.3 4-9Z"/></svg></div>
-            <div class="val">6 品种</div>
-            <div class="lab">六大主营海珍品种</div>
-          </div>
-        </div>
-      </div>
-      <div class="cv-partners" id="cvPartners">
-        <div class="chip liquid-glass">獐子岛集团 × 辽宁省海洋动物免疫学与疫病防控重点实验室</div>
-      </div>
+  <section class="view active" id="home"><div class="view-inner">
+
+    <div class="hero">
+      <h1 class="t-h1">黄渤海海珍品 · 种质基因组数据平台</h1>
+      <p class="lead t-body">把每一份种质，沉淀为可查询、可分析、可追溯的基因组数据。</p>
+      <p class="mission t-body">整合虾夷扇贝、仿刺参、皱纹盘鲍、长牡蛎、香螺、海胆等黄渤海主养海珍品的活体保育、全基因组重测序与 SNP 变异数据，为良种选育、种质鉴定与产地溯源提供一体化数据支撑。</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#resources">浏览种质资源</a>
+        <a class="btn-ghost" href="#databases">查看数据库</a>
       </div>
     </div>
-    <div class="cv-scroll-cue"><span class="bar"></span><span>SCROLL</span></div>
-  </section>
 
-  <!-- SPECIES -->
-  <section class="veil" id="species" data-sec="02" data-morph="ring" data-acc="teal">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><div class="eyebrow reveal"><span class="n">02</span> 物种矩阵 · SPECIES MATRIX</div>
-          <h2 class="sec-title reveal">六大主营品种<br>种质资源</h2></div>
-        <p class="sec-note reveal">点击任意品种查看<b>种质档案</b>——样本、基因组指标、关联位点。数据随重测序进度动态更新。</p>
-      </div>
-      <div class="spx-grid reveal" id="spxGrid"></div>
-      <div class="sec-head reserve-head">
-        <div><div class="eyebrow reveal"><span class="n">02·B</span> 战略储备 · STRATEGIC RESERVE</div>
-          <h2 class="sec-title reveal">战略储备品种</h2></div>
-        <p class="sec-note reveal">原生优质经济品种与引进优质种，作为种业振兴的<b>后备资源池</b>，随调查与引种进度逐步纳入种质库。</p>
-      </div>
-      <div class="reserve-wrap reveal" id="reserveWrap"></div>
+    <div class="stat-band">
+      <div class="stat"><div class="v" data-n="6">0</div><div class="k">保藏物种</div></div>
+      <div class="stat"><div class="v" data-n="128400">0</div><div class="k">活体份数</div></div>
+      <div class="stat"><div class="v" data-n="9">0</div><div class="k">基因组数</div></div>
+      <div class="stat"><div class="v" data-n="14300000">0</div><div class="k">SNP 位点</div></div>
     </div>
-  </section>
 
-  <!-- LIBRARIES -->
-  <section class="solid" id="libraries" data-sec="03" data-morph="grid" data-acc="cyan">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><div class="eyebrow reveal"><span class="n">03</span> 数据库架构 · THE LIBRARY SYSTEM</div>
-          <h2 class="sec-title reveal">四位一体<br>种质数据底座</h2></div>
-        <p class="sec-note reveal">从活体到分子标记的全链条数据资产。<b>点击任意库</b>查看内容与实时状态。</p>
-      </div>
-      <div class="lib-grid reveal" id="libGrid"></div>
+    <div class="bento">
+      <a class="tile flagship" href="#analysis"><div><div class="th">遗传分析</div><div class="td">种群分化、性状关联与产地溯源分析示例，数据驱动的选育决策支撑。</div></div><span class="tb-badge badge--beta">示例</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据检索</div><div class="td">跨库全局检索种质、样本与变异位点。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据汇交</div><div class="td">科研与生产数据规范化汇交入库。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">可视化</div><div class="td">基因组与群体数据的交互式图表呈现。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">表型库</div><div class="td">生长、抗逆、品质等性状表型数据管理。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据下载</div><div class="td">开放数据集与标准化文件下载出口。</div></div><span class="tb-badge badge--wip">建设中</span></a>
     </div>
-  </section>
 
-  <!-- OUTRO -->
-  <section id="outro" data-sec="04" data-morph="sphere" data-acc="purple">
-    <div class="wrap">
-      <div class="eyebrow reveal"><span class="n">04</span> 关于平台 · 从规模导向到种业振兴</div>
-      <h2 class="outro-big reveal">给每一份种质<br>一张<span class="g">基因身份证</span>。</h2>
-      <p class="outro-sub reveal">以六大主营品种为核心、战略储备品种为后备，并行沉淀活体、序列、变异与分化四层数据资产，为黄渤海海珍品良种选育、品系维护与产地溯源，构筑可长期持有、持续扩容的种质数据核心。</p>
-      <div class="credits reveal">
+    <div class="home-sec">
+      <div class="t-cap">SPECIES · COMPLETENESS</div>
+      <h2 class="t-h2" style="margin-top:8px">主营品种 · 完备度</h2>
+      <div class="homegrid-spx" id="homeSpx" style="margin-top:28px"></div>
+    </div>
+
+    <div class="home-sec">
+      <div class="t-cap">DATABASES</div>
+      <h2 class="t-h2" style="margin-top:8px">数据库总览</h2>
+      <div class="homegrid-lib" id="homeLibs" style="margin-top:28px"></div>
+    </div>
+
+    <div class="glass partner-wall">
+      <div class="t-cap">共建单位 · CO-BUILDERS</div>
+      <div class="pw-row">
+        <span class="pw-item">獐子岛集团股份有限公司</span>
+        <span class="pw-item">辽宁省海洋水产种质资源与遗传育种重点实验室</span>
+      </div>
+      <div class="pw-note">※ 平台部分展示数据为示例（DEMO），仅用于功能演示，不代表真实测序或生产结果。</div>
+    </div>
+
+  </div></section>
+  <section class="view" id="resources"><div class="view-inner">
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">GERMPLASM RESOURCES</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">主营品种 · 种质资源矩阵</h1>
+      </div>
+      <p class="t-body sec-note">黄渤海主养海珍品六大主营品种，活体保育、重测序与 SNP 数据一体化档案，点击卡片查看完整种质基因组指标。</p>
+    </div>
+    <div class="spx-grid" id="spxGrid"></div>
+
+    <div class="sec-head reserve-head">
+      <div>
+        <div class="t-cap">STRATEGIC RESERVE</div>
+        <h2 class="t-h2 sec-title" style="margin-top:8px">战略储备品种</h2>
+      </div>
+      <p class="t-body sec-note">面向未来良种选育与种质多样性布局的储备品种清单，随建库进度逐步纳入正式档案。</p>
+    </div>
+    <div class="reserve-wrap" id="reserveWrap"></div>
+
+  </div></section>
+  <section class="view" id="databases"><div class="view-inner">
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">DATABASES</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">数据库总览</h1>
+      </div>
+      <p class="t-body sec-note">活体、基因组重测序、SNP 变异与群体分化分析四库贯通，构成种质数据从采集到分析的完整链路。</p>
+    </div>
+    <div class="lib-grid" id="libGrid"></div>
+
+    <div class="glass" id="libWip" tabindex="0" role="note" aria-label="转录组库 · 建设中" title="该数据库建设中，敬请期待"
+      style="margin-top:2px;padding:clamp(30px,4vw,54px);cursor:not-allowed;opacity:.55">
+      <div style="font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-faint)">DB·05</div>
+      <div style="font-family:var(--f-disp);font-weight:600;font-size:clamp(22px,2.6vw,30px);line-height:1.05;margin-top:16px;color:var(--ink-dim)">转录组库 <span class="tb-badge badge--wip" style="vertical-align:middle;margin-left:8px">建设中</span></div>
+      <div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-faint);margin-top:8px;text-transform:uppercase">TRANSCRIPTOME LIBRARY</div>
+      <p style="color:var(--ink-faint);font-size:14.5px;margin-top:18px;line-height:1.7;max-width:42ch">该数据库建设中，敬请期待。规划纳入主营品种关键性状表达谱数据。</p>
+    </div>
+
+  </div></section>
+  <section class="view" id="analysis"><div class="view-inner">
+
+    <div class="glass" style="padding:14px 22px;border-left:2px solid var(--warn);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:clamp(32px,5vh,56px)">
+      <span class="tb-badge badge--beta">试运行 · 示例数据</span>
+      <span class="t-body" style="font-size:14px;color:var(--ink-dim)">本模块为试运行版本，展示内容基于示例（DEMO）数据，不代表真实测序或分析结果。</span>
+    </div>
+
+    <div class="sec-head">
+      <div>
+        <div class="t-cap">POPULATION DIFFERENTIATION</div>
+        <h1 class="t-h2 sec-title" style="margin-top:8px">群体分化与产地溯源</h1>
+      </div>
+      <p class="t-body sec-note">以仿刺参长海四海区为例，展示海区两两 Fst 分化矩阵与各海区溯源特征，为种源鉴定提供参照框架。</p>
+    </div>
+    <div id="analysisBody"></div>
+
+  </div></section>
+  <section class="view" id="search"><div class="view-inner">
+    <div class="wip-page">
+      <div class="wip-badge">建设中</div>
+      <h1 class="t-h1">数据检索</h1>
+      <p class="t-body" style="max-width:56ch;margin:18px auto 0">统一的跨库检索入口正在建设中，未来将支持从品种、位点到样本编号的一站式查询与数据获取。</p>
+      <div class="wip-plan">
+        <div class="wip-item"><span class="tb-badge badge--wip">规划中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">全局检索</b> — 跨库关键词检索：品种/位点/样本编号</span></div>
+        <div class="wip-item"><span class="tb-badge badge--wip">规划中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">高级检索</b> — 按染色体区间、性状、海区、MAF 阈值组合筛选</span></div>
+        <div class="wip-item"><span class="tb-badge badge--wip">规划中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">数据下载与申请</b> — VCF/FASTA 导出与数据使用申请流程</span></div>
+      </div>
+    </div>
+  </div></section>
+  <section class="view" id="standards"><div class="view-inner">
+    <div class="wip-page">
+      <div class="wip-badge">整理中</div>
+      <h1 class="t-h1">标准规范</h1>
+      <p class="t-body" style="max-width:56ch;margin:18px auto 0">种质数据的描述、汇交与命名标准正在整理中，旨在为平台数据资产的长期积累提供统一规范。</p>
+      <div class="wip-plan">
+        <div class="wip-item"><span class="tb-badge badge--wip">整理中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">种质描述规范</b> — 海珍品种质资源描述与元数据字段标准</span></div>
+        <div class="wip-item"><span class="tb-badge badge--wip">整理中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">数据汇交标准</b> — 活体/重测序/SNP 数据入库格式与质控要求</span></div>
+        <div class="wip-item"><span class="tb-badge badge--wip">整理中</span><span class="t-body" style="color:var(--ink-dim)"><b style="color:var(--ink)">命名规范</b> — 样本编号、位点 ID、品系命名规则</span></div>
+      </div>
+    </div>
+  </div></section>
+  <section class="view" id="about"><div class="view-inner">
+    <div class="t-cap">关于平台 · 从规模导向到种业振兴</div>
+    <h1 class="t-h1" style="margin-top:14px">给每一份种质，一张<span style="background:linear-gradient(100deg,var(--gene),var(--ocean));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">基因身份证</span>。</h1>
+    <p class="t-body" style="max-width:62ch;margin-top:22px">以六大主营品种为核心、战略储备品种为后备，并行沉淀活体、序列、变异与分化四层数据资产，为黄渤海海珍品良种选育、品系维护与产地溯源，构筑可长期持有、持续扩容的种质数据核心。</p>
+
+    <div class="glass" style="margin-top:clamp(48px,7vh,80px);padding:clamp(28px,3.6vw,42px);border-radius:16px">
+      <div class="credits" style="margin-top:0;border-top:none;padding-top:0">
         <div class="cred"><div class="k">建设主体</div><div class="v">獐子岛集团<br><small>股份有限公司</small></div></div>
         <div class="cred"><div class="k">技术支撑</div><div class="v">辽宁省海洋动物免疫学与<br><small>疫病防控重点实验室</small></div></div>
         <div class="cred"><div class="k">覆盖品种</div><div class="v">六大主营 + 战略储备<br><small>扇贝/参/螺/胆/鲍/蚝</small></div></div>
-        <div class="cred"><div class="k">数据维护</div><div class="v">定期补充完善<br><small>活体 · 序列 · SNP · 差异</small></div></div>
+        <div class="cred"><div class="k">数据维护</div><div class="v">定期补充完善<br><small>活体 · 序列 · SNP · 群体分化</small></div></div>
       </div>
-      <div class="footline reveal"><span>黄渤海海珍品 · 种质资源数字平台</span><span>HBH · GERMPLASM · PLATFORM / 2026</span></div>
-      <div class="disclaimer reveal">※ 本站所有样本数、基因组指标、位点与分类数据均为演示用示例数据（DEMO），仅用于平台功能与视觉展示，不代表真实测序结果。</div>
     </div>
-  </section>
+
+    <div class="footline" style="margin-top:48px"><span>黄渤海海珍品 · 种质资源数字平台</span><span>HBH · GERMPLASM · PLATFORM / 2026</span></div>
+    <div class="disclaimer">※ 本站所有样本数、基因组指标、位点与分类数据均为演示用示例数据（DEMO），仅用于平台功能与视觉展示，不代表真实测序结果。</div>
+  </div></section>
 </main>
+
+<!-- FOOTER (outside .view — always visible) -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="col">
+      <h4>平台简介</h4>
+      <p class="t-body" style="font-size:13.5px;line-height:1.7;max-width:36ch">黄渤海海珍品 · 种质资源数字平台，沉淀活体、序列、变异与分化四层数据资产，服务良种选育、品系维护与产地溯源。</p>
+      <p class="t-body" style="font-size:12.5px;line-height:1.7;margin-top:12px;color:var(--ink-faint)">獐子岛集团 × 辽宁省海洋动物免疫学与疫病防控重点实验室</p>
+    </div>
+    <div class="col">
+      <h4>导航</h4>
+      <a href="#home">首页</a>
+      <a href="#resources">种质资源</a>
+      <a href="#databases">数据库</a>
+      <a href="#analysis">遗传分析</a>
+    </div>
+    <div class="col">
+      <h4>资源</h4>
+      <a href="#search">数据检索</a>
+      <a href="#standards">标准规范</a>
+      <a href="#about">关于</a>
+    </div>
+    <div class="col">
+      <h4>备案</h4>
+      <p class="t-body" style="font-size:12.5px;color:var(--ink-faint)">辽ICP备 XXXXXXXX 号（占位）</p>
+      <p class="t-body" style="font-size:12.5px;color:var(--ink-faint);margin-top:8px">辽公网安备 XXXXXXXX 号（占位）</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 獐子岛集团股份有限公司 · 种质资源数字平台</span>
+    <span>示例数据（DEMO）· 仅供演示</span>
+  </div>
+</footer>
 
 <!-- MODAL -->
 <div class="modal" id="modal" aria-hidden="true">
@@ -529,8 +686,6 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
 (function(){
   "use strict";
@@ -796,7 +951,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       desc:'经严苛质控的高质量变异位点标准库，支撑优势性状筛选、品系血统鉴定与产地溯源标记面板。',
       cols:['位点 ID','染色体','位置','等位基因','MAF','关联性状'],
       rows:[['Myz-g0421','Chr7','12,483,910','A/G','0.34','壳长'],['Myz-s1180','Chr3','8,912,044','C/T','0.28','壳色'],['Ajp-g0662','Chr5','21,004,551','G/A','0.31','体质量'],['Cgi-g0915','Chr2','4,776,220','T/C','0.44','高温适应'],['Hdh-g0338','Chr9','15,220,870','A/C','0.26','耐低温'],['Hcr-g0471','Chr4','9,551,203','G/T','0.30','性腺品质']]},
-    diff:{c:'red',title:'差异性分析',en:'DIFFERENTIATION',
+    diff:{c:'red',title:'群体分化分析',en:'DIFFERENTIATION',
       desc:'群体分化、种源鉴定与优势性状关联的分析中枢，将基因组分化特征转化为品系判别与产地认证工具。',
       cols:['海区对','加权 Fst','私有位点','溯源准确率'],
       rows:[['獐子岛 ↔ 大长山','0.081','1,204','96.4%'],['獐子岛 ↔ 金坨','0.113','1,872','97.8%'],['獐子岛 ↔ 王家岛','0.129','2,031','98.1%'],['大长山 ↔ 金坨','0.072','988','95.2%'],['大长山 ↔ 王家岛','0.095','1,540','96.0%'],['金坨 ↔ 王家岛','0.104','1,760','96.9%']]}
@@ -853,7 +1008,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       return {label:m.toFixed(2),value:Math.round((totalM*1e6/5)*(0.6+seed/100*0.8)/1000)};});}
   SPECIES.forEach(function(s){genDist(s);if(s.sub)s.sub.forEach(genDist);});
 
-  // 四海区 Fst 矩阵（对称，对角为 0）——用于差异性热力图
+  // 四海区 Fst 矩阵（对称，对角为 0）——用于群体分化热力图
   var REG_LABELS=['獐子岛','大长山','金坨','王家岛'];
   var FST=[
     [0,0.081,0.113,0.129],
@@ -867,9 +1022,10 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      ============================================================ */
   var modal=document.getElementById('modal'),modalBody=document.getElementById('modalBody');
   function openModal(html){modalBody.innerHTML=html;modal.classList.add('open');modal.setAttribute('aria-hidden','false');
-    document.body.classList.add('modal-open');if(window.__lenis)try{window.__lenis.stop();}catch(e){}modalBody.parentNode.scrollTop=0;}
+    document.body.classList.add('modal-open');modalBody.parentNode.scrollTop=0;}
   function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
-    document.body.classList.remove('modal-open');if(window.__lenis)try{window.__lenis.start();}catch(e){}}
+    document.body.classList.remove('modal-open');}
+  window.__closeModal=closeModal; // 供 geoBlock 内联 onclick 跨 IIFE 作用域调用（同 __spFallback 模式）
   $$('[data-close]').forEach(function(el){el.addEventListener('click',closeModal);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
 
@@ -932,7 +1088,8 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       '<p class="mnote" style="margin:0 0 14px">以仿刺参长海四海区为例——各海区以自然海峡相隔，遗传背景各异，构成种源鉴定与产地溯源的参照框架。</p>'+
       '<div class="msub" style="font-size:12px;opacity:.8">海区两两分化 · PAIRWISE Fst</div>'+
       heatmap(REG_LABELS,FST,{color:'red',cap:'长海四海区加权 Fst 热力图 · 值越高分化越强 · 示例'})+
-      '<div class="geo-grid">'+reg+'</div>';}
+      '<div class="geo-grid">'+reg+'</div>'+
+      '<a href="#analysis" onclick="window.__closeModal&&window.__closeModal()" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:'+ACC.red+'">前往遗传分析 →</a>';}
 
   function libChart(key,d){
     if(key==='live'){ // 各品种保育个体数
@@ -979,6 +1136,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     $$('.spx',grid).forEach(function(el){function op(){openModal(speciesModal(SPECIES[+el.getAttribute('data-sp')]));}
       el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
 
+  // #analysis 视图：复用 geoBlock() 渲染完整群体分化内容
+  function renderAnalysis(){var body=document.getElementById('analysisBody');if(!body)return;body.innerHTML=geoBlock();}
+
   // 战略储备品种（轻量清单式）
   function initReserve(){var wrap=document.getElementById('reserveWrap');if(!wrap)return;
     wrap.innerHTML=RESERVE.map(function(g){
@@ -995,7 +1155,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      desc:'全基因组重测序原始序列与组装入库，随测序进度定期扩容，构成分析的统一数据源。',mv:'扇贝 190 · 海参 160',mvc:false,mk:'重测序序列 · 持续入库',live:'定期补充完善'},
     {lib:'snp',code:'DB·03',t:'SNP 库',en:'SNP VARIANT LIBRARY',c:'cyan',
      desc:'经严苛质控的高质量变异位点标准库，支撑性状筛选、血统鉴定与产地溯源。',mv:'14,361,837',mvc:true,mk:'高质量 SNP · 扇贝×海参',live:'随品种扩容'},
-    {lib:'diff',code:'DB·04',t:'差异性分析',en:'DIFFERENTIATION',c:'red',
+    {lib:'diff',code:'DB·04',t:'群体分化分析',en:'DIFFERENTIATION',c:'red',
      desc:'群体分化、种源鉴定与优势性状关联的分析中枢，产出品系判别与产地认证工具。',mv:'Fst · GWAS · 分类器',mvc:false,mk:'分化 / 溯源 / 关联',live:'模型迭代'}
   ];
   function initLibraries(){var grid=document.getElementById('libGrid');if(!grid)return;var html='';
@@ -1006,6 +1166,70 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     grid.innerHTML=html;
     $$('.lib',grid).forEach(function(el){function op(){var k=el.getAttribute('data-lib');openModal(libModal(LIB_DETAIL[k],k));}
       el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
+
+  /* ============================================================
+     HOME — species/library cards + count-up
+     ============================================================ */
+  function countUp(el,target,suffix){
+    if(reduceMotion){el.textContent=fmt(target)+(suffix||'');return;}
+    var t0=null,dur=1400;
+    function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);
+      el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))))+(suffix||'');
+      if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  function renderHome(){
+    var sp=$('#homeSpx');
+    if(sp){
+      sp.innerHTML=SPECIES.map(function(s){
+        var photo='<div class="ph" style="--sp:'+ACC[s.c]+'">'+
+          '<img src="assets/species/'+s.img+'.jpg" alt="'+s.cn+'" loading="lazy" '+
+          'onerror="window.__spFallback(this,\''+s.img+'\')"></div>';
+        var dims=[
+          ['活体',true],
+          ['重测序',!!s.done],
+          ['SNP',!!s.done],
+          ['性状定位',true],
+          ['群体分化',!!s.geo]
+        ];
+        var dots=dims.map(function(d){return '<span class="dm'+(d[1]?' on':'')+'">'+d[0]+'</span>';}).join('');
+        return '<div class="spx-card" style="--sp:'+ACC[s.c]+'" tabindex="0" role="button" data-sp-idx="'+SPECIES.indexOf(s)+'" aria-label="'+s.cn+' 详情">'+
+          photo+'<div class="body"><div class="cn">'+s.cn+'</div><div class="la">'+s.la+'</div>'+
+          '<div class="dot-matrix">'+dots+'</div></div></div>';
+      }).join('');
+      $$('.spx-card',sp).forEach(function(el){
+        function op(){openModal(speciesModal(SPECIES[+el.getAttribute('data-sp-idx')]));}
+        el.addEventListener('click',op);
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});
+      });
+    }
+    var lb=$('#homeLibs');
+    if(lb){
+      lb.innerHTML=LIBS.map(function(l){
+        return '<div class="libcard" style="--lc:'+ACC[l.c]+'" tabindex="0" role="button" data-lib="'+l.lib+'" aria-label="'+l.t+' 详情">'+
+          '<div class="lc-code">'+l.code+'</div><div class="lc-t">'+l.t+'</div><div class="lc-en">'+l.en+'</div>'+
+          '<p class="lc-desc">'+l.desc+'</p>'+
+          '<div class="lc-metric"><span class="lc-mv">'+l.mv+'</span><span class="lc-mk">'+l.mk+'</span></div></div>';
+      }).join('');
+      $$('.libcard',lb).forEach(function(el){
+        function op(){var k=el.getAttribute('data-lib');openModal(libModal(LIB_DETAIL[k],k));}
+        el.addEventListener('click',op);
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});
+      });
+    }
+  }
+  function initHomeCountUp(){
+    var els=$$('.stat .v[data-n]');
+    if(!els.length)return;
+    if(!('IntersectionObserver' in window)){els.forEach(function(el){countUp(el,parseFloat(el.getAttribute('data-n')));});return;}
+    var seen=new WeakSet();
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting&&!seen.has(en.target)){seen.add(en.target);countUp(en.target,parseFloat(en.target.getAttribute('data-n')));io.unobserve(en.target);}
+      });
+    },{threshold:.4});
+    els.forEach(function(el){io.observe(el);});
+  }
 
   /* ============================================================
      REGIONS
@@ -1044,16 +1268,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     requestAnimationFrame(step);}
 
   function setAccent(name){document.documentElement.style.setProperty('--acc',ACC[name]||ACC.cyan);}
-  var inHero=true,hi=0;
   function initMotion(){
-    var lenis=null;
-    if(typeof Lenis!=='undefined'&&!reduceMotion){try{lenis=new Lenis({duration:1.15,smoothWheel:true,easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t));}});
-      function rl(t){lenis.raf(t);requestAnimationFrame(rl);}requestAnimationFrame(rl);}catch(e){lenis=null;}}
-    window.__lenis=lenis;
-    if(window.gsap&&window.ScrollTrigger&&!reduceMotion){gsap.registerPlugin(ScrollTrigger);if(lenis)lenis.on('scroll',ScrollTrigger.update);
-      $$('[data-sec]').forEach(function(sec){var items=$$('.reveal',sec);if(!items.length)return;gsap.set(items,{y:38,opacity:0});
-        ScrollTrigger.create({trigger:sec,start:'top 80%',once:true,onEnter:function(){gsap.to(items,{y:0,opacity:1,duration:.95,ease:'power3.out',stagger:.08});}});});
-    }else{$$('.reveal').forEach(function(el){el.style.opacity=1;el.style.transform='none';});}
     // counters
     var counted=new WeakSet();
     function ac(el){if(counted.has(el))return;counted.add(el);var t=parseFloat(el.getAttribute('data-count')),suf=el.innerHTML.replace(/^[0-9,]*/,'');
@@ -1062,113 +1277,41 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)ac(en.target);});},{threshold:.4});
       var obc=function(){$$('[data-count]').forEach(function(el){io.observe(el);});};obc();window.__obsCount=obc;}
     else $$('[data-count]').forEach(ac);
-    // progress + accent + morph
-    var progress=document.getElementById('progress'),secNow=document.getElementById('secNow');
-    window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight,p=h>0?(window.pageYOffset/h):0;progress.style.width=(p*100)+'%';},{passive:true});
-    if('IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){var s=en.target;
-      secNow.textContent=s.getAttribute('data-sec');setAccent(s.getAttribute('data-acc'));
-      var mp=s.getAttribute('data-morph');if(mp==='hero'){inHero=true;if(Scene.ok)Scene.setMorph(Scene.heroMorphs[hi%Scene.heroMorphs.length]);}
-      else{inHero=false;if(Scene.ok)Scene.setMorph(mp);}}});},{threshold:.5});
-      $$('[data-sec]').forEach(function(s){io2.observe(s);});}
-    if(!reduceMotion)setInterval(function(){if(inHero&&Scene.ok&&Scene.heroMorphs.length){hi++;Scene.setMorph(Scene.heroMorphs[hi%Scene.heroMorphs.length]);}},3600);
   }
+  window.__reveal=function(){
+    if(!window.gsap||reduceMotion)return;
+    $$('.view.active .reveal').forEach(function(el,i){
+      gsap.fromTo(el,{y:24,opacity:0},{y:0,opacity:1,duration:.7,ease:'power3.out',delay:i*.04,overwrite:true});
+    });
+  };
 
-  var TMAP={hero:{sel:'#cover'},cover:{sel:'#cover'},species:{sel:'#species'},live:{sel:'#libraries',lib:'live'},genome:{sel:'#libraries',lib:'genome'},
-    snp:{sel:'#libraries',lib:'snp'},diff:{sel:'#libraries',lib:'diff'},lib:{sel:'#libraries'},outro:{sel:'#outro'},
-    cucumber:{sel:'#species',sp:1}};
-  var INTENTS=[{k:['首页','主页','回到','home','top','开头'],cmd:'hero'},
-    {k:['鲍','海参','仿刺参','牡蛎','蚝','扇贝','虾夷','海胆','马粪','紫海','香螺','螺','物种','品种','species'],cmd:'species'},
-    {k:['活体','实体','保育','live'],cmd:'live'},{k:['基因库','重测序','序列','genome','reseq','测序'],cmd:'genome'},
-    {k:['snp','位点','变异','标记','marker','panel'],cmd:'snp'},{k:['地理','分化单元','天然'],cmd:'cucumber'},
-    {k:['差异','分化','溯源','产地','海区','fst','diff','鉴定'],cmd:'diff'},
-    {k:['库','数据库','library','db'],cmd:'lib'},{k:['关于','about','团队','单位'],cmd:'outro'}];
-  function scrollToSel(sel){var el=$(sel);if(!el)return;if(window.__lenis){try{window.__lenis.scrollTo(el,{duration:1.3});return;}catch(e){}}el.scrollIntoView({behavior:reduceMotion?'auto':'smooth'});}
-  function flash(){var f=document.getElementById('navFlash');if(!f||reduceMotion)return;if(window.gsap)gsap.fromTo(f,{opacity:0},{opacity:.35,duration:.25,yoyo:true,repeat:1,ease:'power2.out'});}
-  function runCmd(cmd){var t=TMAP[cmd];if(!t)return false;scrollToSel(t.sel);flash();
-    if(typeof t.sp==='number'&&SPECIES[t.sp]){setTimeout(function(){openModal(speciesModal(SPECIES[t.sp]));},reduceMotion?0:520);return true;}
-    if(t.lib){var el=$('.lib[data-lib="'+t.lib+'"]');if(el){el.classList.add('lit');setTimeout(function(){el.classList.remove('lit');},2200);}
-      if(cmd==='diff'&&LIB_DETAIL.diff){setTimeout(function(){openModal(libModal(LIB_DETAIL.diff,'diff'));},reduceMotion?0:520);}}return true;}
-  function parseIntent(text){var q=(text||'').toLowerCase().trim();if(!q)return null;
-    for(var i=0;i<INTENTS.length;i++)for(var j=0;j<INTENTS[i].k.length;j++)if(q.indexOf(INTENTS[i].k[j])>=0)return INTENTS[i].cmd;return null;}
-  function initNav(){var navCmd=document.getElementById('navCmd'),input=document.getElementById('navInput'),go=document.getElementById('navGo');
-    function submit(){var cmd=parseIntent(input.value);if(cmd){runCmd(cmd);input.value='';input.blur();}else{input.value='';input.setAttribute('placeholder','没听懂 — 试试「SNP库」「虾夷扇贝」「差异性」…');}}
-    if(go)go.addEventListener('click',submit);if(input)input.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
-    $$('.nav-chip').forEach(function(ch){ch.addEventListener('click',function(){runCmd(ch.getAttribute('data-cmd'));});});
-    $$('.topnav a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();scrollToSel(a.getAttribute('href'));});});
-    $$('.hsp').forEach(function(el,i){el.style.cursor='pointer';el.addEventListener('click',function(){if(SPECIES[i])openModal(speciesModal(SPECIES[i]));});});
-    setTimeout(function(){navCmd.classList.remove('hidden');},reduceMotion?600:2600);}
+  var VIEWS=['home','resources','databases','analysis','search','standards','about'];
+  function route(hash){
+    var id=(hash||location.hash||'#home').replace('#','').split('?')[0];
+    if(VIEWS.indexOf(id)<0)id='home';
+    $$('.view').forEach(function(v){v.classList.toggle('active',v.id===id);});
+    $$('.tb-nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+id);});
+    window.scrollTo(0,0);
+    if(window.__reveal)window.__reveal();
+  }
+  window.addEventListener('hashchange',function(){route();});
+  renderHome();
+  route();
+  initHomeCountUp();
 
   function initCursor(){if(isTouch||reduceMotion)return;var cur=document.getElementById('cursor'),dot=document.getElementById('cursorDot'),cx=0,cy=0,dx=0,dy=0;
     window.addEventListener('pointermove',function(e){cx=e.clientX;cy=e.clientY;dot.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';},{passive:true});
     (function loop(){dx+=(cx-dx)*.18;dy+=(cy-dy)*.18;cur.style.transform='translate('+dx+'px,'+dy+'px) translate(-50%,-50%)';requestAnimationFrame(loop);})();
-    function bind(){$$('a,button,.reg-btn,.spx,.lib,.nav-chip,.hsp').forEach(function(el){
+    function bind(){$$('a,button,.reg-btn,.spx,.lib,.tile,.spx-card,.libcard').forEach(function(el){
       el.addEventListener('mouseenter',function(){cur.classList.add('big');});el.addEventListener('mouseleave',function(){cur.classList.remove('big');});});}
     bind();window.__bindCursor=bind;}
 
   window.addEventListener('DOMContentLoaded',function(){
-    initSpecies();initReserve();initLibraries();initNav();initCursor();
+    initSpecies();initReserve();initLibraries();renderAnalysis();initCursor();
     if(window.__obsCount)window.__obsCount();
     runLoader(function(){});initMotion();
     // re-observe dynamically-added counters (SNP lib metric) and rebind cursor
     if(window.__obsCount)window.__obsCount();if(window.__bindCursor)window.__bindCursor();
-  });
-})();
-</script>
-
-<!-- ======= 视频封面：淡入淡出 + 入场动画 + 滚动按钮 ======= -->
-<script>
-(function(){
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* 视频 rAF 淡入淡出（无 loop，手动循环） */
-  var video=document.getElementById('coverVideo');
-  if(video){
-    var raf=null,fadingOut=false,FADE=500,LEAD=0.55;
-    function fadeTo(target,dur){
-      if(raf)cancelAnimationFrame(raf);
-      var start=parseFloat(video.style.opacity||'0'),delta=target-start,t0=null;
-      function step(ts){if(t0===null)t0=ts;var t=dur<=0?1:Math.min((ts-t0)/dur,1);
-        video.style.opacity=String(start+delta*t);if(t<1)raf=requestAnimationFrame(step);}
-      raf=requestAnimationFrame(step);
-    }
-    video.addEventListener('loadeddata',function(){video.style.opacity='0';var p=video.play();if(p&&p.catch)p.catch(function(){});fadeTo(1,FADE);});
-    video.addEventListener('timeupdate',function(){var rem=video.duration-video.currentTime;
-      if(!fadingOut&&rem<=LEAD&&rem>0){fadingOut=true;fadeTo(0,FADE);}});
-    video.addEventListener('ended',function(){video.style.opacity='0';
-      setTimeout(function(){video.currentTime=0;var p=video.play();if(p&&p.catch)p.catch(function(){});fadingOut=false;fadeTo(1,FADE);},100);});
-    // 若已缓存，loadeddata 可能已过
-    if(video.readyState>=2){video.style.opacity='0';var pp=video.play();if(pp&&pp.catch)pp.catch(function(){});fadeTo(1,FADE);}
-  }
-
-  /* 标题逐词模糊入场 */
-  var title=document.getElementById('cvTitle');
-  if(title){
-    var words=(title.getAttribute('data-text')||'').split(' ');
-    title.innerHTML=words.map(function(w){return '<span class="w">'+w+'</span>';}).join('');
-    var spans=title.querySelectorAll('.w');
-    spans.forEach(function(s,i){
-      if(reduce){s.style.opacity=1;s.style.filter='none';s.style.transform='none';return;}
-      s.style.transition='opacity .7s ease,filter .7s ease,transform .7s ease';
-      setTimeout(function(){s.style.opacity=1;s.style.filter='blur(0)';s.style.transform='none';},200+i*100);
-    });
-  }
-
-  /* 其余元素延时入场 */
-  function rise(el,delay){if(!el)return;if(reduce){el.style.opacity=1;return;}
-    el.style.transition='opacity .7s ease,transform .7s ease';el.style.transform='translateY(20px)';
-    setTimeout(function(){el.style.opacity=1;el.style.transform='none';},delay);}
-  rise(document.getElementById('cvSub'),800);
-  rise(document.getElementById('cvCtas'),1100);
-  rise(document.getElementById('cvStats'),1300);
-  rise(document.getElementById('cvPartners'),1400);
-
-  /* 封面按钮 → 平滑滚动到对应板块 */
-  document.querySelectorAll('#cover [data-goto]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var sel=btn.getAttribute('data-goto'),el=document.querySelector(sel);if(!el)return;
-      if(window.__lenis){try{window.__lenis.scrollTo(el,{duration:1.3});return;}catch(e){}}
-      el.scrollIntoView({behavior:reduce?'auto':'smooth'});
-    });
   });
 })();
 </script>
