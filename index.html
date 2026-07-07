@@ -429,8 +429,13 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .rsv-gname{font-family:var(--f-disp);font-size:17px;color:var(--ink)}
 .rsv-en{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
 .rsv-cnt{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--rc)}
-.rsv-items{display:flex;flex-wrap:wrap;gap:8px}
-.rsv-item{display:inline-flex;flex-direction:column;gap:2px;padding:8px 13px;border:1px solid var(--line);border-radius:9px;background:rgba(150,185,215,.04)}
+.rsv-items{display:flex;flex-wrap:wrap;gap:10px}
+.rsv-item{display:inline-flex;align-items:center;gap:11px;padding:7px 13px 7px 7px;border:1px solid var(--line);border-radius:11px;background:rgba(150,185,215,.04);transition:border-color .25s var(--ease),transform .25s var(--ease)}
+.rsv-item:hover{border-color:var(--rc);transform:translateY(-2px)}
+.rsv-thumb{width:38px;height:38px;flex:none;border-radius:8px;overflow:hidden;background:rgba(150,185,215,.06);border:1px solid var(--line)}
+.rsv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rsv-thumb.none{display:none}
+.rsv-txt{display:inline-flex;flex-direction:column;gap:2px;min-width:0}
 .rsv-cn{font-size:14px;color:var(--ink)}
 .rsv-la{font-family:var(--f-mono);font-size:10px;font-style:italic;color:var(--ink-faint)}
 @media(max-width:760px){.reserve-wrap{grid-template-columns:1fr}}
@@ -884,37 +889,37 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     var eff=((i%2===0)?'+':'−')+(0.18+((i*13)%40)/100).toFixed(2);
     rows.push(['<span class="hl">'+pfx+'-g'+(400+i*137%600)+'</span>',chr,pos,traits[i],eff]);}return rows;}
   var SPECIES=[
-    {key:'scallop',cn:'虾夷扇贝',la:'Mizuhopecten yessoensis',cls:'双壳纲 · BIVALVIA',c:'cyan',img:'scallop',
+    {key:'scallop',cn:'虾夷扇贝',la:'Mizuhopecten yessoensis',cls:'双壳纲 · BIVALVIA',c:'cyan',img:'scallop',photo:'虾夷扇贝.png',
      note:'规格与壳色品系，獐子岛红 / 獐子岛紫。',n:'n=190',badge:'已重测序',done:true,
      stats:[['样本数','190',''],['高质量 SNP','8.53','M'],['基因组','1.43','Gb'],['Contig N50','804','kb'],['测序覆盖','34','×'],['杂合度','0.29','%']],
      traits:['生长 · 壳长壳高体重','壳色 · 獐子岛红/紫','规格分化','闭壳肌重']},
-    {key:'cucumber',cn:'仿刺参',la:'Apostichopus japonicus',cls:'海参纲 · HOLOTHUROIDEA',c:'red',img:'cucumber',
+    {key:'cucumber',cn:'仿刺参',la:'Apostichopus japonicus',cls:'海参纲 · HOLOTHUROIDEA',c:'red',img:'cucumber',photo:'仿刺参.png',
      note:'长海四海区群体，生长性状与产地溯源。',n:'n=160',badge:'已重测序',done:true,geo:true,
      stats:[['样本数','160',''],['高质量 SNP','5.91','M'],['基因组','0.81','Gb'],['Contig N50','486','kb'],['测序覆盖','30','×'],['杂合度','0.42','%']],
      traits:['生长 · 体质量','腐皮综合征抗性','四海区分化','体壁品质']},
-    {key:'whelk',cn:'香螺',la:'Neptunea cumingii',cls:'腹足纲 · GASTROPODA',c:'rose',img:'whelk',
+    {key:'whelk',cn:'香螺',la:'Neptunea cumingii',cls:'腹足纲 · GASTROPODA',c:'rose',img:'whelk',photo:'香螺.png',
      note:'高值螺类，野生资源调查与增殖。',n:'n=42',badge:'资源调查',done:false,
      stats:[['样本数','42',''],['高质量 SNP','3.11','M'],['基因组','1.52','Gb'],['Contig N50','96','kb'],['测序覆盖','22','×'],['杂合度','0.60','%']],
      traits:['生长 · 壳高','野生资源','增殖','软体部重']},
-    {key:'urchin',cn:'海胆',la:'Echinoidea',cls:'海胆纲 · ECHINOIDEA',c:'amber',img:'urchin_h',
+    {key:'urchin',cn:'海胆',la:'Echinoidea',cls:'海胆纲 · ECHINOIDEA',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
      note:'黄渤海主养海胆，含马粪海胆与紫海胆两个品种。',n:'n=122',badge:'重测序中',done:false,
      stats:[['样本合计','122',''],['高质量 SNP','9.33','M'],['涵盖品种','2','种'],['测序覆盖','25','×'],['靶向性状','性腺','品质'],['状态','重测序','中']],
      traits:['性腺产量与品质','生长','抗逆','壳径棘长'],
      sub:[
-       {key:'urchin_h',cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',c:'amber',img:'urchin_h',
+       {key:'urchin_h',cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
         note:'黄渤海主养海胆，性腺产量与品质。',n:'n=64',badge:'重测序中',
         stats:[['样本数','64',''],['高质量 SNP','4.81','M'],['基因组','0.63','Gb'],['Contig N50','142','kb'],['测序覆盖','26','×'],['杂合度','0.48','%']],
         traits:['性腺产量','生长','耐温','壳径']},
-       {key:'urchin_p',cn:'紫海胆',la:'Heliocidaris crassispina',c:'purple',img:'urchin_p',
+       {key:'urchin_p',cn:'紫海胆',la:'Heliocidaris crassispina',c:'purple',img:'urchin_p',photo:'紫海胆.png',
         note:'高值海胆，性腺品质与抗逆性状。',n:'n=58',badge:'重测序中',
         stats:[['样本数','58',''],['高质量 SNP','4.52','M'],['基因组','0.71','Gb'],['Contig N50','138','kb'],['测序覆盖','25','×'],['杂合度','0.51','%']],
         traits:['性腺品质','壳径','抗逆','棘长']}
      ]},
-    {key:'abalone',cn:'皱纹盘鲍',la:'Haliotis discus hannai',cls:'腹足纲 · GASTROPODA',c:'teal',img:'abalone',
+    {key:'abalone',cn:'皱纹盘鲍',la:'Haliotis discus hannai',cls:'腹足纲 · GASTROPODA',c:'teal',img:'abalone',photo:'皱纹盘报.png',
      note:'黄渤海鲍主养品种，耐低温品系选育。',n:'n=120',badge:'已重测序',done:true,
      stats:[['样本数','120',''],['高质量 SNP','8.24','M'],['基因组','1.79','Gb'],['Contig N50','212','kb'],['测序覆盖','32','×'],['杂合度','0.31','%']],
      traits:['生长 · 壳长','耐低温','存活率','肌肉产量']},
-    {key:'oyster',cn:'长牡蛎',la:'Crassostrea gigas',cls:'双壳纲 · BIVALVIA',c:'steel',img:'oyster',
+    {key:'oyster',cn:'长牡蛎',la:'Crassostrea gigas',cls:'双壳纲 · BIVALVIA',c:'steel',img:'oyster',photo:'太平洋牡蛎.png',
      note:'高温胁迫适应性与糖代谢权衡研究。',n:'n=96',badge:'已重测序',done:true,
      stats:[['样本数','96',''],['高质量 SNP','9.13','M'],['基因组','0.56','Gb'],['Contig N50','1.97','Mb'],['测序覆盖','28','×'],['杂合度','0.55','%']],
      traits:['高温胁迫适应','糖代谢','生长','出肉率']}
@@ -922,15 +927,15 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   // 战略储备品种（轻量清单，DEMO 占位）
   var RESERVE=[
     {group:'原生优质经济品种',en:'NATIVE ECONOMIC SPECIES',c:'teal',items:[
-      {cn:'紫石房蛤',la:'Saxidomus purpurata'},
-      {cn:'砂海螂',la:'Mya arenaria'},
-      {cn:'厚壳贻贝',la:'Mytilus coruscus'}
+      {cn:'紫石房蛤',la:'Saxidomus purpurata',photo:'紫石房蛤.png'},
+      {cn:'砂海螂',la:'Mya arenaria',photo:'砂海螂.png'},
+      {cn:'厚壳贻贝',la:'Mytilus coruscus',photo:'后壳贻贝.png'}
     ]},
     {group:'引进优质种',en:'INTRODUCED ELITE SPECIES',c:'steel',items:[
-      {cn:'大西洋深水扇贝',la:'Placopecten magellanicus'},
-      {cn:'日本海神蛤',la:'Panopea japonica'},
-      {cn:'虾夷扇贝',la:'Mizuhopecten yessoensis'},
-      {cn:'马粪海胆',la:'Hemicentrotus pulcherrimus'}
+      {cn:'大西洋深水扇贝',la:'Placopecten magellanicus',photo:'大西洋深水扇贝.png'},
+      {cn:'日本海神蛤',la:'Panopea japonica',photo:'日本海神蛤.jpg'},
+      {cn:'虾夷扇贝',la:'Mizuhopecten yessoensis',photo:'虾夷扇贝.png'},
+      {cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',photo:'马粪海胆.png'}
     ]}
   ];
   var PFX={abalone:'Hdh',cucumber:'Ajp',oyster:'Cgi',scallop:'Myz',urchin:'Ech',urchin_h:'Hpu',urchin_p:'Hcr',whelk:'Ncu'};
@@ -1035,11 +1040,14 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     var box=img.parentNode;img.remove();box.innerHTML=em;box.classList.add('fallback');
   }catch(e){img.style.display='none';}};
 
+  // 图片路径：优先用中文文件名 photo（含扩展名，编码中文以适配 file://），无则回退旧英文 key .jpg
+  function spPhoto(s){return 'assets/species/'+(s.photo?encodeURIComponent(s.photo):(s.img+'.jpg'));}
+
   function speciesModal(s){
     var stats=s.stats.map(function(t){return '<div class="mstat"><div class="v">'+t[1]+(t[2]?'<span class="u">'+t[2]+'</span>':'')+'</div><div class="k">'+t[0]+'</div></div>';}).join('');
     var chips=s.traits.map(function(t){return '<span class="mchip">'+t+'</span>';}).join('');
     var photo='<div class="mh-emblem" style="--sp:'+ACC[s.c]+';padding:0;overflow:hidden">'+
-      '<img src="assets/species/'+s.img+'.jpg" alt="'+s.cn+'" style="width:100%;height:100%;object-fit:cover;display:block" '+
+      '<img src="'+spPhoto(s)+'" alt="'+s.cn+'" style="width:100%;height:100%;object-fit:cover;display:block" '+
       'onerror="window.__spFallback(this,\''+s.img+'\')"></div>';
     var head='<div class="mh">'+photo+
       '<div class="mh-txt"><div class="mh-cn">'+s.cn+'</div><div class="mh-la">'+s.la+'</div><div class="mh-cls">'+s.cls+'</div>'+
@@ -1125,7 +1133,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   function initSpecies(){var grid=document.getElementById('spxGrid');if(!grid)return;var html='';
     SPECIES.forEach(function(s,idx){
       var media='<div class="emblem" style="--sp:'+ACC[s.c]+'">'+
-        '<img class="emblem-photo" src="assets/species/'+s.img+'.jpg" alt="'+s.cn+'" loading="lazy" '+
+        '<img class="emblem-photo" src="'+spPhoto(s)+'" alt="'+s.cn+'" loading="lazy" '+
         'onerror="window.__spFallback(this,\''+s.img+'\')">'+
         '<span style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(4,6,13,.75))"></span></div>';
       html+='<div class="spx" style="--sp:'+ACC[s.c]+'" tabindex="0" role="button" data-sp="'+idx+'" aria-label="'+s.cn+' 详情">'+
@@ -1139,10 +1147,12 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   // #analysis 视图：复用 geoBlock() 渲染完整群体分化内容
   function renderAnalysis(){var body=document.getElementById('analysisBody');if(!body)return;body.innerHTML=geoBlock();}
 
-  // 战略储备品种（轻量清单式）
+  // 战略储备品种（轻量清单式，带缩略图）
   function initReserve(){var wrap=document.getElementById('reserveWrap');if(!wrap)return;
     wrap.innerHTML=RESERVE.map(function(g){
-      var items=g.items.map(function(it){return '<span class="rsv-item"><span class="rsv-cn">'+it.cn+'</span><span class="rsv-la">'+it.la+'</span></span>';}).join('');
+      var items=g.items.map(function(it){
+        var thumb=it.photo?'<span class="rsv-thumb"><img src="assets/species/'+encodeURIComponent(it.photo)+'" alt="'+it.cn+'" loading="lazy" onerror="this.parentNode.classList.add(\'none\');this.remove();"></span>':'';
+        return '<span class="rsv-item">'+thumb+'<span class="rsv-txt"><span class="rsv-cn">'+it.cn+'</span><span class="rsv-la">'+it.la+'</span></span></span>';}).join('');
       return '<div class="rsv-group" style="--rc:'+ACC[g.c]+'">'+
         '<div class="rsv-head"><span class="rsv-dot"></span><span class="rsv-gname">'+g.group+'</span>'+
         '<span class="rsv-en">'+g.en+'</span><span class="rsv-cnt">'+g.items.length+' 种</span></div>'+
@@ -1183,7 +1193,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     if(sp){
       sp.innerHTML=SPECIES.map(function(s){
         var photo='<div class="ph" style="--sp:'+ACC[s.c]+'">'+
-          '<img src="assets/species/'+s.img+'.jpg" alt="'+s.cn+'" loading="lazy" '+
+          '<img src="'+spPhoto(s)+'" alt="'+s.cn+'" loading="lazy" '+
           'onerror="window.__spFallback(this,\''+s.img+'\')"></div>';
         var dims=[
           ['活体',true],
