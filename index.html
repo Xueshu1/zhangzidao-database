@@ -109,10 +109,31 @@ a{color:inherit;text-decoration:none}
 .demo-tag{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--amber);border:1px solid rgba(255,179,71,.4);
   border-radius:100px;padding:3px 9px}
 
-/* NAV COMMAND BAR */
-.nav-cmd{position:fixed;z-index:58;left:50%;transform:translateX(-50%);bottom:clamp(20px,3.4vw,34px);
-  width:min(560px,calc(100% - 40px));transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.nav-cmd.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}
+/* TOPBAR (fixed nav shell) */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:56;display:flex;align-items:center;gap:clamp(16px,3vw,40px);
+  padding:0 clamp(18px,3vw,40px);height:64px;
+  background:rgba(7,11,20,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(120,180,220,.12)}
+.tb-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:14px;font-weight:500;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
+.tb-logo .dot{width:9px;height:9px;border-radius:50%;background:var(--ocean);box-shadow:0 0 12px var(--ocean);animation:pulse 2.6s var(--ease) infinite}
+.tb-nav{display:flex;gap:clamp(10px,1.6vw,22px);align-items:center;flex:1}
+.tb-nav a{position:relative;font-size:15px;font-weight:400;color:var(--ink-dim);transition:color .25s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tb-nav a:hover{color:var(--ink)}
+.tb-nav a.active{color:var(--ink)}
+.tb-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:2px;background:var(--ocean);box-shadow:0 0 10px var(--ocean)}
+.tb-badge{font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:100px;border:1px solid currentColor;line-height:1}
+.badge--live{color:var(--ocean)}.badge--beta{color:var(--warn)}.badge--wip{color:var(--ink-faint)}
+.tb-search{display:flex;align-items:center;gap:8px;background:rgba(18,26,42,.6);border:1px solid rgba(120,180,220,.16);
+  border-radius:100px;padding:7px 14px;color:var(--ink-faint);font-size:13px;cursor:pointer;transition:.25s;white-space:nowrap}
+.tb-search:hover{border-color:var(--ocean);color:var(--ink-dim)}
+@media(max-width:960px){.tb-nav{overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}.tb-nav::-webkit-scrollbar{display:none}.tb-search span{display:none}}
+
+/* VIEW CONTAINERS (hash-routed) */
+.view{display:none;min-height:100vh;padding-top:64px}
+.view.active{display:block}
+.view-inner{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vh,96px) clamp(20px,5vw,64px)}
+
+/* NAV COMMAND BAR (legacy command palette pieces; command chips/shell still used by runCmd) */
 .nav-shell{display:flex;align-items:center;gap:12px;background:rgba(7,11,23,.72);backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);border:1px solid var(--line-2);border-radius:100px;padding:11px 12px 11px 20px;
   box-shadow:0 12px 44px rgba(0,0,0,.5)}
@@ -432,119 +453,28 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 
 <!-- HEADER -->
 <div class="progress-line" id="progress"></div>
-<header class="header">
-  <a class="wordmark" href="#cover"><span class="dot"></span><span>海珍 · 种质平台</span></a>
-  <nav class="topnav">
-    <a href="#species">物种</a><a href="#libraries">数据库</a><a href="#outro">关于</a>
+<header class="topbar">
+  <a class="tb-logo" href="#home"><span class="dot"></span>海珍 · 种质平台</a>
+  <nav class="tb-nav">
+    <a href="#home">首页</a>
+    <a href="#resources">种质资源<span class="tb-badge badge--live">已上线</span></a>
+    <a href="#databases">数据库<span class="tb-badge badge--live">部分</span></a>
+    <a href="#analysis">遗传分析<span class="tb-badge badge--beta">示例</span></a>
+    <a href="#search">数据检索<span class="tb-badge badge--wip">建设中</span></a>
+    <a href="#standards">标准规范<span class="tb-badge badge--wip">整理中</span></a>
+    <a href="#about">关于</a>
   </nav>
+  <div class="tb-search" id="tbSearch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>全局检索…</span></div>
 </header>
-<div class="chrome chrome--bl"><span class="counter"><b id="secNow">01</b> / 04</span><span class="demo-tag">示例数据 DEMO</span></div>
-
-<!-- NAV COMMAND BAR -->
-<div class="nav-cmd hidden" id="navCmd">
-  <div class="nav-shell"><span class="pfx"></span>
-    <input id="navInput" type="text" placeholder="问我去哪 — 试试「看看虾夷扇贝」「SNP 库」「差异性」…" autocomplete="off" />
-    <button class="nav-go" id="navGo">GO</button>
-  </div>
-  <div class="nav-chips">
-    <button class="nav-chip" data-cmd="species">六大物种</button>
-    <button class="nav-chip" data-cmd="live">活体库</button>
-    <button class="nav-chip" data-cmd="genome">基因库</button>
-    <button class="nav-chip" data-cmd="snp">SNP库</button>
-    <button class="nav-chip" data-cmd="diff">差异性</button>
-    <button class="nav-chip" data-cmd="hero">首页</button>
-  </div>
-</div>
 
 <main>
-  <!-- ======= 视频封面（电影感首屏 · 01 首页） ======= -->
-  <section id="cover" data-sec="01" data-morph="hero" data-acc="cyan">
-    <video class="cover-video" id="coverVideo"
-      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
-      autoplay muted playsinline preload="auto"></video>
-    <div class="cover-inner">
-      <div class="cv-body">
-        <div class="cv-badge liquid-glass">
-          <span class="new">上线</span>
-          <span class="txt">黄渤海海珍品 · 种质资源数字平台 2026</span>
-        </div>
-        <h1 class="cv-title" id="cvTitle" data-text="黄渤海海珍品 种质基因组"></h1>
-        <p class="cv-sub" id="cvSub">六大主营品种 · 战略储备品种 · 活体库 · 基因库重测序 · SNP 库 · 差异性分析。覆盖虾夷扇贝、海参、香螺、海胆、鲍鱼、牡蛎，一体化的种质数据底座。</p>
-        <div class="cv-ctas" id="cvCtas">
-          <button class="cv-primary liquid-glass-strong" data-goto="#species">进入平台
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-          </button>
-          <button class="cv-secondary" data-goto="#libraries">了解数据库
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-          </button>
-        </div>
-        <div class="cv-stats" id="cvStats">
-          <div class="cv-card liquid-glass">
-            <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-            <div class="val">14.3M+</div>
-            <div class="lab">高质量 SNP 位点</div>
-          </div>
-          <div class="cv-card liquid-glass">
-            <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 3.9 6 4 9-.1 3-1.5 6.3-4 9-2.5-2.7-3.9-6-4-9 .1-3 1.5-6.3 4-9Z"/></svg></div>
-            <div class="val">6 品种</div>
-            <div class="lab">六大主营海珍品种</div>
-          </div>
-        </div>
-      </div>
-      <div class="cv-partners" id="cvPartners">
-        <div class="chip liquid-glass">獐子岛集团 × 辽宁省海洋动物免疫学与疫病防控重点实验室</div>
-      </div>
-      </div>
-    </div>
-    <div class="cv-scroll-cue"><span class="bar"></span><span>SCROLL</span></div>
-  </section>
-
-  <!-- SPECIES -->
-  <section class="veil" id="species" data-sec="02" data-morph="ring" data-acc="teal">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><div class="eyebrow reveal"><span class="n">02</span> 物种矩阵 · SPECIES MATRIX</div>
-          <h2 class="sec-title reveal">六大主营品种<br>种质资源</h2></div>
-        <p class="sec-note reveal">点击任意品种查看<b>种质档案</b>——样本、基因组指标、关联位点。数据随重测序进度动态更新。</p>
-      </div>
-      <div class="spx-grid reveal" id="spxGrid"></div>
-      <div class="sec-head reserve-head">
-        <div><div class="eyebrow reveal"><span class="n">02·B</span> 战略储备 · STRATEGIC RESERVE</div>
-          <h2 class="sec-title reveal">战略储备品种</h2></div>
-        <p class="sec-note reveal">原生优质经济品种与引进优质种，作为种业振兴的<b>后备资源池</b>，随调查与引种进度逐步纳入种质库。</p>
-      </div>
-      <div class="reserve-wrap reveal" id="reserveWrap"></div>
-    </div>
-  </section>
-
-  <!-- LIBRARIES -->
-  <section class="solid" id="libraries" data-sec="03" data-morph="grid" data-acc="cyan">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><div class="eyebrow reveal"><span class="n">03</span> 数据库架构 · THE LIBRARY SYSTEM</div>
-          <h2 class="sec-title reveal">四位一体<br>种质数据底座</h2></div>
-        <p class="sec-note reveal">从活体到分子标记的全链条数据资产。<b>点击任意库</b>查看内容与实时状态。</p>
-      </div>
-      <div class="lib-grid reveal" id="libGrid"></div>
-    </div>
-  </section>
-
-  <!-- OUTRO -->
-  <section id="outro" data-sec="04" data-morph="sphere" data-acc="purple">
-    <div class="wrap">
-      <div class="eyebrow reveal"><span class="n">04</span> 关于平台 · 从规模导向到种业振兴</div>
-      <h2 class="outro-big reveal">给每一份种质<br>一张<span class="g">基因身份证</span>。</h2>
-      <p class="outro-sub reveal">以六大主营品种为核心、战略储备品种为后备，并行沉淀活体、序列、变异与分化四层数据资产，为黄渤海海珍品良种选育、品系维护与产地溯源，构筑可长期持有、持续扩容的种质数据核心。</p>
-      <div class="credits reveal">
-        <div class="cred"><div class="k">建设主体</div><div class="v">獐子岛集团<br><small>股份有限公司</small></div></div>
-        <div class="cred"><div class="k">技术支撑</div><div class="v">辽宁省海洋动物免疫学与<br><small>疫病防控重点实验室</small></div></div>
-        <div class="cred"><div class="k">覆盖品种</div><div class="v">六大主营 + 战略储备<br><small>扇贝/参/螺/胆/鲍/蚝</small></div></div>
-        <div class="cred"><div class="k">数据维护</div><div class="v">定期补充完善<br><small>活体 · 序列 · SNP · 差异</small></div></div>
-      </div>
-      <div class="footline reveal"><span>黄渤海海珍品 · 种质资源数字平台</span><span>HBH · GERMPLASM · PLATFORM / 2026</span></div>
-      <div class="disclaimer reveal">※ 本站所有样本数、基因组指标、位点与分类数据均为演示用示例数据（DEMO），仅用于平台功能与视觉展示，不代表真实测序结果。</div>
-    </div>
-  </section>
+  <section class="view active" id="home"><div class="view-inner"><h1 class="t-h1">首页</h1></div></section>
+  <section class="view" id="resources"><div class="view-inner"><h1 class="t-h1">种质资源</h1></div></section>
+  <section class="view" id="databases"><div class="view-inner"><h1 class="t-h1">数据库</h1></div></section>
+  <section class="view" id="analysis"><div class="view-inner"><h1 class="t-h1">遗传分析</h1></div></section>
+  <section class="view" id="search"><div class="view-inner"><h1 class="t-h1">数据检索</h1></div></section>
+  <section class="view" id="standards"><div class="view-inner"><h1 class="t-h1">标准规范</h1></div></section>
+  <section class="view" id="about"><div class="view-inner"><h1 class="t-h1">关于</h1></div></section>
 </main>
 
 <!-- MODAL -->
@@ -1119,13 +1049,23 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       if(cmd==='diff'&&LIB_DETAIL.diff){setTimeout(function(){openModal(libModal(LIB_DETAIL.diff,'diff'));},reduceMotion?0:520);}}return true;}
   function parseIntent(text){var q=(text||'').toLowerCase().trim();if(!q)return null;
     for(var i=0;i<INTENTS.length;i++)for(var j=0;j<INTENTS[i].k.length;j++)if(q.indexOf(INTENTS[i].k[j])>=0)return INTENTS[i].cmd;return null;}
-  function initNav(){var navCmd=document.getElementById('navCmd'),input=document.getElementById('navInput'),go=document.getElementById('navGo');
+  function initNav(){var input=document.getElementById('navInput'),go=document.getElementById('navGo');
     function submit(){var cmd=parseIntent(input.value);if(cmd){runCmd(cmd);input.value='';input.blur();}else{input.value='';input.setAttribute('placeholder','没听懂 — 试试「SNP库」「虾夷扇贝」「差异性」…');}}
     if(go)go.addEventListener('click',submit);if(input)input.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
     $$('.nav-chip').forEach(function(ch){ch.addEventListener('click',function(){runCmd(ch.getAttribute('data-cmd'));});});
-    $$('.topnav a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();scrollToSel(a.getAttribute('href'));});});
-    $$('.hsp').forEach(function(el,i){el.style.cursor='pointer';el.addEventListener('click',function(){if(SPECIES[i])openModal(speciesModal(SPECIES[i]));});});
-    setTimeout(function(){navCmd.classList.remove('hidden');},reduceMotion?600:2600);}
+    $$('.hsp').forEach(function(el,i){el.style.cursor='pointer';el.addEventListener('click',function(){if(SPECIES[i])openModal(speciesModal(SPECIES[i]));});});}
+
+  var VIEWS=['home','resources','databases','analysis','search','standards','about'];
+  function route(hash){
+    var id=(hash||location.hash||'#home').replace('#','').split('?')[0];
+    if(VIEWS.indexOf(id)<0)id='home';
+    $$('.view').forEach(function(v){v.classList.toggle('active',v.id===id);});
+    $$('.tb-nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+id);});
+    window.scrollTo(0,0);
+    if(window.__reveal)window.__reveal();
+  }
+  window.addEventListener('hashchange',function(){route();});
+  route();
 
   function initCursor(){if(isTouch||reduceMotion)return;var cur=document.getElementById('cursor'),dot=document.getElementById('cursorDot'),cx=0,cy=0,dx=0,dy=0;
     window.addEventListener('pointermove',function(e){cx=e.clientX;cy=e.clientY;dot.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';},{passive:true});
