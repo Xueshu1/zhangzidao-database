@@ -113,6 +113,61 @@ a{color:inherit;text-decoration:none}
 .view.active{display:block}
 .view-inner{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vh,96px) clamp(20px,5vw,64px)}
 
+/* HOME — hero + stat band */
+.hero{position:relative;padding:clamp(70px,12vh,130px) 0 clamp(48px,7vh,80px);text-align:left}
+.hero .lead{max-width:20ch;margin-bottom:22px}
+.hero .mission{max-width:52ch;margin:0 0 34px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{background:var(--ocean);color:var(--abyss);font-weight:600;font-size:15px;padding:13px 26px;border-radius:100px;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;transition:filter .25s;box-shadow:0 0 30px rgba(34,211,238,.3)}
+.btn-primary:hover{filter:brightness(1.12)}
+.btn-ghost{background:rgba(18,26,42,.5);color:var(--ink);font-size:15px;padding:13px 24px;border-radius:100px;border:1px solid rgba(120,180,220,.18);cursor:pointer;transition:.25s}
+.btn-ghost:hover{border-color:var(--ocean)}
+.stat-band{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:8px;border:1px solid rgba(120,180,220,.12);border-radius:16px;overflow:hidden}
+.stat{padding:clamp(22px,3vw,34px);background:rgba(14,22,38,.55)}
+.stat .v{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;font-size:clamp(30px,4.4vw,56px);line-height:1;color:var(--ink)}
+.stat .v .u{font-size:.36em;color:var(--ocean);margin-left:.3em}
+.stat .k{font-size:13px;color:var(--ink-faint);margin-top:10px;letter-spacing:.04em}
+@media(max-width:760px){.stat-band{grid-template-columns:repeat(2,1fr)}}
+
+/* HOME — bento + species/library cards */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.tile{position:relative;padding:clamp(20px,2.4vw,30px);border-radius:16px;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);overflow:hidden;cursor:pointer;transition:.3s var(--ease);min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.tile:hover{transform:translateY(-4px);border-color:var(--ocean);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.tile.flagship{grid-row:span 2;grid-column:span 1}
+.tile .th{font-family:var(--f-disp);font-weight:600;font-size:19px}
+.tile .td{font-size:14px;color:var(--ink-dim);margin-top:8px;line-height:1.55}
+.spx-card{cursor:pointer;border-radius:16px;overflow:hidden;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);transition:.3s var(--ease);display:flex;flex-direction:column}
+.spx-card:hover{transform:translateY(-4px);border-color:var(--sp);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.spx-card:focus-visible{outline:2px solid var(--sp);outline-offset:-2px}
+.spx-card .ph{aspect-ratio:4/3;background-size:cover;background-position:center;position:relative;overflow:hidden}
+.spx-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.spx-card .body{padding:18px 20px}
+.spx-card .cn{font-family:var(--f-disp);font-weight:700;font-size:22px}
+.spx-card .la{font-family:var(--f-mono);font-style:italic;font-size:12px;color:var(--sp);margin-top:4px}
+.dot-matrix{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.dm{font-family:var(--f-mono);font-size:10px;letter-spacing:.04em;padding:3px 8px;border-radius:100px;border:1px solid var(--line-2);color:var(--ink-faint)}
+.dm.on{border-color:var(--sp);color:var(--sp);background:color-mix(in srgb,var(--sp) 12%,transparent)}
+.libcard{cursor:pointer;padding:clamp(24px,3vw,38px);border-radius:16px;background:rgba(14,22,38,.55);border:1px solid rgba(120,180,220,.12);transition:.3s var(--ease);display:flex;flex-direction:column}
+.libcard:hover{transform:translateY(-4px);border-color:var(--lc);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.libcard:focus-visible{outline:2px solid var(--lc);outline-offset:-2px}
+.libcard .lc-code{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--lc);margin-bottom:16px}
+.libcard .lc-t{font-family:var(--f-disp);font-weight:600;font-size:clamp(20px,2.4vw,26px);line-height:1.1}
+.libcard .lc-en{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;color:var(--ink-faint);margin-top:6px;text-transform:uppercase}
+.libcard .lc-desc{color:var(--ink-dim);font-size:14px;margin-top:16px;line-height:1.65;flex:1}
+.libcard .lc-metric{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.libcard .lc-mv{font-family:var(--f-mono);font-size:clamp(15px,1.8vw,20px);color:var(--lc);font-variant-numeric:tabular-nums}
+.libcard .lc-mk{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.homegrid-spx{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.homegrid-lib{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.home-sec{margin-top:clamp(64px,9vh,110px)}
+.partner-wall{margin-top:clamp(64px,9vh,110px);padding:clamp(26px,3.4vw,40px);display:flex;flex-direction:column;gap:14px}
+.partner-wall .pw-row{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center}
+.partner-wall .pw-item{font-family:var(--f-disp);font-size:clamp(15px,1.7vw,18px);color:var(--ink)}
+.partner-wall .pw-note{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint)}
+@media(max-width:860px){.bento{grid-template-columns:1fr 1fr}.tile.flagship{grid-column:span 2;grid-row:span 1}}
+@media(max-width:900px){.homegrid-spx{grid-template-columns:1fr 1fr}.homegrid-lib{grid-template-columns:1fr}}
+@media(max-width:560px){.homegrid-spx{grid-template-columns:1fr}}
+
 /* CURSOR */
 .cursor{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid rgba(120,180,215,.55);border-radius:50%;
   transform:translate(-50%,-50%);z-index:90;pointer-events:none;mix-blend-mode:difference;display:none;
@@ -420,7 +475,56 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 </header>
 
 <main>
-  <section class="view active" id="home"><div class="view-inner"><h1 class="t-h1">首页</h1></div></section>
+  <section class="view active" id="home"><div class="view-inner">
+
+    <div class="hero">
+      <h1 class="t-h1">黄渤海海珍品 · 种质基因组数据平台</h1>
+      <p class="lead t-body">把每一份种质，沉淀为可查询、可分析、可追溯的基因组数据。</p>
+      <p class="mission t-body">整合虾夷扇贝、仿刺参、皱纹盘鲍、长牡蛎、香螺、海胆等黄渤海主养海珍品的活体保育、全基因组重测序与 SNP 变异数据，为良种选育、种质鉴定与产地溯源提供一体化数据支撑。</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#resources">浏览种质资源</a>
+        <a class="btn-ghost" href="#databases">查看数据库</a>
+      </div>
+    </div>
+
+    <div class="stat-band">
+      <div class="stat"><div class="v" data-n="6">0</div><div class="k">保藏物种</div></div>
+      <div class="stat"><div class="v" data-n="128400">0</div><div class="k">活体份数</div></div>
+      <div class="stat"><div class="v" data-n="9">0</div><div class="k">基因组数</div></div>
+      <div class="stat"><div class="v" data-n="14300000">0</div><div class="k">SNP 位点</div></div>
+    </div>
+
+    <div class="bento">
+      <a class="tile flagship" href="#analysis"><div><div class="th">遗传分析</div><div class="td">种群分化、性状关联与产地溯源分析示例，数据驱动的选育决策支撑。</div></div><span class="tb-badge badge--beta">示例</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据检索</div><div class="td">跨库全局检索种质、样本与变异位点。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据汇交</div><div class="td">科研与生产数据规范化汇交入库。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">可视化</div><div class="td">基因组与群体数据的交互式图表呈现。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">表型库</div><div class="td">生长、抗逆、品质等性状表型数据管理。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+      <a class="tile" href="#search"><div><div class="th">数据下载</div><div class="td">开放数据集与标准化文件下载出口。</div></div><span class="tb-badge badge--wip">建设中</span></a>
+    </div>
+
+    <div class="home-sec">
+      <div class="t-cap">SPECIES · COMPLETENESS</div>
+      <h2 class="t-h2" style="margin-top:8px">主营品种 · 完备度</h2>
+      <div class="homegrid-spx" id="homeSpx" style="margin-top:28px"></div>
+    </div>
+
+    <div class="home-sec">
+      <div class="t-cap">DATABASES</div>
+      <h2 class="t-h2" style="margin-top:8px">数据库总览</h2>
+      <div class="homegrid-lib" id="homeLibs" style="margin-top:28px"></div>
+    </div>
+
+    <div class="glass partner-wall">
+      <div class="t-cap">共建单位 · CO-BUILDERS</div>
+      <div class="pw-row">
+        <span class="pw-item">獐子岛集团股份有限公司</span>
+        <span class="pw-item">辽宁省海洋水产种质资源与遗传育种重点实验室</span>
+      </div>
+      <div class="pw-note">※ 平台部分展示数据为示例（DEMO），仅用于功能演示，不代表真实测序或生产结果。</div>
+    </div>
+
+  </div></section>
   <section class="view" id="resources"><div class="view-inner"><h1 class="t-h1">种质资源</h1></div></section>
   <section class="view" id="databases"><div class="view-inner"><h1 class="t-h1">数据库</h1></div></section>
   <section class="view" id="analysis"><div class="view-inner"><h1 class="t-h1">遗传分析</h1></div></section>
@@ -917,6 +1021,70 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
 
   /* ============================================================
+     HOME — species/library cards + count-up
+     ============================================================ */
+  function countUp(el,target,suffix){
+    if(reduceMotion){el.textContent=fmt(target)+(suffix||'');return;}
+    var t0=null,dur=1400;
+    function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);
+      el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))))+(suffix||'');
+      if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  function renderHome(){
+    var sp=$('#homeSpx');
+    if(sp){
+      sp.innerHTML=SPECIES.map(function(s){
+        var photo='<div class="ph" style="--sp:'+ACC[s.c]+'">'+
+          '<img src="assets/species/'+s.img+'.jpg" alt="'+s.cn+'" loading="lazy" '+
+          'onerror="window.__spFallback(this,\''+s.img+'\')"></div>';
+        var dims=[
+          ['活体',true],
+          ['重测序',!!s.done],
+          ['SNP',!!s.done],
+          ['性状定位',true],
+          ['群体分化',!!s.geo]
+        ];
+        var dots=dims.map(function(d){return '<span class="dm'+(d[1]?' on':'')+'">'+d[0]+'</span>';}).join('');
+        return '<div class="spx-card" style="--sp:'+ACC[s.c]+'" tabindex="0" role="button" data-sp-idx="'+SPECIES.indexOf(s)+'" aria-label="'+s.cn+' 详情">'+
+          photo+'<div class="body"><div class="cn">'+s.cn+'</div><div class="la">'+s.la+'</div>'+
+          '<div class="dot-matrix">'+dots+'</div></div></div>';
+      }).join('');
+      $$('.spx-card',sp).forEach(function(el){
+        function op(){openModal(speciesModal(SPECIES[+el.getAttribute('data-sp-idx')]));}
+        el.addEventListener('click',op);
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});
+      });
+    }
+    var lb=$('#homeLibs');
+    if(lb){
+      lb.innerHTML=LIBS.map(function(l){
+        return '<div class="libcard" style="--lc:'+ACC[l.c]+'" tabindex="0" role="button" data-lib="'+l.lib+'" aria-label="'+l.t+' 详情">'+
+          '<div class="lc-code">'+l.code+'</div><div class="lc-t">'+l.t+'</div><div class="lc-en">'+l.en+'</div>'+
+          '<p class="lc-desc">'+l.desc+'</p>'+
+          '<div class="lc-metric"><span class="lc-mv">'+l.mv+'</span><span class="lc-mk">'+l.mk+'</span></div></div>';
+      }).join('');
+      $$('.libcard',lb).forEach(function(el){
+        function op(){var k=el.getAttribute('data-lib');openModal(libModal(LIB_DETAIL[k],k));}
+        el.addEventListener('click',op);
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});
+      });
+    }
+  }
+  function initHomeCountUp(){
+    var els=$$('.stat .v[data-n]');
+    if(!els.length)return;
+    if(!('IntersectionObserver' in window)){els.forEach(function(el){countUp(el,parseFloat(el.getAttribute('data-n')));});return;}
+    var seen=new WeakSet();
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting&&!seen.has(en.target)){seen.add(en.target);countUp(en.target,parseFloat(en.target.getAttribute('data-n')));io.unobserve(en.target);}
+      });
+    },{threshold:.4});
+    els.forEach(function(el){io.observe(el);});
+  }
+
+  /* ============================================================
      REGIONS
      ============================================================ */
   var REGIONS=[
@@ -980,12 +1148,14 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     if(window.__reveal)window.__reveal();
   }
   window.addEventListener('hashchange',function(){route();});
+  renderHome();
   route();
+  initHomeCountUp();
 
   function initCursor(){if(isTouch||reduceMotion)return;var cur=document.getElementById('cursor'),dot=document.getElementById('cursorDot'),cx=0,cy=0,dx=0,dy=0;
     window.addEventListener('pointermove',function(e){cx=e.clientX;cy=e.clientY;dot.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';},{passive:true});
     (function loop(){dx+=(cx-dx)*.18;dy+=(cy-dy)*.18;cur.style.transform='translate('+dx+'px,'+dy+'px) translate(-50%,-50%)';requestAnimationFrame(loop);})();
-    function bind(){$$('a,button,.reg-btn,.spx,.lib').forEach(function(el){
+    function bind(){$$('a,button,.reg-btn,.spx,.lib,.tile,.spx-card,.libcard').forEach(function(el){
       el.addEventListener('mouseenter',function(){cur.classList.add('big');});el.addEventListener('mouseleave',function(){cur.classList.remove('big');});});}
     bind();window.__bindCursor=bind;}
 
