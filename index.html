@@ -420,25 +420,28 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .emblem-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .spx .emblem{position:relative;border-radius:10px;overflow:hidden}
 
-/* 战略储备品种 · 轻量清单 */
+/* 战略储备品种 · 大图卡片（与主营品种同规格） */
 .reserve-head{margin-top:clamp(52px,8vh,96px)}
-.reserve-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.rsv-group{border:1px solid var(--line-2);border-left:2px solid var(--rc);border-radius:12px;padding:20px 22px;background:rgba(10,15,30,.4)}
-.rsv-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.reserve-wrap{display:flex;flex-direction:column;gap:clamp(28px,4vw,44px)}
+.rsv-group{border-left:2px solid var(--rc);padding-left:clamp(14px,1.6vw,22px)}
+.rsv-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
 .rsv-dot{width:8px;height:8px;border-radius:50%;background:var(--rc);box-shadow:0 0 10px var(--rc);flex:none}
-.rsv-gname{font-family:var(--f-disp);font-size:17px;color:var(--ink)}
+.rsv-gname{font-family:var(--f-disp);font-size:19px;color:var(--ink)}
 .rsv-en{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
 .rsv-cnt{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--rc)}
-.rsv-items{display:flex;flex-wrap:wrap;gap:10px}
-.rsv-item{display:inline-flex;align-items:center;gap:11px;padding:7px 13px 7px 7px;border:1px solid var(--line);border-radius:11px;background:rgba(150,185,215,.04);transition:border-color .25s var(--ease),transform .25s var(--ease)}
-.rsv-item:hover{border-color:var(--rc);transform:translateY(-2px)}
-.rsv-thumb{width:38px;height:38px;flex:none;border-radius:8px;overflow:hidden;background:rgba(150,185,215,.06);border:1px solid var(--line)}
-.rsv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rsv-items{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.rsv-item{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(14,22,38,.55);cursor:default;transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.rsv-item:hover{border-color:var(--rc);transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.rsv-thumb{width:100%;aspect-ratio:1/1;flex:none;overflow:hidden;background:#05080f;border-bottom:1px solid var(--line)}
+.rsv-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.rsv-item:hover .rsv-thumb img{transform:scale(1.05)}
 .rsv-thumb.none{display:none}
-.rsv-txt{display:inline-flex;flex-direction:column;gap:2px;min-width:0}
-.rsv-cn{font-size:14px;color:var(--ink)}
-.rsv-la{font-family:var(--f-mono);font-size:10px;font-style:italic;color:var(--ink-faint)}
-@media(max-width:760px){.reserve-wrap{grid-template-columns:1fr}}
+.rsv-txt{display:flex;flex-direction:column;gap:5px;padding:14px 16px}
+.rsv-cn{font-family:var(--f-disp);font-weight:700;font-size:18px;color:var(--ink)}
+.rsv-la{font-family:var(--f-mono);font-size:11px;font-style:italic;color:var(--rc)}
+@media(max-width:1100px){.rsv-items{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.rsv-items{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.rsv-items{grid-template-columns:1fr}}
 
 /* 合并卡内亚项（海胆） */
 .sub-block{border:1px solid var(--line-2);border-radius:12px;padding:16px 18px;margin:14px 0}
