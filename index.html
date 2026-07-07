@@ -23,7 +23,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--abyss);color:var(--ink);font-family:var(--f-body);font-weight:400;line-height:1.6;
-  overflow-x:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+  overflow-x:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
 body.locked{overflow:hidden;height:100vh}
 body.modal-open{overflow:hidden}
 a{color:inherit;text-decoration:none}
@@ -109,7 +109,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:960px){.tb-nav{overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}.tb-nav::-webkit-scrollbar{display:none}.tb-search span{display:none}}
 
 /* VIEW CONTAINERS (hash-routed) */
-.view{display:none;min-height:100vh;padding-top:64px}
+.view{display:none;padding-top:64px}
 .view.active{display:block}
 .view-inner{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vh,96px) clamp(20px,5vw,64px)}
 
@@ -184,7 +184,8 @@ a{color:inherit;text-decoration:none}
 @media (pointer:fine){.cursor,.cursor-dot{display:block}}
 
 /* LAYOUT */
-main{position:relative;z-index:10}
+main{position:relative;z-index:10;flex:1 0 auto}
+.site-footer{position:relative;z-index:10}
 section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 .wrap{max-width:var(--maxw);margin:0 auto;width:100%}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);
