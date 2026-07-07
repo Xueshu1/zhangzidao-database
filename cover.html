@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>黄渤海海珍品 · 种质资源数字平台</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React + ReactDOM + Babel (CDN) -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <!-- Framer Motion (CDN) -->
+  <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+  <script>window.Motion = window.Motion || window.FramerMotion;</script>
+
+  <!-- Google Fonts (加入 Noto SC 以正确显示中文) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ["'Instrument Serif'", "'Noto Serif SC'", "serif"],
+            body: ["'Barlow'", "'Noto Sans SC'", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Liquid-glass utilities -->
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body { background: #000; }
+
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.15) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.15) 80%,
+        rgba(255, 255, 255, 0.45) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .liquid-glass-strong {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass-strong::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.2) 80%,
+        rgba(255, 255, 255, 0.5) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Suppress benign Framer Motion list-key dev warnings -->
+  <script type="text/babel" data-presets="react">
+    (function () {
+      const origError = console.error;
+      console.error = function (...args) {
+        const msg = args && args[0];
+        if (typeof msg === "string" && msg.indexOf("unique \"key\" prop") !== -1) return;
+        origError.apply(console, args);
+      };
+    })();
+  </script>
+
+  <!-- Icons -->
+  <script type="text/babel" data-presets="react">
+    function ArrowUpRight({ className }) {
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 17L17 7" />
+          <path d="M7 7h10v10" />
+        </svg>
+      );
+    }
+    function Play({ className }) {
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="6 4 20 12 6 20 6 4" />
+        </svg>
+      );
+    }
+    function ClockIcon({ className }) {
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+      );
+    }
+    function GlobeIcon({ className }) {
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c2.5 2.7 3.9 6 4 9-.1 3-1.5 6.3-4 9-2.5-2.7-3.9-6-4-9 .1-3 1.5-6.3 4-9Z" />
+        </svg>
+      );
+    }
+    function MaterialIcon({ path, className }) {
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d={path} />
+        </svg>
+      );
+    }
+    window.ArrowUpRight = ArrowUpRight;
+    window.Play = Play;
+    window.ClockIcon = ClockIcon;
+    window.GlobeIcon = GlobeIcon;
+    window.MaterialIcon = MaterialIcon;
+  </script>
+
+  <!-- FadingVideo -->
+  <script type="text/babel" data-presets="react">
+    const { useRef, useEffect } = React;
+    const FADE_MS = 500;
+    const FADE_OUT_LEAD = 0.55;
+
+    function FadingVideo({ src, style, videoClassName }) {
+      const videoRef = useRef(null);
+      const rafRef = useRef(null);
+      const fadingOutRef = useRef(false);
+
+      useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const fadeTo = (target, duration) => {
+          if (rafRef.current) cancelAnimationFrame(rafRef.current);
+          const start = parseFloat(video.style.opacity || "0");
+          const delta = target - start;
+          let startTime = null;
+          const step = (ts) => {
+            if (startTime === null) startTime = ts;
+            const elapsed = ts - startTime;
+            const t = duration <= 0 ? 1 : Math.min(elapsed / duration, 1);
+            video.style.opacity = String(start + delta * t);
+            if (t < 1) rafRef.current = requestAnimationFrame(step);
+          };
+          rafRef.current = requestAnimationFrame(step);
+        };
+        const onLoadedData = () => {
+          video.style.opacity = "0";
+          const p = video.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+          fadeTo(1, FADE_MS);
+        };
+        const onTimeUpdate = () => {
+          const remaining = video.duration - video.currentTime;
+          if (!fadingOutRef.current && remaining <= FADE_OUT_LEAD && remaining > 0) {
+            fadingOutRef.current = true;
+            fadeTo(0, FADE_MS);
+          }
+        };
+        const onEnded = () => {
+          video.style.opacity = "0";
+          setTimeout(() => {
+            video.currentTime = 0;
+            const p = video.play();
+            if (p && typeof p.catch === "function") p.catch(() => {});
+            fadingOutRef.current = false;
+            fadeTo(1, FADE_MS);
+          }, 100);
+        };
+        video.addEventListener("loadeddata", onLoadedData);
+        video.addEventListener("timeupdate", onTimeUpdate);
+        video.addEventListener("ended", onEnded);
+        return () => {
+          if (rafRef.current) cancelAnimationFrame(rafRef.current);
+          video.removeEventListener("loadeddata", onLoadedData);
+          video.removeEventListener("timeupdate", onTimeUpdate);
+          video.removeEventListener("ended", onEnded);
+        };
+      }, [src]);
+
+      return (
+        <video ref={videoRef} className={videoClassName}
+          style={{ opacity: 0, ...(style || {}) }}
+          src={src} autoPlay muted playsInline preload="auto" />
+      );
+    }
+    window.FadingVideo = FadingVideo;
+  </script>
+
+  <!-- BlurText -->
+  <script type="text/babel" data-presets="react">
+    const { useRef: useRefBT, useState: useStateBT, useEffect: useEffectBT } = React;
+    const { motion: motionBT } = window.Motion;
+
+    function BlurText({ text, className }) {
+      const ref = useRefBT(null);
+      const [inView, setInView] = useStateBT(false);
+      useEffectBT(() => {
+        const el = ref.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setInView(true);
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+      }, []);
+      const words = text.split(" ");
+      return (
+        <p ref={ref} className={className}
+          style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", rowGap: "0.1em" }}>
+          {words.map((word, i) => (
+            <motionBT.span
+              key={i}
+              style={{ display: "inline-block", marginRight: "0.2em" }}
+              initial={{ filter: "blur(10px)", opacity: 0, y: 50 }}
+              animate={inView ? {
+                filter: ["blur(10px)", "blur(5px)", "blur(0px)"],
+                opacity: [0, 0.5, 1],
+                y: [50, -5, 0],
+              } : {}}
+              transition={{ duration: 0.7, times: [0, 0.5, 1], ease: "easeOut", delay: (i * 100) / 1000 }}>
+              {word}
+            </motionBT.span>
+          ))}
+        </p>
+      );
+    }
+    window.BlurText = BlurText;
+  </script>
+
+  <!-- Navbar -->
+  <script type="text/babel" data-presets="react">
+    const { ArrowUpRight: ArrowUpRightNav } = window;
+
+    // 点击 CTA / logo 通知外壳滚动到平台或回到顶部
+    function goToPlatform() {
+      try { window.parent.postMessage({ type: "gotoPlatform" }, "*"); } catch (e) {}
+    }
+
+    function Navbar() {
+      const links = ["首页", "物种", "数据库", "差异性", "关于"];
+      return (
+        <nav className="fixed top-4 left-0 right-0 z-50 px-8 lg:px-16">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="liquid-glass rounded-full w-12 h-12 flex items-center justify-center shrink-0">
+              <span className="font-heading text-white text-xl leading-none">珍</span>
+            </div>
+
+            {/* Center nav (desktop only) */}
+            <div className="hidden lg:flex items-center liquid-glass rounded-full px-1.5 py-1.5">
+              {links.map((link) => (
+                <a key={link} href="#" className="px-3 py-2 text-sm font-medium text-white/90 font-body">
+                  {link}
+                </a>
+              ))}
+              <button onClick={goToPlatform}
+                className="ml-1 flex items-center gap-1 bg-white text-black rounded-full px-4 py-2 text-sm font-medium font-body whitespace-nowrap">
+                进入平台
+                <ArrowUpRightNav className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Right spacer to balance logo */}
+            <div className="w-12 h-12 shrink-0 invisible" />
+          </div>
+        </nav>
+      );
+    }
+    window.Navbar = Navbar;
+    window.goToPlatform = goToPlatform;
+  </script>
+
+  <!-- Hero -->
+  <script type="text/babel" data-presets="react">
+    const { motion: motionHero } = window.Motion;
+    const {
+      FadingVideo: FadingVideoHero, Navbar: NavbarHero, BlurText: BlurTextHero,
+      ArrowUpRight: ArrowUpRightHero, Play: PlayHero, ClockIcon: ClockIconHero,
+      GlobeIcon: GlobeIconHero, goToPlatform: goToPlatformHero,
+    } = window;
+
+    const heroInitial = { filter: "blur(10px)", opacity: 0, y: 20 };
+    const heroAnimate = { filter: "blur(0px)", opacity: 1, y: 0 };
+    const heroT = (delay) => ({ duration: 0.7, ease: "easeOut", delay });
+
+    function StatCard({ icon, value, label }) {
+      return (
+        <div className="liquid-glass p-5 w-[220px] rounded-[1.25rem] flex flex-col">
+          <div className="text-white">{icon}</div>
+          <div className="mt-auto">
+            <div className="font-heading italic text-white text-4xl tracking-[-1px] leading-none pt-8">
+              {value}
+            </div>
+            <div className="text-xs text-white font-body font-light mt-2">{label}</div>
+          </div>
+        </div>
+      );
+    }
+
+    function Hero() {
+      return (
+        <section className="relative min-h-screen w-full overflow-hidden bg-black">
+          {/* Background video */}
+          <FadingVideoHero
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
+            videoClassName="absolute left-1/2 top-0 -translate-x-1/2 object-cover object-top z-0"
+            style={{ width: "120%", height: "120%" }}
+          />
+
+          {/* Foreground */}
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <NavbarHero />
+
+            {/* Hero content */}
+            <div className="flex-1 flex flex-col items-center justify-center text-center pt-24 px-4">
+              {/* Badge */}
+              <motionHero.div initial={heroInitial} animate={heroAnimate} transition={heroT(0.4)}
+                className="liquid-glass rounded-full flex items-center gap-2 pr-3">
+                <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold">上线</span>
+                <span className="text-sm text-white/90">黄渤海海珍品 · 种质资源数字平台 2026</span>
+              </motionHero.div>
+
+              {/* Headline */}
+              <div className="mt-6">
+                <BlurTextHero
+                  text="黄渤海海珍品 种质基因组"
+                  className="text-6xl md:text-7xl lg:text-[5.5rem] font-heading text-white leading-[0.9] max-w-2xl justify-center tracking-[-1px]"
+                />
+              </div>
+
+              {/* Subheading */}
+              <motionHero.p initial={heroInitial} animate={heroAnimate} transition={heroT(0.8)}
+                className="mt-4 text-sm md:text-base text-white max-w-2xl font-body font-light leading-relaxed">
+                六大主营品种 · 战略储备品种 · 活体库 · 基因库重测序 · SNP 库 · 差异性分析。覆盖虾夷扇贝、海参、香螺、海胆、鲍鱼、牡蛎，一体化的种质数据底座。
+              </motionHero.p>
+
+              {/* CTAs */}
+              <motionHero.div initial={heroInitial} animate={heroAnimate} transition={heroT(1.1)}
+                className="flex items-center gap-6 mt-6">
+                <button onClick={goToPlatformHero}
+                  className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white flex items-center gap-2">
+                  进入平台
+                  <ArrowUpRightHero className="h-5 w-5" />
+                </button>
+                <button onClick={goToPlatformHero}
+                  className="flex items-center gap-2 text-sm font-medium text-white font-body">
+                  了解更多
+                  <PlayHero className="h-4 w-4" />
+                </button>
+              </motionHero.div>
+
+              {/* Stats */}
+              <motionHero.div initial={heroInitial} animate={heroAnimate} transition={heroT(1.3)}
+                className="flex items-stretch gap-4 mt-8">
+                <StatCard icon={<ClockIconHero className="w-7 h-7" />} value="14.3M+" label="高质量 SNP 位点" />
+                <StatCard icon={<GlobeIconHero className="w-7 h-7" />} value="6 品种" label="六大主营海珍品种" />
+              </motionHero.div>
+            </div>
+
+            {/* Partners */}
+            <motionHero.div initial={heroInitial} animate={heroAnimate} transition={heroT(1.4)}
+              className="flex flex-col items-center gap-4 pb-8">
+              <div className="liquid-glass rounded-full px-3.5 py-1 text-xs font-medium text-white">
+                獐子岛集团 × 辽宁省海洋动物免疫学与疫病防控重点实验室
+              </div>
+            </motionHero.div>
+          </div>
+        </section>
+      );
+    }
+    window.Hero = Hero;
+  </script>
+
+  <!-- Capabilities -->
+  <script type="text/babel" data-presets="react">
+    const { FadingVideo: FadingVideoCap, MaterialIcon: MaterialIconCap } = window;
+
+    const CARDS = [
+      {
+        iconPath: "M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm1-4h12l-3.75-5-3 4L9 13l-3 4Z",
+        tags: ["保育个体", "可溯源", "六大品种", "个体档案"],
+        title: "活体库",
+        body: "六大主营品种活体种质保育，个体级可溯源档案，为重测序与后续选育提供来源清晰的实体材料。",
+      },
+      {
+        iconPath: "M4 6.47 5.76 10H20v8H4V6.47M22 4h-4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.89-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4Z",
+        tags: ["全基因组", "持续入库", "组装结果", "统一数据源"],
+        title: "基因库 · 重测序",
+        body: "全基因组重测序原始序列与组装结果入库管理，随采样与测序进度定期扩容，构成后续分析的统一数据源。",
+      },
+      {
+        iconPath: "M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1Zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7Z",
+        tags: ["高质量 SNP", "群体分化", "产地溯源", "品系鉴定"],
+        title: "SNP 库 · 差异性",
+        body: "经严苛质控的变异位点标准库，支撑优势性状筛选、血统鉴定与产地溯源，产出品系判别与产地认证工具。",
+      },
+    ];
+
+    function CapabilityCard({ card }) {
+      return (
+        <div className="liquid-glass rounded-[1.25rem] p-6 min-h-[360px] flex flex-col">
+          <div className="flex items-start justify-between gap-4">
+            <div className="liquid-glass rounded-[0.75rem] w-11 h-11 flex items-center justify-center shrink-0">
+              <MaterialIconCap path={card.iconPath} className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex flex-wrap justify-end gap-1.5 max-w-[70%]">
+              {card.tags.map((tag) => (
+                <span key={tag}
+                  className="liquid-glass rounded-full px-3 py-1 text-[11px] text-white/90 font-body whitespace-nowrap">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-1" />
+          <div className="mt-6">
+            <h3 className="font-heading text-white text-3xl md:text-4xl tracking-[-1px] leading-tight">
+              {card.title}
+            </h3>
+            <p className="mt-3 text-sm text-white/90 font-body font-light leading-relaxed max-w-[32ch]">
+              {card.body}
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    function Capabilities() {
+      return (
+        <section className="relative min-h-screen w-full overflow-hidden bg-black">
+          <FadingVideoCap
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_094631_d30ab262-45ee-4b7d-99f3-5d5848c8ef13.mp4"
+            videoClassName="absolute inset-0 w-full h-full object-cover z-0"
+          />
+          <div className="relative z-10 px-8 md:px-16 lg:px-20 pt-24 pb-10 flex flex-col min-h-screen">
+            <div className="mb-auto">
+              <div className="text-sm font-body text-white/80 mb-6">// 平台能力</div>
+              <h2 className="font-heading text-white text-6xl md:text-7xl lg:text-[6rem] leading-[1.05] tracking-[-2px]">
+                种质
+                <br />
+                数字化
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+              {CARDS.map((card) => (
+                <CapabilityCard key={card.title} card={card} />
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+    window.Capabilities = Capabilities;
+  </script>
+
+  <!-- App -->
+  <script type="text/babel" data-presets="react">
+    const { Hero: HeroApp, Capabilities: CapabilitiesApp } = window;
+    function App() {
+      return (
+        <div className="bg-black">
+          <HeroApp />
+          <CapabilitiesApp />
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

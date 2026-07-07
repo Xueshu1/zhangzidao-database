@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>北方海珍 · 种质资源数字平台 | 獐子岛集团</title>
+<meta name="description" content="覆盖鲍鱼·仿刺参·牡蛎·虾夷扇贝·马粪海胆·紫海胆·香螺七大主养品种，整合活体库、基因库重测序、SNP库与差异性分析的北方海珍种质资源数字平台。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#04060d;--abyss-2:#070b17;--panel:#0a0f1e;
+  --line:rgba(150,185,215,.12);--line-2:rgba(150,185,215,.26);
+  --ink:#eaf2f6;--ink-dim:#93a6b8;--ink-faint:#586a7b;
+  --cyan:#2fe4d6;--red:#ff4d6d;--purple:#ab84ff;--teal:#3fe0b0;--steel:#7fb8e6;--amber:#ffb347;--rose:#ff8fb0;
+  --acc:#2fe4d6;--maxw:1320px;--ease:cubic-bezier(.22,.61,.36,1);
+  --f-disp:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;
+  --f-body:'Noto Sans SC','Space Grotesk',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono','Space Grotesk',ui-monospace,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--abyss);color:var(--ink);font-family:var(--f-body);font-weight:300;line-height:1.6;
+  overflow-x:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden;height:100vh}
+body.modal-open{overflow:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--acc);color:var(--abyss)}
+::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:rgba(120,180,215,.22);border-radius:9px}
+::-webkit-scrollbar-thumb:hover{background:rgba(120,180,215,.4)}
+
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+.scene-fb{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(45% 55% at 50% 42%,rgba(47,228,214,.12),transparent 70%),
+    radial-gradient(30% 40% at 66% 60%,rgba(255,77,109,.10),transparent 70%),
+    radial-gradient(30% 40% at 34% 58%,rgba(171,132,255,.10),transparent 70%)}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(130% 100% at 50% -10%,transparent 42%,rgba(0,0,0,.5) 100%),
+    linear-gradient(180deg,rgba(4,6,13,.35),transparent 18%,transparent 82%,rgba(4,6,13,.6))}
+.grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px)}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:100;background:var(--abyss);display:flex;flex-direction:column;
+  justify-content:space-between;padding:clamp(22px,4vw,52px);transition:opacity .9s var(--ease),visibility .9s}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.load-top{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;
+  color:var(--ink-faint);text-transform:uppercase}
+.load-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.load-count{font-family:var(--f-mono);font-weight:500;font-size:clamp(48px,12vw,140px);line-height:.9;color:var(--ink);
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.load-count .u{color:var(--cyan);font-size:.32em;letter-spacing:.05em;margin-left:.35em}
+.load-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase}
+.load-bar{height:1px;background:var(--line);position:relative;overflow:hidden}
+.load-bar span{position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,var(--purple),var(--cyan))}
+.load-bottom{display:flex;justify-content:space-between;gap:16px;font-family:var(--f-mono);font-size:10px;
+  letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase}
+
+/* HEADER / TOP NAV */
+.header{position:fixed;top:0;left:0;right:0;z-index:56;display:flex;align-items:center;justify-content:space-between;
+  padding:clamp(16px,2.4vw,26px) clamp(18px,3vw,40px);pointer-events:none}
+.header a,.header button{pointer-events:auto}
+.wordmark{display:flex;align-items:center;gap:11px;color:var(--ink);font-family:var(--f-mono);font-size:12px;
+  letter-spacing:.18em;text-transform:uppercase}
+.wordmark .dot{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc);
+  animation:pulse 2.6s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.7)}}
+.topnav{display:flex;gap:clamp(18px,2.4vw,34px);align-items:center}
+.topnav a{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);
+  position:relative;transition:color .3s}
+.topnav a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;background:var(--acc);
+  transition:right .3s var(--ease)}
+.topnav a:hover{color:var(--ink)}.topnav a:hover::after{right:0}
+.progress-line{position:fixed;top:0;left:0;height:2px;width:0%;z-index:60;
+  background:linear-gradient(90deg,var(--purple),var(--cyan),var(--red));box-shadow:0 0 14px rgba(47,228,214,.5)}
+.chrome{position:fixed;z-index:55;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);pointer-events:none}
+.chrome--bl{bottom:clamp(18px,3vw,30px);left:clamp(18px,3vw,40px);display:flex;align-items:center;gap:14px}
+.counter b{color:var(--acc);font-weight:500}
+.demo-tag{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--amber);border:1px solid rgba(255,179,71,.4);
+  border-radius:100px;padding:3px 9px}
+
+/* NAV COMMAND BAR */
+.nav-cmd{position:fixed;z-index:58;left:50%;transform:translateX(-50%);bottom:clamp(20px,3.4vw,34px);
+  width:min(560px,calc(100% - 40px));transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.nav-cmd.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}
+.nav-shell{display:flex;align-items:center;gap:12px;background:rgba(7,11,23,.72);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);border:1px solid var(--line-2);border-radius:100px;padding:11px 12px 11px 20px;
+  box-shadow:0 12px 44px rgba(0,0,0,.5)}
+.nav-shell .pfx{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc);flex:none;animation:pulse 2.6s var(--ease) infinite}
+.nav-shell input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:var(--f-body);font-size:15px;font-weight:300}
+.nav-shell input::placeholder{color:var(--ink-faint)}
+.nav-go{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--abyss);background:var(--acc);padding:9px 16px;border-radius:100px;transition:filter .3s}
+.nav-go:hover{filter:brightness(1.15)}
+.nav-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:11px}
+.nav-chip{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-dim);
+  border:1px solid var(--line);border-radius:100px;padding:5px 12px;background:rgba(7,11,23,.55);transition:.25s var(--ease)}
+.nav-chip:hover{color:var(--ink);border-color:var(--acc);box-shadow:0 0 14px rgba(47,228,214,.15)}
+.nav-flash{position:fixed;inset:0;z-index:57;pointer-events:none;opacity:0;
+  background:radial-gradient(60% 60% at 50% 50%,var(--acc),transparent 70%);mix-blend-mode:screen}
+
+/* CURSOR */
+.cursor{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid rgba(120,180,215,.55);border-radius:50%;
+  transform:translate(-50%,-50%);z-index:90;pointer-events:none;mix-blend-mode:difference;display:none;
+  transition:width .3s var(--ease),height .3s var(--ease),background .3s,border-color .3s}
+.cursor.big{width:64px;height:64px;background:rgba(47,228,214,.12);border-color:transparent}
+.cursor-dot{position:fixed;top:0;left:0;width:4px;height:4px;border-radius:50%;background:var(--acc);
+  transform:translate(-50%,-50%);z-index:91;pointer-events:none;display:none}
+@media (pointer:fine){.cursor,.cursor-dot{display:block}}
+
+/* LAYOUT */
+main{position:relative;z-index:10}
+section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
+.wrap{max-width:var(--maxw);margin:0 auto;width:100%}
+.veil{background:linear-gradient(180deg,rgba(4,6,13,.68),rgba(4,6,13,.9) 30%,rgba(4,6,13,.9) 70%,rgba(4,6,13,.68))}
+.solid{background:rgba(4,6,13,.93)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);
+  display:flex;align-items:center;gap:14px;margin-bottom:26px;transition:color .6s var(--ease)}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--acc);opacity:.6;transition:background .6s var(--ease)}
+.eyebrow .n{color:var(--ink-faint)}
+.reveal{opacity:1}
+.flicker{animation:flick 6s steps(1) infinite}
+@keyframes flick{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.35}94%{opacity:1}96%{opacity:.6}97%{opacity:1}}
+
+/* HERO — clean & grand */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  padding-top:12vh;padding-bottom:16vh}
+.hero-eyebrow{font-family:var(--f-mono);font-size:clamp(10px,1.2vw,12.5px);letter-spacing:.32em;text-transform:uppercase;
+  color:var(--ink-dim);margin-bottom:clamp(28px,5vh,52px)}
+.hero-eyebrow .c{color:var(--cyan)}
+.hero-title{font-family:var(--f-disp);font-weight:700;line-height:.92;letter-spacing:-.02em;font-size:clamp(52px,11vw,168px);color:var(--ink)}
+.hero-title .l2{display:block;color:transparent;-webkit-text-stroke:1.4px var(--ink-dim)}
+.hero-sub{margin-top:clamp(30px,5vh,48px);max-width:560px;font-size:clamp(15px,1.7vw,19px);font-weight:300;color:var(--ink-dim);line-height:1.75}
+.hero-sub b{color:var(--ink);font-weight:500}
+.hero-species{margin-top:clamp(30px,4vh,44px);display:flex;flex-wrap:wrap;gap:10px 8px;justify-content:center;max-width:640px}
+.hsp{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:100px;padding:6px 13px;transition:.3s var(--ease)}
+.hsp:hover{color:var(--ink);border-color:var(--acc)}
+.scroll-hint{position:absolute;left:50%;bottom:calc(clamp(20px,3.4vw,34px) + 76px);transform:translateX(-50%);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-hint .bar{width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);animation:scrolldown 2.2s var(--ease) infinite}
+@keyframes scrolldown{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* SECTION HEAD */
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:clamp(48px,7vh,84px)}
+.sec-title{font-family:var(--f-disp);font-weight:600;font-size:clamp(30px,5vw,64px);line-height:1.02;letter-spacing:-.02em}
+.sec-note{max-width:38ch;color:var(--ink-dim);font-size:15px}
+.sec-note b{color:var(--ink)}
+
+/* SPECIES */
+.spx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border:1px solid var(--line)}
+.spx{position:relative;padding:clamp(22px,2.4vw,30px);background:rgba(7,11,23,.5);overflow:hidden;cursor:pointer;
+  transition:background .4s var(--ease);display:flex;flex-direction:column}
+.spx::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--sp);transform:scaleX(0);
+  transform-origin:left;transition:transform .5s var(--ease)}
+.spx:hover{background:rgba(10,16,30,.85)}
+.spx:hover::after,.spx.lit::after{transform:scaleX(1)}
+.spx:focus-visible{outline:2px solid var(--sp);outline-offset:-2px}
+.emblem{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  background:radial-gradient(60% 60% at 50% 45%,color-mix(in srgb,var(--sp) 14%,transparent),transparent 72%)}
+.emblem svg{width:78%;height:78%;overflow:visible}
+.spx:hover .emblem svg,.spx.lit .emblem svg{filter:drop-shadow(0 0 8px var(--sp))}
+.spx-cn{font-family:var(--f-disp);font-weight:700;font-size:clamp(20px,2.3vw,26px);line-height:1;letter-spacing:-.01em}
+.spx-la{font-family:var(--f-mono);font-style:italic;font-size:11px;color:var(--sp);margin-top:8px;letter-spacing:.01em}
+.spx-cls{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-faint);margin-top:5px;text-transform:uppercase}
+.spx-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:18px}
+.spx-stat{font-family:var(--f-mono);font-size:13px;color:var(--ink)}
+.spx-badge{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:100px;
+  border:1px solid var(--line-2);color:var(--ink-dim)}
+.spx-badge.done{border-color:var(--sp);color:var(--sp);background:color-mix(in srgb,var(--sp) 12%,transparent)}
+.spx-more{position:absolute;top:16px;right:16px;font-family:var(--f-mono);font-size:16px;color:var(--ink-faint);
+  opacity:0;transform:translate(-6px,6px);transition:.4s var(--ease)}
+.spx:hover .spx-more{opacity:1;transform:none;color:var(--sp)}
+
+/* LIBRARIES */
+.lib-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;border:1px solid var(--line)}
+.lib{position:relative;padding:clamp(30px,4vw,54px);background:rgba(7,11,23,.5);overflow:hidden;min-height:270px;
+  display:flex;flex-direction:column;cursor:pointer;transition:background .4s var(--ease)}
+.lib::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 100% 0%,var(--lc),transparent 60%);opacity:.08;transition:opacity .5s var(--ease);pointer-events:none}
+.lib:hover::before,.lib.lit::before{opacity:.18}
+.lib:focus-visible{outline:2px solid var(--lc);outline-offset:-2px}
+.lib-code{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--lc);margin-bottom:20px}
+.lib-t{font-family:var(--f-disp);font-weight:600;font-size:clamp(24px,3vw,36px);line-height:1.05;letter-spacing:-.01em}
+.lib-en{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-faint);margin-top:8px;text-transform:uppercase}
+.lib-desc{color:var(--ink-dim);font-size:14.5px;margin-top:20px;line-height:1.7;flex:1;max-width:42ch}
+.lib-metric{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.lib-metric .mv{font-family:var(--f-mono);font-size:clamp(18px,2.4vw,28px);color:var(--ink);font-variant-numeric:tabular-nums}
+.lib-metric .mv.c{color:var(--lc)}
+.lib-metric .mk{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.lib-live{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.lib-live .d{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal);animation:pulse 1.8s var(--ease) infinite}
+
+/* REGIONS */
+.reg-wrap{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:2px;border:1px solid var(--line)}
+.reg-list{display:flex;flex-direction:column;border-right:1px solid var(--line)}
+.reg-btn{all:unset;cursor:pointer;display:flex;align-items:center;gap:16px;padding:clamp(18px,2.3vw,28px) clamp(20px,2.5vw,32px);
+  border-bottom:1px solid var(--line);transition:background .35s var(--ease),padding-left .35s var(--ease);position:relative}
+.reg-btn:last-child{border-bottom:none}
+.reg-btn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease)}
+.reg-btn:hover{background:rgba(255,77,109,.05);padding-left:calc(clamp(20px,2.5vw,32px) + 8px)}
+.reg-btn[aria-selected="true"]{background:rgba(255,77,109,.08)}
+.reg-btn[aria-selected="true"]::before{transform:scaleY(1)}
+.reg-code{font-family:var(--f-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.1em}
+.reg-btn[aria-selected="true"] .reg-code{color:var(--red)}
+.reg-nm .cn{font-family:var(--f-disp);font-weight:600;font-size:clamp(18px,2vw,23px);color:var(--ink);display:block}
+.reg-nm .en{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;color:var(--ink-faint)}
+.reg-panel{padding:clamp(32px,5vw,60px);position:relative;min-height:330px;display:flex;flex-direction:column;justify-content:center;background:rgba(7,11,23,.45)}
+.reg-role{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:20px}
+.reg-h{font-family:var(--f-disp);font-weight:700;font-size:clamp(36px,6vw,78px);line-height:.96;letter-spacing:-.02em;margin-bottom:6px}
+.reg-en2{font-family:var(--f-mono);font-size:12px;letter-spacing:.24em;color:var(--ink-faint);margin-bottom:26px}
+.reg-desc{max-width:52ch;color:var(--ink-dim);font-size:clamp(15px,1.7vw,18px);line-height:1.8}
+.reg-facts{display:flex;gap:34px;margin-top:32px;flex-wrap:wrap}
+.reg-fact .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.reg-fact .v{font-family:var(--f-mono);font-size:clamp(17px,2.2vw,24px);color:var(--ink);margin-top:6px}
+.reg-panel.switch{animation:regfade .5s var(--ease)}
+@keyframes regfade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* OUTRO */
+#outro{min-height:86vh;display:flex;flex-direction:column;justify-content:center}
+.outro-big{font-family:var(--f-disp);font-weight:700;font-size:clamp(38px,7.5vw,116px);line-height:.98;letter-spacing:-.03em}
+.outro-big .g{background:linear-gradient(100deg,var(--purple),var(--cyan) 55%,var(--red));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.outro-sub{margin-top:34px;max-width:58ch;color:var(--ink-dim);font-size:clamp(16px,1.8vw,20px);line-height:1.75}
+.credits{margin-top:clamp(56px,9vh,104px);border-top:1px solid var(--line);padding-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.cred .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px}
+.cred .v{font-size:15px;color:var(--ink);line-height:1.55}.cred .v small{color:var(--ink-dim);font-size:12.5px}
+.footline{margin-top:60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.disclaimer{margin-top:22px;font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-faint);opacity:.8}
+
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px)}
+.modal.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(2,4,9,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;transition:opacity .4s var(--ease)}
+.modal.open .modal-bg{opacity:1}
+.modal-card{position:relative;width:min(880px,100%);max-height:90vh;overflow-y:auto;background:linear-gradient(180deg,#0a1020,#070b16);
+  border:1px solid var(--line-2);border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.6);
+  transform:translateY(24px) scale(.98);opacity:0;transition:transform .45s var(--ease),opacity .45s var(--ease)}
+.modal.open .modal-card{transform:none;opacity:1}
+.modal-x{position:sticky;top:0;float:right;margin:14px 14px -40px 0;all:unset;cursor:pointer;width:38px;height:38px;
+  display:grid;place-items:center;border-radius:50%;border:1px solid var(--line-2);color:var(--ink-dim);
+  font-size:14px;background:rgba(7,11,23,.8);transition:.3s;z-index:2}
+.modal-x:hover{color:var(--ink);border-color:var(--acc)}
+.modal-body{padding:clamp(28px,4vw,48px)}
+.mh{display:flex;gap:clamp(20px,3vw,36px);align-items:center;flex-wrap:wrap;margin-bottom:34px}
+.mh-emblem{width:clamp(96px,14vw,140px);height:clamp(96px,14vw,140px);flex:none;display:grid;place-items:center;border-radius:14px;
+  background:radial-gradient(60% 60% at 50% 45%,color-mix(in srgb,var(--mc) 20%,transparent),transparent 72%);border:1px solid var(--line)}
+.mh-emblem svg{width:76%;height:76%;overflow:visible;filter:drop-shadow(0 0 10px var(--mc))}
+.mh-txt{flex:1;min-width:200px}
+.mh-cn{font-family:var(--f-disp);font-weight:700;font-size:clamp(30px,4vw,48px);line-height:1;letter-spacing:-.02em}
+.mh-la{font-family:var(--f-mono);font-style:italic;font-size:clamp(13px,1.6vw,16px);color:var(--mc);margin-top:10px}
+.mh-cls{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-top:8px}
+.mh-badge{display:inline-block;margin-top:14px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 12px;border-radius:100px;border:1px solid var(--mc);color:var(--mc);background:color-mix(in srgb,var(--mc) 12%,transparent)}
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:32px}
+.mstat{background:#080d19;padding:20px 22px}
+.mstat .v{font-family:var(--f-mono);font-size:clamp(18px,2.4vw,26px);color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.mstat .v .u{color:var(--mc);font-size:.55em;margin-left:3px}
+.mstat .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
+.msub{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mc);margin:0 0 16px}
+.mchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.mchip{font-family:var(--f-mono);font-size:12px;padding:6px 13px;border-radius:100px;border:1px solid var(--line-2);color:var(--ink-dim)}
+.mtable{width:100%;border-collapse:collapse;font-size:13px}
+.mtable th{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);
+  text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-2);font-weight:400}
+.mtable td{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink-dim);font-family:var(--f-mono);font-size:12.5px}
+.mtable td.hl{color:var(--mc)}
+.mtable tr:hover td{background:rgba(120,184,217,.03);color:var(--ink)}
+.mnote{margin-top:24px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink-faint);opacity:.85}
+
+/* RESPONSIVE */
+@media (max-width:1100px){.spx-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:900px){
+  .topnav{display:none}
+  .spx-grid{grid-template-columns:1fr 1fr}
+  .lib-grid{grid-template-columns:1fr}
+  .reg-wrap{grid-template-columns:1fr}
+  .reg-list{border-right:none;border-bottom:1px solid var(--line);flex-direction:row;overflow-x:auto}
+  .reg-btn{border-bottom:none;border-right:1px solid var(--line);min-width:170px}
+  .credits{grid-template-columns:1fr 1fr}
+  .mstats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .spx-grid{grid-template-columns:1fr 1fr}
+  .credits{grid-template-columns:1fr}
+  .nav-chips .nav-chip:nth-child(n+5){display:none}
+  .wordmark span{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important;transition-duration:.15s!important}
+  .scroll-hint,.wordmark .dot,.nav-shell .pfx,.lib-live .d,.flicker{animation:none}
+}
+</style>
+</head>
+<body class="locked">
+
+<canvas id="scene"></canvas>
+<div class="vignette"></div>
+<div class="grain"></div>
+<div class="nav-flash" id="navFlash"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="load-top"><span>GERMPLASM RESOURCE PLATFORM</span><span>NORTH YELLOW SEA / 2026</span></div>
+  <div class="load-mid">
+    <div class="load-count"><span id="loadNum">0</span><span class="u">SNP</span></div>
+    <div class="load-label">正在装载种质基因组环境 · INITIALIZING GENOME ENVIRONMENT</div>
+    <div class="load-bar"><span id="loadBar"></span></div>
+  </div>
+  <div class="load-bottom"><span>鲍 · 参 · 蚝 · 贝 · 马粪海胆 · 紫海胆 · 香螺</span><span>獐子岛集团 × 海洋动物免疫学重点实验室</span></div>
+</div>
+
+<!-- HEADER -->
+<div class="progress-line" id="progress"></div>
+<header class="header">
+  <a class="wordmark" href="#hero"><span class="dot"></span><span>海珍 · 种质平台</span></a>
+  <nav class="topnav">
+    <a href="#species">物种</a><a href="#libraries">数据库</a><a href="#diff">差异性</a><a href="#outro">关于</a>
+  </nav>
+</header>
+<div class="chrome chrome--bl"><span class="counter"><b id="secNow">01</b> / 05</span><span class="demo-tag">示例数据 DEMO</span></div>
+
+<!-- NAV COMMAND BAR -->
+<div class="nav-cmd hidden" id="navCmd">
+  <div class="nav-shell"><span class="pfx"></span>
+    <input id="navInput" type="text" placeholder="问我去哪 — 试试「看看虾夷扇贝」「SNP 库」「差异性」…" autocomplete="off" />
+    <button class="nav-go" id="navGo">GO</button>
+  </div>
+  <div class="nav-chips">
+    <button class="nav-chip" data-cmd="species">七大物种</button>
+    <button class="nav-chip" data-cmd="live">活体库</button>
+    <button class="nav-chip" data-cmd="genome">基因库</button>
+    <button class="nav-chip" data-cmd="snp">SNP库</button>
+    <button class="nav-chip" data-cmd="diff">差异性</button>
+    <button class="nav-chip" data-cmd="hero">首页</button>
+  </div>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section id="hero" data-sec="01" data-morph="hero" data-acc="cyan">
+    <div class="wrap">
+      <div class="hero-eyebrow reveal"><span class="c">北黄海冷水团</span> · 种质资源数字平台 · GERMPLASM PLATFORM</div>
+      <h1 class="hero-title"><span class="reveal flicker">北方海珍</span><span class="l2 reveal">种质基因组</span></h1>
+      <p class="hero-sub reveal">七大主养品种 · 活体库 · 基因库重测序 · SNP库 · 差异性分析<br>一体化的<b>种质数据底座</b>。</p>
+      <div class="hero-species reveal">
+        <span class="hsp">皱纹盘鲍</span><span class="hsp">仿刺参</span><span class="hsp">长牡蛎</span><span class="hsp">虾夷扇贝</span><span class="hsp">马粪海胆</span><span class="hsp">紫海胆</span><span class="hsp">香螺</span>
+      </div>
+    </div>
+    <div class="scroll-hint"><span class="bar"></span><span>SCROLL</span></div>
+  </section>
+
+  <!-- SPECIES -->
+  <section class="veil" id="species" data-sec="02" data-morph="ring" data-acc="teal">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow reveal"><span class="n">02</span> 物种矩阵 · SPECIES MATRIX</div>
+          <h2 class="sec-title reveal">七大主养品种<br>种质资源</h2></div>
+        <p class="sec-note reveal">点击任意品种查看<b>种质档案</b>——样本、基因组指标、关联位点。数据随重测序进度动态更新。</p>
+      </div>
+      <div class="spx-grid reveal" id="spxGrid"></div>
+    </div>
+  </section>
+
+  <!-- LIBRARIES -->
+  <section class="solid" id="libraries" data-sec="03" data-morph="grid" data-acc="cyan">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow reveal"><span class="n">03</span> 数据库架构 · THE LIBRARY SYSTEM</div>
+          <h2 class="sec-title reveal">四位一体<br>种质数据底座</h2></div>
+        <p class="sec-note reveal">从活体到分子标记的全链条数据资产。<b>点击任意库</b>查看内容与实时状态。</p>
+      </div>
+      <div class="lib-grid reveal" id="libGrid"></div>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATION -->
+  <section class="veil" id="diff" data-sec="04" data-morph="helix" data-acc="red">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow reveal"><span class="n">04</span> 差异性 · 长海四海区</div>
+          <h2 class="sec-title reveal">天然的地理<br>遗传分化单元</h2></div>
+        <p class="sec-note reveal">以仿刺参长海四海区为例——各海区以自然海峡相隔，构成种源鉴定的<b>参照框架</b>。点选查看每个海区。</p>
+      </div>
+      <div class="reg-wrap reveal">
+        <div class="reg-list" role="tablist" aria-label="长海四海区">
+          <button class="reg-btn" role="tab" aria-selected="true" data-reg="0"><span class="reg-code">A1</span><span class="reg-nm"><span class="cn">獐子岛</span><span class="en">ZHANGZIDAO</span></span></button>
+          <button class="reg-btn" role="tab" aria-selected="false" data-reg="1"><span class="reg-code">A2</span><span class="reg-nm"><span class="cn">大长山</span><span class="en">DACHANGSHAN</span></span></button>
+          <button class="reg-btn" role="tab" aria-selected="false" data-reg="2"><span class="reg-code">A3</span><span class="reg-nm"><span class="cn">金坨</span><span class="en">JINTUO</span></span></button>
+          <button class="reg-btn" role="tab" aria-selected="false" data-reg="3"><span class="reg-code">A4</span><span class="reg-nm"><span class="cn">王家岛</span><span class="en">WANGJIADAO</span></span></button>
+        </div>
+        <div class="reg-panel" id="regPanel" role="tabpanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTRO -->
+  <section id="outro" data-sec="05" data-morph="sphere" data-acc="purple">
+    <div class="wrap">
+      <div class="eyebrow reveal"><span class="n">05</span> 关于平台 · 从规模导向到种业振兴</div>
+      <h2 class="outro-big reveal">给每一份种质<br>一张<span class="g">基因身份证</span>。</h2>
+      <p class="outro-sub reveal">以七大主养品种为对象，并行沉淀活体、序列、变异与分化四层数据资产，为北方海珍品良种选育、品系维护与产地溯源，构筑可长期持有、持续扩容的种质数据核心。</p>
+      <div class="credits reveal">
+        <div class="cred"><div class="k">建设主体</div><div class="v">獐子岛集团<br><small>股份有限公司</small></div></div>
+        <div class="cred"><div class="k">技术支撑</div><div class="v">辽宁省海洋动物免疫学与<br><small>疫病防控重点实验室</small></div></div>
+        <div class="cred"><div class="k">覆盖品种</div><div class="v">七大主养品种<br><small>鲍/参/蚝/贝/胆×2/螺</small></div></div>
+        <div class="cred"><div class="k">数据维护</div><div class="v">定期补充完善<br><small>活体 · 序列 · SNP · 差异</small></div></div>
+      </div>
+      <div class="footline reveal"><span>北方海珍 · 种质资源数字平台</span><span>NYS · GERMPLASM · PLATFORM / 2026</span></div>
+      <div class="disclaimer reveal">※ 本站所有样本数、基因组指标、位点与分类数据均为演示用示例数据（DEMO），仅用于平台功能与视觉展示，不代表真实测序结果。</div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="详情">
+    <button class="modal-x" data-close aria-label="关闭">✕</button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch=window.matchMedia('(hover: none)').matches;
+  var $=function(s,c){return (c||document).querySelector(s);};
+  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
+  function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+  var ACC={cyan:'#2fe4d6',red:'#ff4d6d',purple:'#ab84ff',teal:'#3fe0b0',steel:'#7fb8e6',amber:'#ffb347',rose:'#ff8fb0'};
+
+  /* ============================================================
+     SPECIES SHAPES — canvas silhouettes (for particle morph)
+     ============================================================ */
+  function drawScallop(g,S){var cx=S/2,hy=S*0.80,r=S*0.42,a0=-Math.PI*0.44,a1=Math.PI*0.44,st=44;
+    g.beginPath();g.moveTo(cx,hy);
+    for(var i=0;i<=st;i++){var a=a0+(a1-a0)*i/st,rr=r*(1+0.05*Math.sin(i/st*Math.PI*9));
+      g.lineTo(cx+Math.sin(a)*rr,hy-Math.cos(a)*rr);}g.closePath();g.fill();}
+  function drawCucumber(g,S){var cx=S/2,cy=S/2,rx=S*0.38,ry=S*0.15;
+    g.beginPath();g.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);g.fill();
+    for(var i=0;i<7;i++){var x=cx-rx*0.8+(i/6)*rx*1.6;g.beginPath();g.arc(x,cy-ry*0.7,S*0.035,0,Math.PI*2);g.fill();}}
+  function drawUrchin(g,S,sp,len){var cx=S/2,cy=S/2,r=S*0.22;
+    g.beginPath();g.arc(cx,cy,r,0,Math.PI*2);g.fill();
+    for(var i=0;i<sp;i++){var a=i/sp*Math.PI*2,bx=cx+Math.cos(a)*r,by=cy+Math.sin(a)*r,
+      tx=cx+Math.cos(a)*(r+len),ty=cy+Math.sin(a)*(r+len),pa=a+Math.PI/2,w=S*0.011;
+      g.beginPath();g.moveTo(bx+Math.cos(pa)*w,by+Math.sin(pa)*w);g.lineTo(bx-Math.cos(pa)*w,by-Math.sin(pa)*w);g.lineTo(tx,ty);g.closePath();g.fill();}}
+  function drawWhelk(g,S){var cx=S*0.46,cy=S*0.54,turns=3.1,pts=64,baseR=S*0.19;
+    for(var i=pts;i>=0;i--){var t=i/pts,ang=t*turns*Math.PI*2,rad=baseR*t,
+      px=cx+Math.cos(ang)*rad,py=cy+Math.sin(ang)*rad-t*S*0.02,cr=S*0.018+t*S*0.072;
+      g.beginPath();g.arc(px,py,cr,0,Math.PI*2);g.fill();}}
+  function drawAbalone(g,S){var cx=S/2,cy=S/2;g.save();g.translate(cx,cy);g.rotate(-0.24);
+    g.beginPath();g.ellipse(0,0,S*0.36,S*0.24,0,0,Math.PI*2);g.fill();
+    g.globalCompositeOperation='destination-out';
+    for(var i=0;i<5;i++){g.beginPath();g.arc(-S*0.22+i*S*0.11,-S*0.10,S*0.026,0,Math.PI*2);g.fill();}
+    g.globalCompositeOperation='source-over';g.restore();}
+
+  /* ============================================================
+     SPECIES EMBLEMS — neon SVG (for cards / modal)
+     ============================================================ */
+  function svg(inner){return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';}
+  function line(x1,y1,x2,y2,w){return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="var(--sp)" stroke-width="'+(w||1.4)+'" stroke-linecap="round"/>';}
+  function dot(x,y,r){return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(r||1.5)+'" fill="var(--sp)"/>';}
+  function pth(d,fillO){return '<path d="'+d+'" fill="'+(fillO?('color-mix(in srgb,var(--sp) '+fillO+'%,transparent)'):'none')+'" stroke="var(--sp)" stroke-width="1.4" stroke-linejoin="round"/>';}
+  function EM_scallop(){var s='',cx=60,hy=96,r=44;
+    for(var i=0;i<=9;i++){var a=(-52+104*i/9)*Math.PI/180;s+=line(cx,hy,cx+Math.sin(a)*r,hy-Math.cos(a)*r,1.2);}
+    var lx=cx+Math.sin(-52*Math.PI/180)*r,ly=hy-Math.cos(-52*Math.PI/180)*r,rx=cx+Math.sin(52*Math.PI/180)*r,ry=hy-Math.cos(52*Math.PI/180)*r;
+    s+=pth('M'+lx.toFixed(1)+' '+ly.toFixed(1)+' A'+r+' '+r+' 0 0 1 '+rx.toFixed(1)+' '+ry.toFixed(1),0);
+    s+=dot(cx,hy,2.4);return svg(s);}
+  function EM_cucumber(){var s=pth('M18 60 Q18 46 60 46 Q102 46 102 60 Q102 74 60 74 Q18 74 18 60 Z',12);
+    for(var i=0;i<8;i++){s+=dot(28+i*8,52,1.4);}for(var j=0;j<7;j++){s+=dot(33+j*8,68,1.2);}return svg(s);}
+  function EM_oyster(){var s='';for(var i=0;i<4;i++){var rr=18+i*10;s+='<path d="M'+(60-rr)+' 70 Q60 '+(70-rr*1.15)+' '+(60+rr)+' 70" fill="none" stroke="var(--sp)" stroke-width="1.3"/>';}
+    s+=pth('M30 72 Q60 24 90 72 Q60 84 30 72 Z',10);return svg(s);}
+  function EM_abalone(){var s=pth('M60 60 m-40 0 a40 24 0 1 0 80 0 a40 24 0 1 0 -80 0',12);
+    for(var i=0;i<5;i++){s+='<circle cx="'+(40+i*11)+'" cy="50" r="3.1" fill="none" stroke="var(--sp)" stroke-width="1.3"/>';}return svg(s);}
+  function EM_urchin(sp,len){var s='',cx=60,cy=60,r=20;
+    s+='<circle cx="60" cy="60" r="20" fill="color-mix(in srgb,var(--sp) 12%,transparent)" stroke="var(--sp)" stroke-width="1.4"/>';
+    for(var i=0;i<sp;i++){var a=i/sp*Math.PI*2;s+=line(cx+Math.cos(a)*r,cy+Math.sin(a)*r,cx+Math.cos(a)*(r+len),cy+Math.sin(a)*(r+len),1.2);}
+    s+=dot(cx,cy,2);return svg(s);}
+  function EM_whelk(){var s='',cx=58,cy=62,turns=2.6,pts=90,baseR=34,d='';
+    for(var i=0;i<=pts;i++){var t=i/pts,ang=t*turns*Math.PI*2,rad=baseR*(1-t)*0.95,px=cx+Math.cos(ang)*rad,py=cy+Math.sin(ang)*rad-(1-t)*4;
+      d+=(i===0?'M':'L')+px.toFixed(1)+' '+py.toFixed(1)+' ';}
+    s+='<path d="'+d+'" fill="none" stroke="var(--sp)" stroke-width="1.6" stroke-linecap="round"/>';
+    s+=line(cx,cy+2,cx+2,cy+30,1.6);return svg(s);}
+  var EMBLEM={
+    abalone:function(){return EM_abalone();}, cucumber:function(){return EM_cucumber();},
+    oyster:function(){return EM_oyster();}, scallop:function(){return EM_scallop();},
+    urchin_h:function(){return EM_urchin(42,10);}, urchin_p:function(){return EM_urchin(22,20);},
+    whelk:function(){return EM_whelk();}
+  };
+
+  /* ============================================================
+     3D SCENE — morph field + mouse force + trail + post + species silhouettes
+     ============================================================ */
+  var Scene=(function(){
+    var api={setMorph:function(){},ok:false,heroMorphs:['halo']};
+    var canvas=document.getElementById('scene');
+    if(typeof THREE==='undefined'||!canvas){var fb=document.createElement('div');fb.className='scene-fb';
+      document.body.insertBefore(fb,document.body.firstChild);if(canvas)canvas.style.display='none';return api;}
+    var renderer;try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false});}
+    catch(e){var fb2=document.createElement('div');fb2.className='scene-fb';document.body.insertBefore(fb2,document.body.firstChild);canvas.style.display='none';return api;}
+    var W=window.innerWidth,H=window.innerHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(W,H);renderer.setClearColor(0x04060d,1);
+    var scene=new THREE.Scene();var camera=new THREE.PerspectiveCamera(60,W/H,0.1,200);camera.position.set(0,0,16);
+    function sprite(){var c=document.createElement('canvas');c.width=c.height=64;var g=c.getContext('2d');
+      var gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.25,'rgba(255,255,255,.85)');
+      gr.addColorStop(.6,'rgba(255,255,255,.18)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);}
+    var tex=sprite();var TWO=Math.PI*2;var N=reduceMotion?3200:(W<700?4600:7200);
+
+    function tHalo(){var a=new Float32Array(N*3),hc=Math.floor(N*0.34);
+      for(var i=0;i<N;i++){var x,y,z;if(i<hc){var t=(i/hc)*TWO*5,st=(i%2===0)?0:Math.PI,R=2.6+(Math.random()-.5)*.5;
+        x=Math.cos(t+st)*R;z=Math.sin(t+st)*R;y=(i/hc-.5)*15+(Math.random()-.5)*.3;}
+        else{var u=Math.random(),v=Math.random(),th=u*TWO,ph=Math.acos(2*v-1),r=4.5+Math.pow(Math.random(),.6)*6.5;
+        x=r*Math.sin(ph)*Math.cos(th);y=r*Math.sin(ph)*Math.sin(th)*.85;z=r*Math.cos(ph);}a[i*3]=x;a[i*3+1]=y;a[i*3+2]=z;}return a;}
+    function tSphere(){var a=new Float32Array(N*3);for(var i=0;i<N;i++){var u=Math.random(),v=Math.random(),th=u*TWO,ph=Math.acos(2*v-1),r=7+(Math.random()-.5)*.6;
+      a[i*3]=r*Math.sin(ph)*Math.cos(th);a[i*3+1]=r*Math.sin(ph)*Math.sin(th);a[i*3+2]=r*Math.cos(ph);}return a;}
+    function tHelix(){var a=new Float32Array(N*3);for(var i=0;i<N;i++){var t=(i/N)*TWO*8,st=(i%2===0)?0:Math.PI,R=3+(Math.random()-.5)*.4;
+      a[i*3]=Math.cos(t+st)*R;a[i*3+2]=Math.sin(t+st)*R;a[i*3+1]=(i/N-.5)*17+(Math.random()-.5)*.25;}return a;}
+    function tGrid(){var a=new Float32Array(N*3),cols=48,rows=Math.ceil(N/cols);
+      for(var i=0;i<N;i++){var c=i%cols,r=Math.floor(i/cols);a[i*3]=(c/(cols-1)-.5)*17+(Math.random()-.5)*.15;
+        a[i*3+1]=(r/(rows-1)-.5)*10+(Math.random()-.5)*.15;a[i*3+2]=(Math.random()-.5)*2.2;}return a;}
+    function tRing(){var a=new Float32Array(N*3),Rr=7.2,rr=1.5;
+      for(var i=0;i<N;i++){var u=Math.random()*TWO,v=Math.random()*TWO;a[i*3]=(Rr+rr*Math.cos(v))*Math.cos(u);
+        a[i*3+1]=(Rr+rr*Math.cos(v))*Math.sin(u)*.6;a[i*3+2]=rr*Math.sin(v);}return a;}
+    function silhouette(drawFn){try{var S=180,c=document.createElement('canvas');c.width=c.height=S;var g=c.getContext('2d');
+      g.clearRect(0,0,S,S);g.fillStyle='#fff';drawFn(g,S);var data=g.getImageData(0,0,S,S).data,pts=[];
+      for(var y=0;y<S;y++)for(var x=0;x<S;x++){if(data[(y*S+x)*4+3]>128)pts.push(x,y);}
+      if(pts.length<120)return null;var np=pts.length/2,a=new Float32Array(N*3);
+      for(var i=0;i<N;i++){var k=((Math.random()*np)|0)*2;a[i*3]=(pts[k]/S-0.5)*16;a[i*3+1]=-(pts[k+1]/S-0.5)*16;a[i*3+2]=(Math.random()-.5)*1.6;}
+      return a;}catch(e){return null;}}
+    var TARGETS={halo:tHalo(),sphere:tSphere(),helix:tHelix(),grid:tGrid(),ring:tRing()};
+    var SIL={sp_scallop:function(g,S){drawScallop(g,S);},sp_cucumber:drawCucumber,
+      sp_urchin:function(g,S){drawUrchin(g,S,40,S*0.11);},sp_whelk:drawWhelk,sp_abalone:drawAbalone};
+    var heroM=[];
+    for(var key in SIL){var arr=silhouette(SIL[key]);if(arr){TARGETS[key]=arr;heroM.push(key);}}
+    if(!heroM.length)heroM=['halo','helix','sphere'];
+    api.heroMorphs=heroM.slice();
+
+    var pal=[[.184,.894,.839],[1,.302,.427],[.671,.518,1],[.475,.722,.851]];
+    var colors=new Float32Array(N*3);
+    for(var ci=0;ci<N;ci++){var pk=Math.random(),c=pk<.5?pal[3]:(pk<.74?pal[0]:(pk<.88?pal[2]:pal[1])),d=.55+Math.random()*.45;
+      colors[ci*3]=c[0]*d;colors[ci*3+1]=c[1]*d;colors[ci*3+2]=c[2]*d;}
+    var start0=TARGETS[heroM[0]]||TARGETS.halo;
+    var base=new Float32Array(start0),target=start0,pos=new Float32Array(N*3);
+    var ox=new Float32Array(N),oy=new Float32Array(N),vx=new Float32Array(N),vy=new Float32Array(N);
+    for(var kk=0;kk<N*3;kk++)pos[kk]=base[kk];
+    var geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    var mat=new THREE.PointsMaterial({size:W<700?.15:.13,map:tex,vertexColors:true,transparent:true,opacity:.92,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
+    scene.add(new THREE.Points(geo,mat));
+
+    var trail=null;
+    try{if(!reduceMotion&&!isTouch){var M=220,tp=new Float32Array(M*3),ta=new Float32Array(M),ts=new Float32Array(M),tvx=new Float32Array(M),tvy=new Float32Array(M),tl=new Float32Array(M);
+      for(var m=0;m<M;m++)tp[m*3]=99999;var tg=new THREE.BufferGeometry();
+      tg.setAttribute('position',new THREE.BufferAttribute(tp,3));tg.setAttribute('aAlpha',new THREE.BufferAttribute(ta,1));tg.setAttribute('aSize',new THREE.BufferAttribute(ts,1));
+      var tmat=new THREE.ShaderMaterial({uniforms:{uTex:{value:tex},uColor:{value:new THREE.Color(0x8ff2ea)}},transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+        vertexShader:'attribute float aAlpha;attribute float aSize;varying float vA;void main(){vA=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*(320.0/-mv.z);gl_Position=projectionMatrix*mv;}',
+        fragmentShader:'uniform sampler2D uTex;uniform vec3 uColor;varying float vA;void main(){vec4 t=texture2D(uTex,gl_PointCoord);gl_FragColor=vec4(uColor,1.0)*t*vA;}'});
+      scene.add(new THREE.Points(tg,tmat));
+      trail={M:M,tp:tp,ta:ta,ts:ts,tvx:tvx,tvy:tvy,tl:tl,idx:0,geo:tg,
+        spawn:function(wx,wy,dx,dy){for(var s=0;s<2;s++){var i=this.idx;this.idx=(this.idx+1)%this.M;
+          this.tp[i*3]=wx+(Math.random()-.5)*.2;this.tp[i*3+1]=wy+(Math.random()-.5)*.2;this.tp[i*3+2]=0;
+          this.tvx[i]=dx*.3+(Math.random()-.5)*.05;this.tvy[i]=dy*.3+(Math.random()-.5)*.05;this.tl[i]=1;this.ta[i]=1;this.ts[i]=2+Math.random()*3;}},
+        update:function(dt){for(var i=0;i<this.M;i++){if(this.tl[i]<=0)continue;this.tp[i*3]+=this.tvx[i];this.tp[i*3+1]+=this.tvy[i];
+          this.tvx[i]*=.94;this.tvy[i]*=.94;this.tl[i]-=dt*1.4;this.ta[i]=Math.max(0,this.tl[i]);if(this.tl[i]<=0){this.tp[i*3]=99999;this.ta[i]=0;}}
+          this.geo.attributes.position.needsUpdate=true;this.geo.attributes.aAlpha.needsUpdate=true;}};}
+    }catch(e){trail=null;}
+
+    var post=null;
+    try{var rt=new THREE.WebGLRenderTarget(W,H,{minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat});
+      var pmat=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:rt.texture},uTime:{value:0},uRes:{value:new THREE.Vector2(W,H)},uAmt:{value:reduceMotion?0.4:1.0}},
+        vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.0,1.0);}',
+        fragmentShader:['uniform sampler2D tDiffuse;uniform float uTime;uniform vec2 uRes;uniform float uAmt;varying vec2 vUv;',
+          'float rand(vec2 co){return fract(sin(dot(co,vec2(12.9898,78.233)))*43758.5453);}',
+          'void main(){vec2 uv=vUv;vec2 ctr=uv-0.5;float d=dot(ctr,ctr);',
+          'float ca=(0.0016+d*0.006)*uAmt;vec2 dir=normalize(ctr+1e-6);',
+          'float r=texture2D(tDiffuse,uv-dir*ca).r;float g=texture2D(tDiffuse,uv).g;float b=texture2D(tDiffuse,uv+dir*ca).b;',
+          'vec3 col=vec3(r,g,b);float vig=smoothstep(0.25,0.95,d*1.7);col*=mix(1.0,0.55,vig);',
+          'float grain=(rand(uv*uRes*0.5+uTime)-0.5)*0.05*uAmt;col+=grain;gl_FragColor=vec4(col,1.0);}'].join('\n')});
+      var pscene=new THREE.Scene();pscene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),pmat));var pcam=new THREE.Camera();
+      post={rt:rt,mat:pmat,scene:pscene,cam:pcam};}catch(e){post=null;}
+
+    var mx=0,my=0,mwx=0,mwy=0,lwx=0,lwy=0,scrollY=0,pv=new THREE.Vector3();
+    function mouseWorld(){var v=new THREE.Vector3((mx/W)*2-1,-(my/H)*2+1,0.5);v.unproject(camera);
+      var dir=v.sub(camera.position).normalize(),dist=(-camera.position.z)/dir.z;pv.copy(camera.position).add(dir.multiplyScalar(dist));mwx=pv.x;mwy=pv.y;}
+    if(!isTouch)window.addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;},{passive:true});
+    window.addEventListener('scroll',function(){scrollY=window.pageYOffset||0;},{passive:true});
+    api.setMorph=function(name){if(TARGETS[name])target=TARGETS[name];};api.ok=true;
+
+    var R=3.6,R2=R*R,FORCE=reduceMotion?0:0.09,LERP=0.035,running=true,t0=performance.now();
+    function loop(now){if(!running)return;requestAnimationFrame(loop);var dt=Math.min((now-t0)/1000,0.05);t0=now;mouseWorld();
+      if(trail){var dvx=mwx-lwx,dvy=mwy-lwy;if((dvx*dvx+dvy*dvy)>0.0009)trail.spawn(mwx,mwy,dvx,dvy);trail.update(dt);}
+      lwx=mwx;lwy=mwy;
+      for(var i=0;i<N;i++){var i3=i*3;base[i3]+=(target[i3]-base[i3])*LERP;base[i3+1]+=(target[i3+1]-base[i3+1])*LERP;base[i3+2]+=(target[i3+2]-base[i3+2])*LERP;
+        var dx=base[i3]-mwx,dy=base[i3+1]-mwy,d2=dx*dx+dy*dy;
+        if(d2<R2&&FORCE>0){var dd=Math.sqrt(d2)+1e-4,f=(1-dd/R)*FORCE;vx[i]+=(dx/dd)*f;vy[i]+=(dy/dd)*f;}
+        vx[i]+=(-ox[i])*0.02;vy[i]+=(-oy[i])*0.02;vx[i]*=0.9;vy[i]*=0.9;ox[i]+=vx[i];oy[i]+=vy[i];
+        pos[i3]=base[i3]+ox[i];pos[i3+1]=base[i3+1]+oy[i];pos[i3+2]=base[i3+2];}
+      geo.attributes.position.needsUpdate=true;
+      var s=scrollY/((document.body.scrollHeight-H)||1),tX=(mx/W-0.5),tY=(my/H-0.5);
+      camera.position.x+=(tX*2.2-camera.position.x)*0.05;camera.position.y+=((-tY*1.6-s*3)-camera.position.y)*0.05;
+      camera.position.z+=((16+s*6)-camera.position.z)*0.05;camera.lookAt(0,-s*1.5,0);
+      if(post){post.mat.uniforms.uTime.value=now*0.001;renderer.setRenderTarget(post.rt);renderer.clear();renderer.render(scene,camera);
+        renderer.setRenderTarget(null);renderer.render(post.scene,post.cam);}else{renderer.render(scene,camera);}}
+    requestAnimationFrame(loop);
+    window.addEventListener('resize',function(){W=window.innerWidth;H=window.innerHeight;renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
+      if(post){post.rt.setSize(W,H);post.mat.uniforms.uRes.value.set(W,H);}});
+    document.addEventListener('visibilitychange',function(){if(document.hidden)running=false;else if(!running){running=true;t0=performance.now();requestAnimationFrame(loop);}});
+    return api;
+  })();
+
+  /* ============================================================
+     MOCK DATA
+     ============================================================ */
+  var CHR={abalone:18,cucumber:23,oyster:10,scallop:19,urchin_h:21,urchin_p:21,whelk:35};
+  function mkMarkers(pfx,traits,chrN){var rows=[];for(var i=0;i<traits.length;i++){
+    var chr='Chr'+(1+((i*7+3)%chrN));var pos=fmt(1200000+((i*811+37)%9)*1000000+((i*277)%1000)*1000);
+    var eff=((i%2===0)?'+':'−')+(0.18+((i*13)%40)/100).toFixed(2);
+    rows.push(['<span class="hl">'+pfx+'-g'+(400+i*137%600)+'</span>',chr,pos,traits[i],eff]);}return rows;}
+  var SPECIES=[
+    {key:'abalone',cn:'皱纹盘鲍',la:'Haliotis discus hannai',cls:'腹足纲 · GASTROPODA',c:'teal',img:'abalone',
+     note:'北方鲍主养品种，耐低温品系选育。',n:'n=120',badge:'已重测序',done:true,
+     stats:[['样本数','120',''],['高质量 SNP','8.24','M'],['基因组','1.79','Gb'],['Contig N50','212','kb'],['测序覆盖','32','×'],['杂合度','0.31','%']],
+     traits:['生长 · 壳长','耐低温','存活率','肌肉产量']},
+    {key:'cucumber',cn:'仿刺参',la:'Apostichopus japonicus',cls:'海参纲 · HOLOTHUROIDEA',c:'red',img:'cucumber',
+     note:'长海四海区群体，生长性状与产地溯源。',n:'n=160',badge:'已重测序',done:true,
+     stats:[['样本数','160',''],['高质量 SNP','5.91','M'],['基因组','0.81','Gb'],['Contig N50','486','kb'],['测序覆盖','30','×'],['杂合度','0.42','%']],
+     traits:['生长 · 体质量','腐皮综合征抗性','四海区分化','体壁品质']},
+    {key:'oyster',cn:'长牡蛎',la:'Crassostrea gigas',cls:'双壳纲 · BIVALVIA',c:'steel',img:'oyster',
+     note:'高温胁迫适应性与糖代谢权衡研究。',n:'n=96',badge:'已重测序',done:true,
+     stats:[['样本数','96',''],['高质量 SNP','9.13','M'],['基因组','0.56','Gb'],['Contig N50','1.97','Mb'],['测序覆盖','28','×'],['杂合度','0.55','%']],
+     traits:['高温胁迫适应','糖代谢','生长','出肉率']},
+    {key:'scallop',cn:'虾夷扇贝',la:'Mizuhopecten yessoensis',cls:'双壳纲 · BIVALVIA',c:'cyan',img:'scallop',
+     note:'规格与壳色品系，獐子岛红 / 獐子岛紫。',n:'n=190',badge:'已重测序',done:true,
+     stats:[['样本数','190',''],['高质量 SNP','8.53','M'],['基因组','1.43','Gb'],['Contig N50','804','kb'],['测序覆盖','34','×'],['杂合度','0.29','%']],
+     traits:['生长 · 壳长壳高体重','壳色 · 獐子岛红/紫','规格分化','闭壳肌重']},
+    {key:'urchin_h',cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',cls:'海胆纲 · ECHINOIDEA',c:'amber',img:'urchin_h',
+     note:'北方主养海胆，性腺产量与品质。',n:'n=64',badge:'重测序中',done:false,
+     stats:[['样本数','64',''],['高质量 SNP','4.81','M'],['基因组','0.63','Gb'],['Contig N50','142','kb'],['测序覆盖','26','×'],['杂合度','0.48','%']],
+     traits:['性腺产量','生长','耐温','壳径']},
+    {key:'urchin_p',cn:'紫海胆',la:'Heliocidaris crassispina',cls:'海胆纲 · ECHINOIDEA',c:'purple',img:'urchin_p',
+     note:'高值海胆，性腺品质与抗逆性状。',n:'n=58',badge:'重测序中',done:false,
+     stats:[['样本数','58',''],['高质量 SNP','4.52','M'],['基因组','0.71','Gb'],['Contig N50','138','kb'],['测序覆盖','25','×'],['杂合度','0.51','%']],
+     traits:['性腺品质','壳径','抗逆','棘长']},
+    {key:'whelk',cn:'香螺',la:'Neptunea cumingii',cls:'腹足纲 · GASTROPODA',c:'rose',img:'whelk',
+     note:'高值螺类，野生资源调查与增殖。',n:'n=42',badge:'资源调查',done:false,
+     stats:[['样本数','42',''],['高质量 SNP','3.11','M'],['基因组','1.52','Gb'],['Contig N50','96','kb'],['测序覆盖','22','×'],['杂合度','0.60','%']],
+     traits:['生长 · 壳高','野生资源','增殖','软体部重']}
+  ];
+  SPECIES.forEach(function(s){s.markers=mkMarkers(s.cn.slice(0,1)==='皱'?'Hdh':(s.key==='cucumber'?'Ajp':(s.key==='oyster'?'Cgi':(s.key==='scallop'?'Myz':(s.key==='urchin_h'?'Hpu':(s.key==='urchin_p'?'Hcr':'Ncu'))))),s.traits,CHR[s.key]);});
+
+  var LIB_DETAIL={
+    live:{c:'teal',title:'活体库',en:'LIVE SPECIMEN LIBRARY',
+      desc:'七大品种活体种质保育，个体级可溯源档案。为重测序与后续选育提供来源清晰的实体材料。',
+      cols:['品种','保育个体','来源海区','入库批次'],
+      rows:[['皱纹盘鲍','1,240','獐子岛','LZ-24-03'],['仿刺参','2,180','大长山','LZ-24-05'],['长牡蛎','960','广鹿岛','LZ-24-06'],['虾夷扇贝','3,050','獐子岛','LZ-24-02'],['马粪海胆','640','金坨','LZ-24-08'],['紫海胆','580','王家岛','LZ-24-09'],['香螺','420','小长山','LZ-24-11']]},
+    genome:{c:'steel',title:'基因库 · 重测序',en:'GENOME / RESEQUENCING LIBRARY',
+      desc:'全基因组重测序原始序列与组装结果入库管理，随采样与测序进度定期扩容。',
+      cols:['样本编号','品种','数据量','覆盖度','状态'],
+      rows:[['RSQ-0021','虾夷扇贝','41.2 Gb','34×','已入库'],['RSQ-0088','仿刺参','30.6 Gb','30×','已入库'],['RSQ-0143','长牡蛎','28.9 Gb','28×','已入库'],['RSQ-0210','皱纹盘鲍','33.1 Gb','32×','已入库'],['RSQ-0266','马粪海胆','26.4 Gb','26×','测序中'],['RSQ-0301','紫海胆','25.0 Gb','25×','测序中'],['RSQ-0355','香螺','22.3 Gb','22×','待补充']]},
+    snp:{c:'cyan',title:'SNP 库',en:'SNP VARIANT LIBRARY',
+      desc:'经严苛质控的高质量变异位点标准库，支撑优势性状筛选、品系血统鉴定与产地溯源标记面板。',
+      cols:['位点 ID','染色体','位置','等位基因','MAF','关联性状'],
+      rows:[['Myz-g0421','Chr7','12,483,910','A/G','0.34','壳长'],['Myz-s1180','Chr3','8,912,044','C/T','0.28','壳色'],['Ajp-g0662','Chr5','21,004,551','G/A','0.31','体质量'],['Cgi-g0915','Chr2','4,776,220','T/C','0.44','高温适应'],['Hdh-g0338','Chr9','15,220,870','A/C','0.26','耐低温'],['Hcr-g0471','Chr4','9,551,203','G/T','0.30','性腺品质']]},
+    diff:{c:'red',title:'差异性分析',en:'DIFFERENTIATION',
+      desc:'群体分化、种源鉴定与优势性状关联的分析中枢，将基因组分化特征转化为品系判别与产地认证工具。',
+      cols:['海区对','加权 Fst','私有位点','溯源准确率'],
+      rows:[['獐子岛 ↔ 大长山','0.081','1,204','96.4%'],['獐子岛 ↔ 金坨','0.113','1,872','97.8%'],['獐子岛 ↔ 王家岛','0.129','2,031','98.1%'],['大长山 ↔ 金坨','0.072','988','95.2%'],['大长山 ↔ 王家岛','0.095','1,540','96.0%'],['金坨 ↔ 王家岛','0.104','1,760','96.9%']]}
+  };
+
+  /* ============================================================
+     MODAL
+     ============================================================ */
+  var modal=document.getElementById('modal'),modalBody=document.getElementById('modalBody');
+  function openModal(html){modalBody.innerHTML=html;modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');if(window.__lenis)try{window.__lenis.stop();}catch(e){}modalBody.parentNode.scrollTop=0;}
+  function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');if(window.__lenis)try{window.__lenis.start();}catch(e){}}
+  $$('[data-close]').forEach(function(el){el.addEventListener('click',closeModal);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
+
+  function speciesModal(s){var em=EMBLEM[s.img]?EMBLEM[s.img]():'';
+    var stats=s.stats.map(function(t){return '<div class="mstat"><div class="v">'+t[1]+(t[2]?'<span class="u">'+t[2]+'</span>':'')+'</div><div class="k">'+t[0]+'</div></div>';}).join('');
+    var chips=s.traits.map(function(t){return '<span class="mchip">'+t+'</span>';}).join('');
+    var rows=s.markers.map(function(r){return '<tr><td class="hl">'+r[0].replace(/<[^>]+>/g,'')+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>';}).join('');
+    return '<div style="--mc:'+ACC[s.c]+'">'+
+      '<div class="mh"><div class="mh-emblem" style="--sp:'+ACC[s.c]+'">'+em+'</div>'+
+      '<div class="mh-txt"><div class="mh-cn">'+s.cn+'</div><div class="mh-la">'+s.la+'</div><div class="mh-cls">'+s.cls+'</div>'+
+      '<span class="mh-badge">'+s.badge+'</span></div></div>'+
+      '<div class="msub">种质基因组指标 · GENOME METRICS</div><div class="mstats">'+stats+'</div>'+
+      '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>'+
+      '<div class="msub">代表性关联位点 · MARKERS</div><table class="mtable"><thead><tr><th>位点 ID</th><th>染色体</th><th>位置</th><th>关联性状</th><th>效应值</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      '<div class="mnote">※ 示例数据（DEMO），仅用于平台演示，不代表真实测序结果。</div></div>';}
+
+  function libModal(d){
+    var head='<tr>'+d.cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr>';
+    var body=d.rows.map(function(r){return '<tr>'+r.map(function(c,i){return '<td'+(i===0?' class="hl"':'')+'>'+c+'</td>';}).join('')+'</tr>';}).join('');
+    return '<div style="--mc:'+ACC[d.c]+'">'+
+      '<div class="mh"><div class="mh-txt"><div class="mh-cn">'+d.title+'</div><div class="mh-la" style="font-style:normal;letter-spacing:.16em">'+d.en+'</div>'+
+      '<p style="color:var(--ink-dim);font-size:14.5px;margin-top:16px;max-width:52ch;line-height:1.7">'+d.desc+'</p></div></div>'+
+      '<div class="msub">库内数据 · RECORDS</div><table class="mtable"><thead>'+head+'</thead><tbody>'+body+'</tbody></table>'+
+      '<div class="mnote">※ 示例数据（DEMO），仅用于平台演示，不代表真实测序结果。</div></div>';}
+
+  /* ============================================================
+     RENDER SPECIES / LIBRARIES
+     ============================================================ */
+  function initSpecies(){var grid=document.getElementById('spxGrid');if(!grid)return;var html='';
+    SPECIES.forEach(function(s,idx){var em=EMBLEM[s.img]?EMBLEM[s.img]():'';
+      html+='<div class="spx" style="--sp:'+ACC[s.c]+'" tabindex="0" role="button" data-sp="'+idx+'" aria-label="'+s.cn+' 详情">'+
+        '<div class="spx-more">↗</div><div class="emblem" style="--sp:'+ACC[s.c]+'">'+em+'</div>'+
+        '<div class="spx-cn">'+s.cn+'</div><div class="spx-la">'+s.la+'</div><div class="spx-cls">'+s.cls+'</div>'+
+        '<div class="spx-foot"><span class="spx-stat">'+s.n+'</span><span class="spx-badge'+(s.done?' done':'')+'">'+s.badge+'</span></div></div>';});
+    grid.innerHTML=html;
+    $$('.spx',grid).forEach(function(el){function op(){openModal(speciesModal(SPECIES[+el.getAttribute('data-sp')]));}
+      el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
+
+  var LIBS=[
+    {lib:'live',code:'DB·01',t:'活体库',en:'LIVE SPECIMEN LIBRARY',c:'teal',
+     desc:'六大品种活体种质保育，个体级可溯源档案，为重测序与选育提供实体材料。',mv:'7 品种',mvc:true,mk:'活体保育 · 个体档案',live:'定期补充'},
+    {lib:'genome',code:'DB·02',t:'基因库 · 重测序',en:'GENOME / RESEQUENCING LIBRARY',c:'steel',
+     desc:'全基因组重测序原始序列与组装入库，随测序进度定期扩容，构成分析的统一数据源。',mv:'扇贝 190 · 海参 160',mvc:false,mk:'重测序序列 · 持续入库',live:'定期补充完善'},
+    {lib:'snp',code:'DB·03',t:'SNP 库',en:'SNP VARIANT LIBRARY',c:'cyan',
+     desc:'经严苛质控的高质量变异位点标准库，支撑性状筛选、血统鉴定与产地溯源。',mv:'14,361,837',mvc:true,mk:'高质量 SNP · 扇贝×海参',live:'随品种扩容'},
+    {lib:'diff',code:'DB·04',t:'差异性分析',en:'DIFFERENTIATION',c:'red',
+     desc:'群体分化、种源鉴定与优势性状关联的分析中枢，产出品系判别与产地认证工具。',mv:'Fst · GWAS · 分类器',mvc:false,mk:'分化 / 溯源 / 关联',live:'模型迭代'}
+  ];
+  function initLibraries(){var grid=document.getElementById('libGrid');if(!grid)return;var html='';
+    LIBS.forEach(function(l){html+='<div class="lib" style="--lc:'+ACC[l.c]+'" tabindex="0" role="button" data-lib="'+l.lib+'" aria-label="'+l.t+' 详情">'+
+      '<div class="lib-code">'+l.code+'</div><div class="lib-t">'+l.t+'</div><div class="lib-en">'+l.en+'</div>'+
+      '<p class="lib-desc">'+l.desc+'</p><div class="lib-metric"><div><div class="mv'+(l.mvc?' c':'')+'"'+(l.lib==='snp'?' data-count="14361837"':'')+'>'+(l.lib==='snp'?'0':l.mv)+'</div>'+
+      '<div class="mk">'+l.mk+'</div></div><span class="lib-live"><span class="d"></span>'+l.live+'</span></div></div>';});
+    grid.innerHTML=html;
+    $$('.lib',grid).forEach(function(el){function op(){openModal(libModal(LIB_DETAIL[el.getAttribute('data-lib')]));}
+      el.addEventListener('click',op);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();op();}});});}
+
+  /* ============================================================
+     REGIONS
+     ============================================================ */
+  var REGIONS=[
+    {code:'A1',cn:'獐子岛',en:'ZHANGZIDAO',role:'底播增殖 · 冷水团核心',
+     desc:'常年受北黄海冷水团覆盖，以底播增殖为主。产品生长周期长、品质优异，享有较高溢价，是"獐子岛海参"地理标志核心产区。',
+     facts:[['养殖模式','底播增殖'],['产品定位','高溢价'],['地理标志','獐子岛海参']]},
+    {code:'A2',cn:'大长山',en:'DACHANGSHAN',role:'浮筏 + 底播 · 多元苗源',
+     desc:'苗种输入渠道多元，浮筏养殖与底播并行。长期跨海区苗种流通使遗传背景高度复合化，是种源鉴定的重要参照。',
+     facts:[['养殖模式','浮筏+底播'],['苗种来源','多元输入'],['遗传背景','复合化']]},
+    {code:'A3',cn:'金坨',en:'JINTUO · 小长山',role:'新品系中试 · 小规格',
+     desc:'新品系中试的重要示范场所，人工选育群体与野生底播群体共存。仿刺参小规格群体参照（体质量均值约 20.62 g）。',
+     facts:[['功能定位','新品系中试'],['群体构成','选育+野生'],['体质量','≈ 20.62 g']]},
+    {code:'A4',cn:'王家岛',en:'WANGJIADAO · 广鹿岛',role:'大规格群体 · 极端体型',
+     desc:'仿刺参大规格群体参照（体质量均值约 44.88 g），与金坨群体形成理想的极端表型对比，是生长关联分析的主力数据来源。',
+     facts:[['功能定位','大规格参照'],['体质量','≈ 44.88 g'],['分析角色','极端对比']]}
+  ];
+  function initRegions(){var panel=document.getElementById('regPanel'),btns=$$('.reg-btn');if(!panel)return;
+    function render(i){var r=REGIONS[i];var facts=r.facts.map(function(f){return '<div class="reg-fact"><div class="k">'+f[0]+'</div><div class="v">'+f[1]+'</div></div>';}).join('');
+      panel.classList.remove('switch');void panel.offsetWidth;panel.classList.add('switch');
+      panel.innerHTML='<div class="reg-role">'+r.role+'</div><div class="reg-h">'+r.cn+'</div><div class="reg-en2">'+r.code+' · '+r.en+'</div><p class="reg-desc">'+r.desc+'</p><div class="reg-facts">'+facts+'</div>';}
+    function sel(i){btns.forEach(function(b,j){b.setAttribute('aria-selected',j===i?'true':'false');});render(i);}
+    btns.forEach(function(b,i){b.addEventListener('click',function(){sel(i);});if(!isTouch)b.addEventListener('mouseenter',function(){sel(i);});});sel(0);}
+
+  /* ============================================================
+     LOADER + MOTION + NAV + CURSOR
+     ============================================================ */
+  function runLoader(cb){var loader=document.getElementById('loader'),numEl=document.getElementById('loadNum'),barEl=document.getElementById('loadBar');
+    var T=14361837,dur=reduceMotion?500:2000,start=performance.now();
+    function step(now){var p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3);numEl.textContent=fmt(T*e);barEl.style.right=(100-p*100)+'%';
+      if(p<1)requestAnimationFrame(step);else setTimeout(function(){loader.classList.add('done');document.body.classList.remove('locked');if(cb)cb();},260);}
+    requestAnimationFrame(step);}
+
+  function setAccent(name){document.documentElement.style.setProperty('--acc',ACC[name]||ACC.cyan);}
+  var inHero=true,hi=0;
+  function initMotion(){
+    var lenis=null;
+    if(typeof Lenis!=='undefined'&&!reduceMotion){try{lenis=new Lenis({duration:1.15,smoothWheel:true,easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t));}});
+      function rl(t){lenis.raf(t);requestAnimationFrame(rl);}requestAnimationFrame(rl);}catch(e){lenis=null;}}
+    window.__lenis=lenis;
+    if(window.gsap&&window.ScrollTrigger&&!reduceMotion){gsap.registerPlugin(ScrollTrigger);if(lenis)lenis.on('scroll',ScrollTrigger.update);
+      $$('[data-sec]').forEach(function(sec){var items=$$('.reveal',sec);if(!items.length)return;gsap.set(items,{y:38,opacity:0});
+        ScrollTrigger.create({trigger:sec,start:'top 80%',once:true,onEnter:function(){gsap.to(items,{y:0,opacity:1,duration:.95,ease:'power3.out',stagger:.08});}});});
+      var hero=$$('#hero .reveal');gsap.set(hero,{y:40,opacity:0});gsap.to(hero,{y:0,opacity:1,duration:1.1,ease:'power3.out',stagger:.1,delay:.15});
+    }else{$$('.reveal').forEach(function(el){el.style.opacity=1;el.style.transform='none';});}
+    // counters
+    var counted=new WeakSet();
+    function ac(el){if(counted.has(el))return;counted.add(el);var t=parseFloat(el.getAttribute('data-count')),suf=el.innerHTML.replace(/^[0-9,]*/,'');
+      if(reduceMotion){el.innerHTML=fmt(t)+suf;return;}var dur=1700,start=performance.now();
+      function s(now){var p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3);el.innerHTML=fmt(t*e)+suf;if(p<1)requestAnimationFrame(s);}requestAnimationFrame(s);}
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)ac(en.target);});},{threshold:.4});
+      var obc=function(){$$('[data-count]').forEach(function(el){io.observe(el);});};obc();window.__obsCount=obc;}
+    else $$('[data-count]').forEach(ac);
+    // progress + accent + morph
+    var progress=document.getElementById('progress'),secNow=document.getElementById('secNow');
+    window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight,p=h>0?(window.pageYOffset/h):0;progress.style.width=(p*100)+'%';},{passive:true});
+    if('IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){var s=en.target;
+      secNow.textContent=s.getAttribute('data-sec');setAccent(s.getAttribute('data-acc'));
+      var mp=s.getAttribute('data-morph');if(mp==='hero'){inHero=true;if(Scene.ok)Scene.setMorph(Scene.heroMorphs[hi%Scene.heroMorphs.length]);}
+      else{inHero=false;if(Scene.ok)Scene.setMorph(mp);}}});},{threshold:.5});
+      $$('[data-sec]').forEach(function(s){io2.observe(s);});}
+    if(!reduceMotion)setInterval(function(){if(inHero&&Scene.ok&&Scene.heroMorphs.length){hi++;Scene.setMorph(Scene.heroMorphs[hi%Scene.heroMorphs.length]);}},3600);
+  }
+
+  var TMAP={hero:{sel:'#hero'},species:{sel:'#species'},live:{sel:'#libraries',lib:'live'},genome:{sel:'#libraries',lib:'genome'},
+    snp:{sel:'#libraries',lib:'snp'},diff:{sel:'#diff'},lib:{sel:'#libraries'},outro:{sel:'#outro'}};
+  var INTENTS=[{k:['首页','主页','回到','home','top','开头'],cmd:'hero'},
+    {k:['鲍','海参','仿刺参','牡蛎','蚝','扇贝','虾夷','海胆','马粪','紫海','香螺','螺','物种','品种','species'],cmd:'species'},
+    {k:['活体','实体','保育','live'],cmd:'live'},{k:['基因库','重测序','序列','genome','reseq','测序'],cmd:'genome'},
+    {k:['snp','位点','变异','标记','marker','panel'],cmd:'snp'},{k:['差异','分化','溯源','产地','海区','fst','diff','鉴定'],cmd:'diff'},
+    {k:['库','数据库','library','db'],cmd:'lib'},{k:['关于','about','团队','单位'],cmd:'outro'}];
+  function scrollToSel(sel){var el=$(sel);if(!el)return;if(window.__lenis){try{window.__lenis.scrollTo(el,{duration:1.3});return;}catch(e){}}el.scrollIntoView({behavior:reduceMotion?'auto':'smooth'});}
+  function flash(){var f=document.getElementById('navFlash');if(!f||reduceMotion)return;if(window.gsap)gsap.fromTo(f,{opacity:0},{opacity:.35,duration:.25,yoyo:true,repeat:1,ease:'power2.out'});}
+  function runCmd(cmd){var t=TMAP[cmd];if(!t)return false;scrollToSel(t.sel);flash();
+    if(t.lib){var el=$('.lib[data-lib="'+t.lib+'"]');if(el){el.classList.add('lit');setTimeout(function(){el.classList.remove('lit');},2200);}}return true;}
+  function parseIntent(text){var q=(text||'').toLowerCase().trim();if(!q)return null;
+    for(var i=0;i<INTENTS.length;i++)for(var j=0;j<INTENTS[i].k.length;j++)if(q.indexOf(INTENTS[i].k[j])>=0)return INTENTS[i].cmd;return null;}
+  function initNav(){var navCmd=document.getElementById('navCmd'),input=document.getElementById('navInput'),go=document.getElementById('navGo');
+    function submit(){var cmd=parseIntent(input.value);if(cmd){runCmd(cmd);input.value='';input.blur();}else{input.value='';input.setAttribute('placeholder','没听懂 — 试试「SNP库」「虾夷扇贝」「差异性」…');}}
+    if(go)go.addEventListener('click',submit);if(input)input.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
+    $$('.nav-chip').forEach(function(ch){ch.addEventListener('click',function(){runCmd(ch.getAttribute('data-cmd'));});});
+    $$('.topnav a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();scrollToSel(a.getAttribute('href'));});});
+    $$('.hsp').forEach(function(el,i){el.style.cursor='pointer';el.addEventListener('click',function(){if(SPECIES[i])openModal(speciesModal(SPECIES[i]));});});
+    setTimeout(function(){navCmd.classList.remove('hidden');},reduceMotion?600:2600);}
+
+  function initCursor(){if(isTouch||reduceMotion)return;var cur=document.getElementById('cursor'),dot=document.getElementById('cursorDot'),cx=0,cy=0,dx=0,dy=0;
+    window.addEventListener('pointermove',function(e){cx=e.clientX;cy=e.clientY;dot.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';},{passive:true});
+    (function loop(){dx+=(cx-dx)*.18;dy+=(cy-dy)*.18;cur.style.transform='translate('+dx+'px,'+dy+'px) translate(-50%,-50%)';requestAnimationFrame(loop);})();
+    function bind(){$$('a,button,.reg-btn,.spx,.lib,.nav-chip,.hsp').forEach(function(el){
+      el.addEventListener('mouseenter',function(){cur.classList.add('big');});el.addEventListener('mouseleave',function(){cur.classList.remove('big');});});}
+    bind();window.__bindCursor=bind;}
+
+  window.addEventListener('DOMContentLoaded',function(){
+    initSpecies();initLibraries();initRegions();initNav();initCursor();
+    if(window.__obsCount)window.__obsCount();
+    runLoader(function(){});initMotion();
+    // re-observe dynamically-added counters (SNP lib metric) and rebind cursor
+    if(window.__obsCount)window.__obsCount();if(window.__bindCursor)window.__bindCursor();
+  });
+})();
+</script>
+
+<!-- ▼▼ 仅用于被 index.html 作为下半段嵌入时，向外层汇报自身高度，实现与封面的连续滚动。单独打开本文件不受影响。 ▼▼ -->
+<script>
+(function(){
+  if(window.parent===window)return; // 单独打开时不做任何事
+  function reportHeight(){
+    var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
+    try{window.parent.postMessage({type:'platformHeight',height:h},'*');}catch(e){}
+  }
+  window.addEventListener('load',function(){
+    reportHeight();
+    [500,1200,2600,4200].forEach(function(t){setTimeout(reportHeight,t);});
+  });
+  window.addEventListener('resize',reportHeight);
+  // 内容动态变化（加载动画结束、模态框等）时持续汇报
+  if(window.ResizeObserver){try{new ResizeObserver(reportHeight).observe(document.body);}catch(e){}}
+})();
+</script>
+<!-- ▲▲ 高度汇报片段结束 ▲▲ -->
+</body>
+</html>

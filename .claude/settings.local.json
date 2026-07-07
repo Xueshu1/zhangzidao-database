@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Start-Process \"D:\\\\soft\\\\dropbox\\\\Dropbox\\\\Group_manuscript\\\\獐子岛种质资源信息比对库构建\\\\獐子岛种质库网站\\\\index.html\")",
+      "Bash(cd \"D:/soft/dropbox/Dropbox/Group_manuscript/獐子岛种质资源信息比对库构建/獐子岛种质库网站\")",
+      "Bash(ls -la)",
+      "Bash(ls -la /workspace)",
+      "Read(//e/Downloads/Downloads/**)",
+      "Bash(node -e ' *)",
+      "PowerShell($node = \\(Get-Command node -ErrorAction SilentlyContinue\\); if\\($node\\){$node.Source}else{\"no-node\"}; \\(Get-Command python -ErrorAction SilentlyContinue\\).Source)",
+      "Bash(claude plugin *)",
+      "Read(//d/RustroverProjects/WebstormProjects/**)",
+      "Read(//c/Users/nate22/.claude/projects/D--soft-dropbox-Dropbox-Group-manuscript------------------------/**)",
+      "WebFetch(domain:www.uniprot.org)",
+      "WebSearch",
+      "WebFetch(domain:www.genesys-pgr.org)",
+      "WebFetch(domain:www.ebi.ac.uk)",
+      "WebFetch(domain:www.illumina.com)",
+      "WebFetch(domain:www.oxfordnanopore.com)",
+      "WebFetch(domain:www.ncbi.nlm.nih.gov)",
+      "WebFetch(domain:ngdc.cncb.ac.cn)",
+      "WebFetch(domain:db.cngb.org)",
+      "WebFetch(domain:www.ensembl.org)",
+      "WebFetch(domain:www.nabrc.org.cn)",
+      "WebFetch(domain:marine.fishinfo.cn)",
+      "WebFetch(domain:npgsweb.ars-grin.gov)",
+      "WebFetch(domain:useast.ensembl.org)",
+      "WebFetch(domain:www.higentec.com)",
+      "WebFetch(domain:mgbase.qnlm.ac)",
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)",
+      "Read(//c/Program Files/Google/Chrome/Application/**)",
+      "Bash(git -C \"D:/RustroverProjects/WebstormProjects/core-api\" rev-parse --is-inside-work-tree)",
+      "Read(//c/Users/**)",
+      "Read(//c/Users/zhang/.claude/plugins/cache/superpowers-marketplace/superpowers/**)",
+      "Bash(git *)"
+    ]
+  }
+}
