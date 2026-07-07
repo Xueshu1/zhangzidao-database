@@ -1024,6 +1024,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     document.body.classList.add('modal-open');modalBody.parentNode.scrollTop=0;}
   function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
     document.body.classList.remove('modal-open');}
+  window.__closeModal=closeModal; // 供 geoBlock 内联 onclick 跨 IIFE 作用域调用（同 __spFallback 模式）
   $$('[data-close]').forEach(function(el){el.addEventListener('click',closeModal);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
 
@@ -1087,7 +1088,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       '<div class="msub" style="font-size:12px;opacity:.8">海区两两分化 · PAIRWISE Fst</div>'+
       heatmap(REG_LABELS,FST,{color:'red',cap:'长海四海区加权 Fst 热力图 · 值越高分化越强 · 示例'})+
       '<div class="geo-grid">'+reg+'</div>'+
-      '<a href="#analysis" onclick="closeModal()" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:'+ACC.red+'">前往遗传分析 →</a>';}
+      '<a href="#analysis" onclick="window.__closeModal&&window.__closeModal()" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:'+ACC.red+'">前往遗传分析 →</a>';}
 
   function libChart(key,d){
     if(key==='live'){ // 各品种保育个体数
