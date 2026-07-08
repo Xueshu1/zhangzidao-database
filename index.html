@@ -895,36 +895,60 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     {key:'scallop',cn:'虾夷扇贝',la:'Mizuhopecten yessoensis',cls:'双壳纲 · BIVALVIA',c:'cyan',img:'scallop',photo:'虾夷扇贝.png',
      note:'规格与壳色品系，獐子岛红 / 獐子岛紫。',n:'n=190',badge:'已重测序',done:true,
      stats:[['样本数','190',''],['高质量 SNP','8.53','M'],['基因组','1.43','Gb'],['Contig N50','804','kb'],['测序覆盖','34','×'],['杂合度','0.29','%']],
+     popgen:[['核苷酸多样性 π','2.84×10⁻³'],['LD 衰减距离','18.6 kb'],['有效群体 Ne','34,200'],['近交系数 Fis','0.012']],
+     growth:{months:[3,6,9,12,15,18,24],shellLength:[18,32,48,62,74,82,94],weight:[2.8,12.5,28.4,52.6,78.3,95.2,128.6]},
+     envTol:{temp:[2,25,8,22],salinity:[24,35,28,32],oxygen:[4.5,12,6.5,10],disease:75},
      traits:['生长 · 壳长壳高体重','壳色 · 獐子岛红/紫','规格分化','闭壳肌重']},
     {key:'cucumber',cn:'仿刺参',la:'Apostichopus japonicus',cls:'海参纲 · HOLOTHUROIDEA',c:'red',img:'cucumber',photo:'仿刺参.png',
      note:'长海四海区群体，生长性状与产地溯源。',n:'n=160',badge:'已重测序',done:true,geo:true,
      stats:[['样本数','160',''],['高质量 SNP','5.91','M'],['基因组','0.81','Gb'],['Contig N50','486','kb'],['测序覆盖','30','×'],['杂合度','0.42','%']],
+     popgen:[['核苷酸多样性 π','3.21×10⁻³'],['LD 衰减距离','24.8 kb'],['有效群体 Ne','28,600'],['近交系数 Fis','0.028']],
+     growth:{months:[4,8,12,16,20,24,30],shellLength:[0,0,0,0,0,0,0],weight:[8,28,62,105,148,185,240]},
+     envTol:{temp:[3,28,10,25],salinity:[26,38,30,35],oxygen:[5,14,7,11],disease:68},
      traits:['生长 · 体质量','腐皮综合征抗性','四海区分化','体壁品质']},
     {key:'whelk',cn:'香螺',la:'Neptunea cumingii',cls:'腹足纲 · GASTROPODA',c:'rose',img:'whelk',photo:'香螺.png',
      note:'高值螺类，野生资源调查与增殖。',n:'n=42',badge:'资源调查',done:false,
      stats:[['样本数','42',''],['高质量 SNP','3.11','M'],['基因组','1.52','Gb'],['Contig N50','96','kb'],['测序覆盖','22','×'],['杂合度','0.60','%']],
+     popgen:[['核苷酸多样性 π','4.15×10⁻³'],['LD 衰减距离','12.4 kb'],['有效群体 Ne','18,400'],['近交系数 Fis','-0.008']],
+     growth:{months:[6,12,18,24,30,36],shellLength:[22,45,68,88,104,118],weight:[5.2,18.6,42.8,72.4,98.6,125.8]},
+     envTol:{temp:[0,22,6,18],salinity:[25,36,28,33],oxygen:[5.5,13,7.5,11],disease:62},
      traits:['生长 · 壳高','野生资源','增殖','软体部重']},
     {key:'urchin',cn:'海胆',la:'Echinoidea',cls:'海胆纲 · ECHINOIDEA',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
      note:'黄渤海主养海胆，含马粪海胆与紫海胆两个品种。',n:'n=122',badge:'重测序中',done:false,
      stats:[['样本合计','122',''],['高质量 SNP','9.33','M'],['涵盖品种','2','种'],['测序覆盖','25','×'],['靶向性状','性腺','品质'],['状态','重测序','中']],
+     popgen:[['核苷酸多样性 π','3.68×10⁻³'],['LD 衰减距离','15.2 kb'],['有效群体 Ne','22,800'],['近交系数 Fis','0.018']],
+     growth:{months:[4,8,12,16,20,24],shellLength:[0,0,0,0,0,0],weight:[3.5,12.8,26.4,42.8,58.6,72.4]},
+     envTol:{temp:[4,26,12,22],salinity:[28,36,30,34],oxygen:[6,14,8,12],disease:70},
      traits:['性腺产量与品质','生长','抗逆','壳径棘长'],
      sub:[
        {key:'urchin_h',cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
         note:'黄渤海主养海胆，性腺产量与品质。',n:'n=64',badge:'重测序中',
         stats:[['样本数','64',''],['高质量 SNP','4.81','M'],['基因组','0.63','Gb'],['Contig N50','142','kb'],['测序覆盖','26','×'],['杂合度','0.48','%']],
+        popgen:[['核苷酸多样性 π','3.42×10⁻³'],['LD 衰减距离','16.8 kb'],['有效群体 Ne','24,500'],['近交系数 Fis','0.015']],
+        growth:{months:[4,8,12,16,20,24],shellLength:[0,0,0,0,0,0],weight:[3.2,11.5,24.8,40.6,55.2,68.4]},
+        envTol:{temp:[5,25,13,21],salinity:[28,35,30,33],oxygen:[6.5,14,8.5,12],disease:72},
         traits:['性腺产量','生长','耐温','壳径']},
        {key:'urchin_p',cn:'紫海胆',la:'Heliocidaris crassispina',c:'purple',img:'urchin_p',photo:'紫海胆.png',
         note:'高值海胆，性腺品质与抗逆性状。',n:'n=58',badge:'重测序中',
         stats:[['样本数','58',''],['高质量 SNP','4.52','M'],['基因组','0.71','Gb'],['Contig N50','138','kb'],['测序覆盖','25','×'],['杂合度','0.51','%']],
+        popgen:[['核苷酸多样性 π','3.94×10⁻³'],['LD 衰减距离','13.6 kb'],['有效群体 Ne','21,200'],['近交系数 Fis','0.022']],
+        growth:{months:[4,8,12,16,20,24],shellLength:[0,0,0,0,0,0],weight:[3.8,14.2,28.6,45.4,62.8,76.8]},
+        envTol:{temp:[6,28,14,24],salinity:[29,37,31,35],oxygen:[6,13,8,11],disease:68},
         traits:['性腺品质','壳径','抗逆','棘长']}
      ]},
     {key:'abalone',cn:'皱纹盘鲍',la:'Haliotis discus hannai',cls:'腹足纲 · GASTROPODA',c:'teal',img:'abalone',photo:'皱纹盘报.png',
      note:'黄渤海鲍主养品种，耐低温品系选育。',n:'n=120',badge:'已重测序',done:true,
      stats:[['样本数','120',''],['高质量 SNP','8.24','M'],['基因组','1.79','Gb'],['Contig N50','212','kb'],['测序覆盖','32','×'],['杂合度','0.31','%']],
+     popgen:[['核苷酸多样性 π','2.56×10⁻³'],['LD 衰减距离','22.4 kb'],['有效群体 Ne','42,600'],['近交系数 Fis','0.008']],
+     growth:{months:[6,12,18,24,30,36,42],shellLength:[15,38,62,84,102,116,128],weight:[1.8,8.4,22.6,46.8,78.4,112.6,145.2]},
+     envTol:{temp:[0,26,8,20],salinity:[26,36,29,34],oxygen:[5,12,7,10],disease:78},
      traits:['生长 · 壳长','耐低温','存活率','肌肉产量']},
     {key:'oyster',cn:'长牡蛎',la:'Crassostrea gigas',cls:'双壳纲 · BIVALVIA',c:'steel',img:'oyster',photo:'太平洋牡蛎.png',
      note:'高温胁迫适应性与糖代谢权衡研究。',n:'n=96',badge:'已重测序',done:true,
      stats:[['样本数','96',''],['高质量 SNP','9.13','M'],['基因组','0.56','Gb'],['Contig N50','1.97','Mb'],['测序覆盖','28','×'],['杂合度','0.55','%']],
+     popgen:[['核苷酸多样性 π','4.82×10⁻³'],['LD 衰减距离','8.6 kb'],['有效群体 Ne','56,400'],['近交系数 Fis','-0.018']],
+     growth:{months:[3,6,9,12,15,18],shellLength:[24,48,68,86,98,108],weight:[4.2,18.6,42.8,76.4,108.6,138.2]},
+     envTol:{temp:[5,32,15,28],salinity:[18,38,25,35],oxygen:[4,16,6,13],disease:82},
      traits:['高温胁迫适应','糖代谢','生长','出肉率']}
   ];
   // 战略储备品种（轻量清单，DEMO 占位）
@@ -968,16 +992,30 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   /* ============================================================
      图表助手（纯内联 SVG，零依赖，离线可用）
      ============================================================ */
-  function _hx(c){return ACC[c]||c||'#2fe4d6';}
-  // 柱状图：data=[{label,value}], opts{color,unit,w,h}
-  function barChart(data,opts){opts=opts||{};var col=_hx(opts.color),W=opts.w||520,H=opts.h||150,
+  // 科学配色方案（Nature/Science 风格）
+  var SCI={ocean:'#2196F3',teal:'#00BCD4',green:'#4CAF50',lime:'#8BC34A',amber:'#FFC107',
+    orange:'#FF9800',red:'#F44336',pink:'#E91E63',purple:'#9C27B0',indigo:'#3F51B5',
+    cyan:'#00E5FF',mint:'#1DE9B6',yellow:'#FFEA00',coral:'#FF6E40',magenta:'#F50057',violet:'#7C4DFF'};
+  var PALETTE=[SCI.ocean,SCI.teal,SCI.orange,SCI.purple,SCI.green,SCI.pink,SCI.amber,SCI.indigo];
+  function _hx(c){return ACC[c]||SCI[c]||c||'#2fe4d6';}
+  function _col(i,base){return base?_hx(base):PALETTE[i%PALETTE.length];}
+
+  // 柱状图（多色渐变）：data=[{label,value}], opts{color,colors,gradient,unit,w,h}
+  function barChart(data,opts){opts=opts||{};var W=opts.w||520,H=opts.h||150,
     pad=26,bw=(W-pad*2)/data.length,max=Math.max.apply(null,data.map(function(d){return d.value;}))||1;
-    var bars='',labs='';
-    data.forEach(function(d,i){var bh=Math.max(2,(d.value/max)*(H-46)),x=pad+i*bw+bw*0.16,y=H-26-bh,ww=bw*0.68;
-      bars+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+ww.toFixed(1)+'" height="'+bh.toFixed(1)+'" rx="2" fill="'+col+'" opacity="0.85"><title>'+d.label+'：'+d.value+(opts.unit||'')+'</title></rect>';
-      bars+='<text x="'+(x+ww/2).toFixed(1)+'" y="'+(y-5).toFixed(1)+'" fill="#cdd8e2" font-size="9" font-family="var(--f-mono)" text-anchor="middle">'+d.value+'</text>';
-      labs+='<text x="'+(x+ww/2).toFixed(1)+'" y="'+(H-10)+'" fill="#7f93a6" font-size="9.5" font-family="var(--f-mono)" text-anchor="middle">'+d.label+'</text>';});
-    return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+
+    var bars='',labs='',defs='';var useMulti=opts.colors||opts.gradient;
+    data.forEach(function(d,i){
+      var col=useMulti?_col(i,opts.colors?opts.colors[i]:null):_hx(opts.color);
+      var bh=Math.max(2,(d.value/max)*(H-46)),x=pad+i*bw+bw*0.16,y=H-26-bh,ww=bw*0.68;
+      var gid='g'+i+'_'+Math.random().toString(36).substr(2,4);
+      if(opts.gradient){
+        var c2=i<data.length-1?_col(i+1):col;
+        defs+='<linearGradient id="'+gid+'" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.95"/><stop offset="100%" stop-color="'+c2+'" stop-opacity="0.7"/></linearGradient>';
+        col='url(#'+gid+')';}
+      bars+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+ww.toFixed(1)+'" height="'+bh.toFixed(1)+'" rx="3" fill="'+col+'" opacity="'+(opts.gradient?'1':'0.88')+'"><title>'+d.label+'：'+d.value+(opts.unit||'')+'</title></rect>';
+      bars+='<text x="'+(x+ww/2).toFixed(1)+'" y="'+(y-5).toFixed(1)+'" fill="#d5e3ec" font-size="9" font-family="var(--f-mono)" text-anchor="middle" font-weight="500">'+d.value+'</text>';
+      labs+='<text x="'+(x+ww/2).toFixed(1)+'" y="'+(H-10)+'" fill="#8a9eb0" font-size="9.5" font-family="var(--f-mono)" text-anchor="middle">'+d.label+'</text>';});
+    return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+(defs?'<defs>'+defs+'</defs>':'')+
       '<line x1="'+pad+'" y1="'+(H-26)+'" x2="'+(W-pad)+'" y2="'+(H-26)+'" stroke="var(--line-2)" stroke-width="1"/>'+bars+labs+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 水平进度条组：data=[{label,value,max,disp}], opts{color}
@@ -1004,6 +1042,72 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
         if(i!==j)svg+='<text x="'+(x+cell/2)+'" y="'+(y+cell/2+4)+'" fill="#eaf2f6" font-size="11" font-family="var(--f-mono)" text-anchor="middle">'+v.toFixed(3)+'</text>';
         else svg+='<text x="'+(x+cell/2)+'" y="'+(y+cell/2+4)+'" fill="#4a5a6b" font-size="12" font-family="var(--f-mono)" text-anchor="middle">—</text>';}}
     return '<div class="chart-wrap" style="overflow-x:auto"><svg viewBox="0 0 '+W+' '+H+'" width="100%" style="min-width:'+Math.min(W,340)+'px" preserveAspectRatio="xMinYMid meet" role="img">'+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 折线图：series=[{name,data:[{x,y}]}], opts{color,xLabel,yLabel,w,h}
+  function lineChart(series,opts){opts=opts||{};var W=opts.w||520,H=opts.h||180,pad=42,top=20,
+    xMin=Infinity,xMax=-Infinity,yMin=Infinity,yMax=-Infinity;
+    series.forEach(function(s){s.data.forEach(function(p){if(p.x<xMin)xMin=p.x;if(p.x>xMax)xMax=p.x;if(p.y<yMin)yMin=p.y;if(p.y>yMax)yMax=p.y;});});
+    var xRange=xMax-xMin||1,yRange=yMax-yMin||1,plotW=W-pad*2,plotH=H-pad-top;
+    function sx(x){return pad+(x-xMin)/xRange*plotW;}
+    function sy(y){return top+plotH-(y-yMin)/yRange*plotH;}
+    var svg='<rect x="'+pad+'" y="'+top+'" width="'+plotW+'" height="'+plotH+'" fill="none" stroke="var(--line)" stroke-width="1"/>';
+    var cols=[opts.color||'cyan','red','purple','teal','steel','amber'];
+    series.forEach(function(s,si){var col=_hx(cols[si%cols.length]),path='M';
+      s.data.forEach(function(p,i){path+=(i?'L':'')+sx(p.x).toFixed(1)+','+sy(p.y).toFixed(1);});
+      svg+='<path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="2" opacity="0.85"/>';
+      s.data.forEach(function(p){svg+='<circle cx="'+sx(p.x).toFixed(1)+'" cy="'+sy(p.y).toFixed(1)+'" r="3" fill="'+col+'"><title>'+s.name+': '+p.x+(opts.xLabel||'')+' → '+p.y.toFixed(1)+(opts.yLabel||'')+'</title></circle>';});});
+    // 坐标轴标签
+    for(var i=0;i<=5;i++){var yv=yMin+i*(yMax-yMin)/5;
+      svg+='<text x="'+(pad-8)+'" y="'+(sy(yv)+4)+'" fill="#7f93a6" font-size="9" font-family="var(--f-mono)" text-anchor="end">'+yv.toFixed(0)+'</text>';}
+    var xStep=Math.ceil(xRange/6);for(var xi=xMin;xi<=xMax;xi+=xStep){
+      svg+='<text x="'+sx(xi).toFixed(1)+'" y="'+(top+plotH+16)+'" fill="#7f93a6" font-size="9" font-family="var(--f-mono)" text-anchor="middle">'+xi+'</text>';}
+    return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 棒棒糖图（用于群体遗传学指标）：data=[{label,value,unit}], opts{color,w,h}
+  function lollipopChart(data,opts){opts=opts||{};var W=opts.w||420,H=opts.h||180,padL=120,padR=30,padT=20,padB=30;
+    var plotW=W-padL-padR,plotH=H-padT-padB,n=data.length,gap=plotH/(n+1);
+    var max=Math.max.apply(null,data.map(function(d){return parseFloat(d.value)||0;}))||1;
+    var svg='',defs='';
+    data.forEach(function(d,i){
+      var val=parseFloat(d.value)||0,y=padT+gap*(i+1),x1=padL,x2=padL+val/max*plotW;
+      var col=_col(i);var gid='lol'+i;
+      defs+='<linearGradient id="'+gid+'" x1="0%" x2="100%"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.3"/><stop offset="100%" stop-color="'+col+'"/></linearGradient>';
+      svg+='<line x1="'+x1+'" y1="'+y+'" x2="'+x2.toFixed(1)+'" y2="'+y+'" stroke="url(#'+gid+')" stroke-width="3" stroke-linecap="round"/>';
+      svg+='<circle cx="'+x2.toFixed(1)+'" cy="'+y+'" r="5" fill="'+col+'"><title>'+d.label+': '+d.value+(d.unit||'')+'</title></circle>';
+      svg+='<text x="'+(padL-10)+'" y="'+(y+4)+'" fill="#93a6b8" font-size="11" font-family="var(--f-body)" text-anchor="end">'+d.label+'</text>';
+      svg+='<text x="'+(x2+10).toFixed(1)+'" y="'+(y+4)+'" fill="'+col+'" font-size="10" font-family="var(--f-mono)" font-weight="600">'+d.value+(d.unit||'')+'</text>';});
+    return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img"><defs>'+defs+'</defs>'+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 圆环图（染色体分布）：data=[{label,value}], opts{color,w}
+  function donutChart(data,opts){opts=opts||{};var S=opts.w||240,cx=S/2,cy=S/2,R=S*0.35,r=R*0.55;
+    var total=data.reduce(function(sum,d){return sum+d.value;},0)||1,ang=0;
+    var svg='',paths='';
+    data.forEach(function(d,i){
+      var sweep=d.value/total*Math.PI*2,x1=cx+R*Math.cos(ang),y1=cy+R*Math.sin(ang);
+      ang+=sweep;var x2=cx+R*Math.cos(ang),y2=cy+R*Math.sin(ang);
+      var largeArc=sweep>Math.PI?1:0,col=_col(i);
+      var xi1=cx+r*Math.cos(ang-sweep),yi1=cy+r*Math.sin(ang-sweep),xi2=cx+r*Math.cos(ang),yi2=cy+r*Math.sin(ang);
+      paths+='<path d="M '+x1.toFixed(1)+' '+y1.toFixed(1)+' A '+R+' '+R+' 0 '+largeArc+' 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' L '+xi2.toFixed(1)+' '+yi2.toFixed(1)+' A '+r+' '+r+' 0 '+largeArc+' 0 '+xi1.toFixed(1)+' '+yi1.toFixed(1)+' Z" fill="'+col+'" opacity="0.85" stroke="#0a1120" stroke-width="2"><title>'+d.label+': '+d.value.toFixed(1)+(opts.unit||'')+'</title></path>';});
+    svg+='<text x="'+cx+'" y="'+(cy-4)+'" fill="#eaf2f6" font-size="18" font-family="var(--f-mono)" font-weight="700" text-anchor="middle">'+total.toFixed(1)+'</text>';
+    svg+='<text x="'+cx+'" y="'+(cy+12)+'" fill="#93a6b8" font-size="10" font-family="var(--f-mono)" text-anchor="middle">'+(opts.centerLabel||'TOTAL')+'</text>';
+    return '<div class="chart-wrap" style="max-width:'+S+'px;margin:0 auto"><svg viewBox="0 0 '+S+' '+S+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+paths+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 雷达图：data=[{label,value,max}], opts{color,w,h}
+  function radarChart(data,opts){opts=opts||{};var col=_hx(opts.color),S=opts.w||260,cx=S/2,cy=S/2,R=S*0.38,n=data.length;
+    var svg='';
+    // 背景圈（5层）
+    for(var lv=1;lv<=5;lv++){var r=R*lv/5;
+      svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(1)+'" fill="none" stroke="var(--line)" stroke-width="0.5" opacity="'+(0.3-lv*0.03)+'"/>';}
+    // 轴线与标签
+    var pts=[];
+    for(var i=0;i<n;i++){var ang=Math.PI*2*i/n-Math.PI/2,ex=cx+R*Math.cos(ang),ey=cy+R*Math.sin(ang);
+      svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="var(--line)" stroke-width="0.5" opacity="0.4"/>';
+      var v=data[i].value/(data[i].max||100),px=cx+R*v*Math.cos(ang),py=cy+R*v*Math.sin(ang);pts.push(px+','+py);
+      var lx=cx+(R+22)*Math.cos(ang),ly=cy+(R+22)*Math.sin(ang),anch=ang>Math.PI/2&&ang<3*Math.PI/2?'end':'start';
+      svg+='<text x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" fill="#93a6b8" font-size="10" font-family="var(--f-body)" text-anchor="'+anch+'">'+data[i].label+'</text>';}
+    svg+='<polygon points="'+pts.join(' ')+'" fill="'+col+'" fill-opacity="0.18" stroke="'+col+'" stroke-width="2" opacity="0.85"/>';
+    pts.forEach(function(p){var xy=p.split(',');svg+='<circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="3.5" fill="'+col+'"/>';});
+    return '<div class="chart-wrap" style="max-width:'+S+'px;margin:0 auto"><svg viewBox="0 0 '+S+' '+S+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
 
   // 为每个品种生成「按染色体 SNP 计数」模拟分布（确定性，不随机跳动）
@@ -1058,16 +1162,39 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     var body;
     if(s.sub){
       // 合并卡（海胆）：总览 + 每个亚项一块
-      body='<div class="msub">品种构成 · SUB-SPECIES</div><div class="mstats">'+stats+'</div>'+
+      var popgenBlock='';
+      if(s.popgen){var pg=s.popgen.map(function(p){return {label:p[0],value:p[1],unit:''};});
+        popgenBlock='<div class="msub">群体遗传学指标 · POPULATION GENETICS</div>'+lollipopChart(pg,{cap:'核苷酸多样性、连锁不平衡衰减、有效群体大小、近交系数 · 示例'});}
+      body='<div class="msub">品种构成 · SUB-SPECIES</div><div class="mstats">'+stats+'</div>'+popgenBlock+
         '<div class="mnote" style="margin-top:6px">本品种包含以下 '+s.sub.length+' 个海胆品种，分别建立种质基因组档案：</div>'+
         s.sub.map(subGenomeBlock).join('')+
         '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>';
     } else {
       var rows=s.markers.map(function(r){return '<tr><td class="hl">'+r[0].replace(/<[^>]+>/g,'')+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>';}).join('');
-      var snpChart=barChart(s.snpByChr,{color:s.c,unit:'M',cap:'按染色体高质量 SNP 计数（M）· 示例分布'});
-      var mafChart=barChart(s.mafDist,{color:s.c,unit:'k',cap:'次等位基因频率(MAF) 分布 · 位点数(千)'});
-      body='<div class="msub">种质基因组指标 · GENOME METRICS</div><div class="mstats">'+stats+'</div>'+
-        '<div class="msub">SNP 密度概要 · SNP DENSITY</div>'+snpChart+mafChart+
+      // SNP 密度 - 使用圆环图展示染色体分布（更美观）
+      var snpChart=donutChart(s.snpByChr,{unit:'M',centerLabel:'SNP(M)',cap:'高质量 SNP 按染色体分布（M）· 示例'});
+      // MAF 分布 - 使用多色渐变柱状图
+      var mafChart=barChart(s.mafDist,{gradient:true,unit:'k',cap:'次等位基因频率(MAF) 分布 · 位点数(千) · 示例'});
+      // 群体遗传学指标 - 使用棒棒糖图
+      var popgenBlock='';
+      if(s.popgen){var pg=s.popgen.map(function(p){return {label:p[0],value:p[1],unit:''};});
+        popgenBlock='<div class="msub">群体遗传学指标 · POPULATION GENETICS</div>'+lollipopChart(pg,{cap:'核苷酸多样性、连锁不平衡衰减、有效群体大小、近交系数 · 示例'});}
+      // 生长曲线 - 使用面积图（待实现）或保持折线图
+      var growthBlock='';
+      if(s.growth){var gd=s.growth,series=[];
+        if(gd.weight&&gd.weight.length)series.push({name:'体重',data:gd.months.map(function(m,i){return {x:m,y:gd.weight[i]};})});
+        if(gd.shellLength&&gd.shellLength.length&&gd.shellLength.some(function(v){return v>0;}))
+          series.push({name:'壳长',data:gd.months.map(function(m,i){return {x:m,y:gd.shellLength[i]};})});
+        if(series.length)growthBlock='<div class="msub">生长曲线 · GROWTH CURVE</div>'+
+          lineChart(series,{color:s.c,xLabel:'月',yLabel:series.length>1?'':' g',cap:'月龄 vs '+(series.length>1?'体重(g)/壳长(mm)':'体重(g)')+'· 示例数据'});}
+      // 环境适应性雷达图
+      var envBlock='';
+      if(s.envTol){var et=s.envTol,radarData=[
+        {label:'温度耐受',value:(et.temp[1]-et.temp[0]),max:35},{label:'盐度适应',value:(et.salinity[1]-et.salinity[0]),max:25},
+        {label:'溶氧需求',value:(et.oxygen[1]-et.oxygen[0]),max:15},{label:'抗病指数',value:et.disease,max:100}];
+        envBlock='<div class="msub">环境适应性 · ENVIRONMENTAL TOLERANCE</div>'+radarChart(radarData,{color:s.c,cap:'温度范围 '+et.temp[0]+'~'+et.temp[1]+'℃ · 盐度 '+et.salinity[0]+'~'+et.salinity[1]+'‰ · 溶氧 '+et.oxygen[0]+'~'+et.oxygen[1]+' mg/L · 示例'});}
+      body='<div class="msub">种质基因组指标 · GENOME METRICS</div><div class="mstats">'+stats+'</div>'+popgenBlock+
+        '<div class="msub">SNP 密度概要 · SNP DENSITY</div>'+snpChart+mafChart+growthBlock+envBlock+
         '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>'+
         '<div class="msub">代表性关联位点 · MARKERS</div><table class="mtable"><thead><tr><th>位点 ID</th><th>染色体</th><th>位置</th><th>关联性状</th><th>效应值</th></tr></thead><tbody>'+rows+'</tbody></table>';
     }
@@ -1078,12 +1205,17 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   // 合并卡内单个亚项的基因组小节（马粪海胆 / 紫海胆）
   function subGenomeBlock(u){
     var stats=u.stats.map(function(t){return '<div class="mstat"><div class="v">'+t[1]+(t[2]?'<span class="u">'+t[2]+'</span>':'')+'</div><div class="k">'+t[0]+'</div></div>';}).join('');
-    var snpChart=barChart(u.snpByChr,{color:u.c,unit:'M',cap:'按染色体高质量 SNP 计数（M）· 示例'});
+    // 使用圆环图展示SNP分布
+    var snpChart=donutChart(u.snpByChr,{unit:'M',centerLabel:'SNP(M)',cap:'按染色体高质量 SNP 计数（M）· 示例'});
     var chips=u.traits.map(function(t){return '<span class="mchip">'+t+'</span>';}).join('');
+    // 群体遗传学指标（如果有）
+    var popgenBlock='';
+    if(u.popgen){var pg=u.popgen.map(function(p){return {label:p[0].replace('核苷酸多样性 ','π=').replace('LD 衰减距离','LD=').replace('有效群体 ','Ne=').replace('近交系数 ','Fis='),value:p[1],unit:''};});
+      popgenBlock=lollipopChart(pg,{cap:'群体遗传学关键指标 · 示例'});}
     return '<div class="sub-block" style="--mc:'+ACC[u.c]+'">'+
       '<div class="sub-h"><span class="sub-dot"></span><span class="sub-cn">'+u.cn+'</span>'+
       '<span class="sub-la">'+u.la+'</span><span class="mh-badge" style="margin-left:auto">'+u.badge+'</span></div>'+
-      '<div class="mstats">'+stats+'</div>'+snpChart+
+      '<div class="mstats">'+stats+'</div>'+popgenBlock+snpChart+
       '<div class="mchips" style="margin-top:12px">'+chips+'</div></div>';}
 
   // 天然地理遗传分化单元（并入仿刺参弹窗）
@@ -1094,7 +1226,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       return '<div class="geo-card"><div class="geo-role">'+r.role+'</div>'+
         '<div class="geo-h">'+r.cn+' <span class="geo-code">'+r.code+' · '+r.en+'</span></div>'+
         '<p class="geo-desc">'+r.desc+'</p><div class="geo-facts">'+facts+'</div>'+
-        barChart(fstData,{color:'red',cap:r.cn+' 与其它海区的加权 Fst · 值越高分化越强 · 示例'})+'</div>';}).join('');
+        barChart(fstData,{gradient:true,cap:r.cn+' 与其它海区的加权 Fst · 值越高分化越强 · 示例'})+'</div>';}).join('');
     return '<div class="msub" style="color:'+ACC.red+'">天然地理遗传分化单元 · GEOGRAPHIC UNITS</div>'+
       '<p class="mnote" style="margin:0 0 14px">以仿刺参长海四海区为例——各海区以自然海峡相隔，遗传背景各异，构成种源鉴定与产地溯源的参照框架。</p>'+
       '<div class="msub" style="font-size:12px;opacity:.8">海区两两分化 · PAIRWISE Fst</div>'+
@@ -1103,17 +1235,17 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       '<a href="#analysis" onclick="window.__closeModal&&window.__closeModal()" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:'+ACC.red+'">前往遗传分析 →</a>';}
 
   function libChart(key,d){
-    if(key==='live'){ // 各品种保育个体数
+    if(key==='live'){ // 各品种保育个体数 - 使用多色渐变柱状图
       var data=d.rows.map(function(r){return {label:r[0].slice(0,2),value:parseInt(r[1].replace(/,/g,''),10)};});
-      return '<div class="msub">保育个体分布 · SPECIMENS BY SPECIES</div>'+barChart(data,{color:'teal',unit:' 尾',cap:'各品种活体保育个体数 · 示例'});
+      return '<div class="msub">保育个体分布 · SPECIMENS BY SPECIES</div>'+barChart(data,{gradient:true,unit:' 尾',cap:'各品种活体保育个体数 · 示例'});
     }
     if(key==='genome'){ // 各样本覆盖度 进度条
       var data=d.rows.map(function(r){return {label:r[1].slice(0,4),value:parseInt(r[3],10),max:40,disp:r[3]};});
       return '<div class="msub">测序覆盖度 · SEQUENCING DEPTH</div>'+progressRows(data,{color:'steel',cap:'各样本重测序覆盖度（目标 ≥30×）· 示例'});
     }
-    if(key==='snp'){ // 按染色体 SNP 计数（汇总扇贝分布做示意）
+    if(key==='snp'){ // 按染色体 SNP 计数 - 使用圆环图
       var sc=SPECIES.filter(function(s){return s.key==='scallop';})[0];
-      return '<div class="msub">SNP 按染色体分布 · SNP BY CHROMOSOME</div>'+barChart(sc.snpByChr,{color:'cyan',unit:'M',cap:'高质量 SNP 按染色体计数（以虾夷扇贝为例，M）· 示例'});
+      return '<div class="msub">SNP 按染色体分布 · SNP BY CHROMOSOME</div>'+donutChart(sc.snpByChr,{unit:'M',centerLabel:'SNP(M)',cap:'高质量 SNP 按染色体计数（以虾夷扇贝为例，M）· 示例'});
     }
     if(key==='diff'){ // 四海区 Fst 热力图
       return '<div class="msub">海区两两分化 · PAIRWISE Fst</div>'+heatmap(REG_LABELS,FST,{color:'red',cap:'长海四海区加权 Fst 热力图 · 值越高分化越强 · 示例'});
