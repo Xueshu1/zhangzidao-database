@@ -477,7 +477,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   <div class="load-top"><span>GERMPLASM RESOURCE PLATFORM</span><span>NORTH YELLOW SEA / 2026</span></div>
   <div class="load-mid">
     <div class="load-count"><span id="loadNum">0</span><span class="u">SNP</span></div>
-    <div class="load-label">正在装载种质基因组环境 · INITIALIZING GENOME ENVIRONMENT</div>
+    <div class="load-label">正在装载种质资源环境 · INITIALIZING GERMPLASM ENVIRONMENT</div>
     <div class="load-bar"><span id="loadBar"></span></div>
   </div>
   <div class="load-bottom"><span>鲍 · 参 · 蚝 · 贝 · 马粪海胆 · 紫海胆 · 香螺</span><span>獐子岛集团 × 海洋动物免疫学重点实验室</span></div>
@@ -502,7 +502,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
   <section class="view active" id="home"><div class="view-inner">
 
     <div class="hero">
-      <h1 class="t-h1">黄渤海海珍品 · 种质基因组数据平台</h1>
+      <h1 class="t-h1">黄渤海海珍品 · 种质资源数据平台</h1>
       <p class="lead t-body">把每一份种质，沉淀为可查询、可分析、可追溯的基因组数据。</p>
       <p class="mission t-body">整合虾夷扇贝、仿刺参、皱纹盘鲍、长牡蛎、香螺、海胆等黄渤海主养海珍品的活体保育、全基因组重测序与 SNP 变异数据，为良种选育、种质鉴定与产地溯源提供一体化数据支撑。</p>
       <div class="hero-cta">
@@ -556,7 +556,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
         <div class="t-cap">GERMPLASM RESOURCES</div>
         <h1 class="t-h2 sec-title" style="margin-top:8px">主营品种 · 种质资源矩阵</h1>
       </div>
-      <p class="t-body sec-note">黄渤海主养海珍品六大主营品种，活体保育、重测序与 SNP 数据一体化档案，点击卡片查看完整种质基因组指标。</p>
+      <p class="t-body sec-note">黄渤海主养海珍品六大主营品种，活体保育、重测序与 SNP 数据一体化档案，点击卡片查看完整种质资源指标。</p>
     </div>
     <div class="spx-grid" id="spxGrid"></div>
 
@@ -1217,7 +1217,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       if(s.popgen){var pg=s.popgen.map(function(p){return {label:p[0],value:p[1],unit:''};});
         popgenBlock='<div class="msub">群体遗传学指标 · POPULATION GENETICS</div>'+lollipopChart(pg,{cap:'核苷酸多样性、连锁不平衡衰减、有效群体大小、近交系数 · 示例'});}
       body='<div class="msub">品种构成 · SUB-SPECIES</div><div class="mstats">'+stats+'</div>'+popgenBlock+
-        '<div class="mnote" style="margin-top:6px">本品种包含以下 '+s.sub.length+' 个海胆品种，分别建立种质基因组档案：</div>'+
+        '<div class="mnote" style="margin-top:6px">本品种包含以下 '+s.sub.length+' 个海胆品种，分别建立种质资源档案：</div>'+
         s.sub.map(subGenomeBlock).join('')+
         '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>';
     } else {
@@ -1255,7 +1255,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       // 转录组表达热图
       var exprBlock='';
       if(s.expr){exprBlock='<div class="msub">组织表达谱 · TISSUE EXPRESSION PROFILE</div>'+exprHeatmap(s.expr,{cap:'关键基因在不同组织的相对表达量（FPKM）· 示例'});}
-      body='<div class="msub">种质基因组指标 · GENOME METRICS</div><div class="mstats">'+stats+'</div>'+popgenBlock+
+      body='<div class="msub">种质资源指标 · GERMPLASM METRICS</div><div class="mstats">'+stats+'</div>'+popgenBlock+
         '<div class="msub">SNP 密度概要 · SNP DENSITY</div>'+snpChart+mafChart+growthBlock+envBlock+goBlock+keggBlock+exprBlock+
         '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>'+
         '<div class="msub">代表性关联位点 · MARKERS</div><table class="mtable"><thead><tr><th>位点 ID</th><th>染色体</th><th>位置</th><th>关联性状</th><th>效应值</th></tr></thead><tbody>'+rows+'</tbody></table>';
