@@ -37,15 +37,31 @@ a{color:inherit;text-decoration:none}
 #bg-stack{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--abyss)}
 .bg-mesh{position:absolute;inset:0;
   background:
-    radial-gradient(38% 44% at 22% 28%,rgba(34,211,238,.14),transparent 70%),
-    radial-gradient(34% 40% at 78% 22%,rgba(139,123,240,.12),transparent 70%),
-    radial-gradient(46% 50% at 60% 82%,rgba(34,211,238,.08),transparent 72%)}
-.bg-grid{position:absolute;inset:0;opacity:.5;
-  background-image:linear-gradient(rgba(120,180,220,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(120,180,220,.05) 1px,transparent 1px);
+    radial-gradient(38% 44% at 22% 28%,rgba(34,211,238,.18),transparent 70%),
+    radial-gradient(34% 40% at 78% 22%,rgba(47,228,214,.14),transparent 70%),
+    radial-gradient(46% 50% at 60% 82%,rgba(0,180,216,.16),transparent 72%),
+    radial-gradient(30% 35% at 40% 50%,rgba(34,211,238,.10),transparent 65%)}
+.bg-ocean{position:absolute;inset:0;opacity:.15;
+  background:
+    radial-gradient(circle at 20% 80%,rgba(34,211,238,.6),transparent 25%),
+    radial-gradient(circle at 80% 20%,rgba(0,180,216,.5),transparent 25%),
+    radial-gradient(circle at 50% 50%,rgba(47,228,214,.4),transparent 30%);
+  animation:oceanPulse 15s ease-in-out infinite}
+@keyframes oceanPulse{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.22;transform:scale(1.05)}}
+.bg-bubbles{position:absolute;inset:0;overflow:hidden}
+.bg-bubbles::before,.bg-bubbles::after{content:'';position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.3),transparent);
+  animation:bubble-rise 25s ease-in-out infinite}
+.bg-bubbles::before{width:80px;height:80px;left:15%;bottom:-80px;animation-delay:0s}
+.bg-bubbles::after{width:120px;height:120px;right:20%;bottom:-120px;animation-delay:8s}
+@keyframes bubble-rise{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:.4}90%{opacity:.2}100%{transform:translateY(-100vh) scale(1.5);opacity:0}}
+.bg-grid{position:absolute;inset:0;opacity:.4;
+  background-image:linear-gradient(rgba(34,211,238,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px);
   background-size:64px 64px;
   -webkit-mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%);
-  mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%)}
+  mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%);
+  animation:wave 20s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-10px) scaleY(1.02)}}
 .bg-noise{position:absolute;inset:0;opacity:.035;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 @media (prefers-reduced-motion:reduce){#scene{display:none}}
@@ -466,7 +482,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 <body class="locked">
 
 <canvas id="scene"></canvas>
-<div id="bg-stack"><div class="bg-mesh"></div><div class="bg-grid"></div><div class="bg-noise"></div></div>
+<div id="bg-stack"><div class="bg-ocean"></div><div class="bg-bubbles"></div><div class="bg-mesh"></div><div class="bg-grid"></div><div class="bg-noise"></div></div>
 <div class="vignette"></div>
 <div class="grain"></div>
 <div class="cursor" id="cursor"></div>
@@ -811,9 +827,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     if(!heroM.length)heroM=['halo','helix','sphere'];
     api.heroMorphs=heroM.slice();
 
-    var pal=[[.184,.894,.839],[1,.302,.427],[.671,.518,1],[.475,.722,.851]];
+    var pal=[[.184,.894,.839],[.0,.706,.847],[.286,.965,.843],[.0,.753,.659]];
     var colors=new Float32Array(N*3);
-    for(var ci=0;ci<N;ci++){var pk=Math.random(),c=pk<.5?pal[3]:(pk<.74?pal[0]:(pk<.88?pal[2]:pal[1])),d=.55+Math.random()*.45;
+    for(var ci=0;ci<N;ci++){var pk=Math.random(),c=pk<.4?pal[0]:(pk<.7?pal[1]:(pk<.88?pal[2]:pal[3])),d=.6+Math.random()*.4;
       colors[ci*3]=c[0]*d;colors[ci*3+1]=c[1]*d;colors[ci*3+2]=c[2]*d;}
     var start0=TARGETS[heroM[0]]||TARGETS.halo;
     var base=new Float32Array(start0),target=start0,pos=new Float32Array(N*3);
