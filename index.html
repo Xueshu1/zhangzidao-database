@@ -32,39 +32,85 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb{background:rgba(120,180,215,.22);border-radius:9px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(120,180,215,.4)}
 
-#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:1;display:block;opacity:.5;mix-blend-mode:screen;pointer-events:none}
 
-#bg-stack{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--abyss)}
+#bg-stack{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(180deg,#040711 0%,#071628 40%,#062940 100%)}
 .bg-mesh{position:absolute;inset:0;
   background:
-    radial-gradient(38% 44% at 22% 28%,rgba(34,211,238,.18),transparent 70%),
-    radial-gradient(34% 40% at 78% 22%,rgba(47,228,214,.14),transparent 70%),
-    radial-gradient(46% 50% at 60% 82%,rgba(0,180,216,.16),transparent 72%),
-    radial-gradient(30% 35% at 40% 50%,rgba(34,211,238,.10),transparent 65%)}
-.bg-ocean{position:absolute;inset:0;opacity:.15;
+    radial-gradient(45% 55% at 20% 25%,rgba(34,211,238,.3),transparent 65%),
+    radial-gradient(40% 50% at 80% 20%,rgba(47,228,214,.22),transparent 65%),
+    radial-gradient(50% 55% at 60% 85%,rgba(0,180,216,.26),transparent 68%);
+  will-change:transform;animation:meshShift 30s ease-in-out infinite}
+@keyframes meshShift{0%,100%{opacity:1}50%{opacity:.75}}
+
+/* 波浪层 - 只保留 1 个 SVG，去掉 blur */
+.bg-waves{position:absolute;inset:0;overflow:hidden;opacity:.5}
+.bg-waves svg{position:absolute;left:-5%;width:110%;height:100%}
+.wave-1{will-change:transform;animation:waveDrift1 22s ease-in-out infinite}
+.wave-2{will-change:transform;animation:waveDrift2 30s ease-in-out infinite reverse}
+@keyframes waveDrift1{0%,100%{transform:translate(-3%,0)}50%{transform:translate(3%,-2%)}}
+@keyframes waveDrift2{0%,100%{transform:translate(2%,1%)}50%{transform:translate(-3%,-1%)}}
+
+/* Caustics - 简化，无 blur，无 filter */
+.bg-caustics{position:absolute;inset:0;opacity:.25;mix-blend-mode:screen;
   background:
-    radial-gradient(circle at 20% 80%,rgba(34,211,238,.6),transparent 25%),
-    radial-gradient(circle at 80% 20%,rgba(0,180,216,.5),transparent 25%),
-    radial-gradient(circle at 50% 50%,rgba(47,228,214,.4),transparent 30%);
-  animation:oceanPulse 15s ease-in-out infinite}
-@keyframes oceanPulse{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.22;transform:scale(1.05)}}
+    radial-gradient(circle at 20% 30%,rgba(150,230,255,.35) 0,transparent 8%),
+    radial-gradient(circle at 65% 25%,rgba(120,220,220,.3) 0,transparent 6%),
+    radial-gradient(circle at 40% 65%,rgba(160,240,255,.28) 0,transparent 7%),
+    radial-gradient(circle at 80% 70%,rgba(140,225,240,.3) 0,transparent 6%);
+  will-change:transform;animation:causticShift 14s ease-in-out infinite}
+@keyframes causticShift{0%,100%{transform:translate(0,0);opacity:.25}50%{transform:translate(-2%,2%);opacity:.38}}
+
+.bg-ocean{position:absolute;inset:0;opacity:.28;
+  background:
+    radial-gradient(circle at 20% 80%,rgba(34,211,238,.7),transparent 30%),
+    radial-gradient(circle at 80% 20%,rgba(0,180,216,.6),transparent 30%);
+  will-change:transform;animation:oceanPulse 12s ease-in-out infinite}
+@keyframes oceanPulse{0%,100%{opacity:.28}50%{opacity:.42}}
+
+/* 气泡 - 精简为 4 个 */
 .bg-bubbles{position:absolute;inset:0;overflow:hidden}
-.bg-bubbles::before,.bg-bubbles::after{content:'';position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.3),transparent);
-  animation:bubble-rise 25s ease-in-out infinite}
-.bg-bubbles::before{width:80px;height:80px;left:15%;bottom:-80px;animation-delay:0s}
-.bg-bubbles::after{width:120px;height:120px;right:20%;bottom:-120px;animation-delay:8s}
-@keyframes bubble-rise{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:.4}90%{opacity:.2}100%{transform:translateY(-100vh) scale(1.5);opacity:0}}
-.bg-grid{position:absolute;inset:0;opacity:.4;
+.bubble{position:absolute;bottom:-60px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(200,240,255,.8),rgba(34,211,238,.35) 50%,transparent 70%);
+  box-shadow:0 0 10px rgba(34,211,238,.35);
+  will-change:transform;animation:bubbleRise linear infinite}
+.bubble:nth-child(1){width:18px;height:18px;left:12%;animation-duration:20s;animation-delay:0s}
+.bubble:nth-child(2){width:28px;height:28px;left:38%;animation-duration:27s;animation-delay:5s}
+.bubble:nth-child(3){width:14px;height:14px;left:65%;animation-duration:22s;animation-delay:11s}
+.bubble:nth-child(4){width:22px;height:22px;left:82%;animation-duration:25s;animation-delay:7s}
+@keyframes bubbleRise{
+  0%{transform:translateY(0) scale(0.7);opacity:0}
+  12%{opacity:.7}
+  100%{transform:translateY(-105vh) scale(1.2);opacity:0}
+}
+
+/* 浮游粒子 - 精简为 5 个，用 opacity 代替复杂 transform */
+.bg-particles{position:absolute;inset:0;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;
+  background:rgba(47,228,214,.9);box-shadow:0 0 6px rgba(34,211,238,.8);
+  will-change:transform,opacity;animation:particleDrift linear infinite}
+.particle:nth-child(1){top:20%;left:15%;animation-duration:30s;animation-delay:0s}
+.particle:nth-child(2){top:45%;left:70%;animation-duration:38s;animation-delay:8s}
+.particle:nth-child(3){top:70%;left:30%;animation-duration:34s;animation-delay:4s}
+.particle:nth-child(4){top:15%;left:58%;animation-duration:36s;animation-delay:12s}
+.particle:nth-child(5){top:60%;left:85%;animation-duration:32s;animation-delay:16s}
+@keyframes particleDrift{
+  0%{transform:translate(0,0);opacity:0}
+  15%{opacity:.9}
+  85%{opacity:.6}
+  100%{transform:translate(80px,-70px);opacity:0}
+}
+
+.bg-grid{position:absolute;inset:0;opacity:.18;
   background-image:linear-gradient(rgba(34,211,238,.08) 1px,transparent 1px),
     linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px);
-  background-size:64px 64px;
-  -webkit-mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%);
-  mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 100%);
-  animation:wave 20s ease-in-out infinite}
-@keyframes wave{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-10px) scaleY(1.02)}}
-.bg-noise{position:absolute;inset:0;opacity:.035;mix-blend-mode:overlay;
+  background-size:80px 80px;
+  -webkit-mask-image:radial-gradient(65% 65% at 50% 45%,#000,transparent 100%);
+  mask-image:radial-gradient(65% 65% at 50% 45%,#000,transparent 100%)}
+
+.bg-noise{position:absolute;inset:0;opacity:.03;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-@media (prefers-reduced-motion:reduce){#scene{display:none}}
+@media (prefers-reduced-motion:reduce){#scene,.bubble,.particle,.wave-1,.wave-2,.bg-caustics,.bg-ocean,.bg-mesh{animation:none}}
 
 .glass{background:rgba(18,26,42,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(120,180,220,.12);border-radius:16px}
@@ -430,7 +476,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 
 /* ============ 图表（内联 SVG） ============ */
 .chart-wrap{margin:6px 0 30px}
-.chart-cap{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
+.chart-cap{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
 .mphoto{width:clamp(96px,14vw,150px);height:clamp(96px,14vw,150px);flex:none;border-radius:14px;overflow:hidden;border:1px solid var(--line-2);background:#05080f}
 .mphoto img{width:100%;height:100%;object-fit:cover;display:block}
 .emblem-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -482,7 +528,54 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
 <body class="locked">
 
 <canvas id="scene"></canvas>
-<div id="bg-stack"><div class="bg-ocean"></div><div class="bg-bubbles"></div><div class="bg-mesh"></div><div class="bg-grid"></div><div class="bg-noise"></div></div>
+<div id="bg-stack">
+  <div class="bg-mesh"></div>
+  <div class="bg-waves">
+    <svg class="wave-1" viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(34,211,238,0)"/>
+          <stop offset="30%" stop-color="rgba(34,211,238,0.5)"/>
+          <stop offset="70%" stop-color="rgba(47,228,214,0.6)"/>
+          <stop offset="100%" stop-color="rgba(34,211,238,0)"/>
+        </linearGradient>
+        <linearGradient id="wg2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(0,180,216,0)"/>
+          <stop offset="40%" stop-color="rgba(0,180,216,0.4)"/>
+          <stop offset="80%" stop-color="rgba(139,123,240,0.35)"/>
+          <stop offset="100%" stop-color="rgba(0,180,216,0)"/>
+        </linearGradient>
+        <linearGradient id="wg3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(47,228,214,0)"/>
+          <stop offset="50%" stop-color="rgba(47,228,214,0.3)"/>
+          <stop offset="100%" stop-color="rgba(47,228,214,0)"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,300 Q360,180 720,300 T1440,300 L1440,900 L0,900 Z" fill="url(#wg1)" opacity="0.4"/>
+      <path d="M0,450 Q360,350 720,450 T1440,450 L1440,900 L0,900 Z" fill="url(#wg1)" opacity="0.3"/>
+    </svg>
+    <svg class="wave-2" viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,400 Q400,260 800,400 T1440,400 L1440,900 L0,900 Z" fill="url(#wg2)" opacity="0.5"/>
+      <path d="M0,550 Q400,430 800,550 T1440,550 L1440,900 L0,900 Z" fill="url(#wg2)" opacity="0.35"/>
+    </svg>
+    <svg class="wave-3" viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,350 Q480,230 960,350 T1920,350 L1440,900 L0,900 Z" fill="url(#wg3)" opacity="0.5"/>
+      <path d="M0,600 Q480,480 960,600 T1920,600 L1440,900 L0,900 Z" fill="url(#wg3)" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="bg-caustics"></div>
+  <div class="bg-ocean"></div>
+  <div class="bg-bubbles">
+    <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+    <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+  </div>
+  <div class="bg-particles">
+    <span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span>
+    <span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span>
+  </div>
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+</div>
 <div class="vignette"></div>
 <div class="grain"></div>
 <div class="cursor" id="cursor"></div>
@@ -1098,18 +1191,18 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 棒棒糖图（用于群体遗传学指标）：data=[{label,value,unit}], opts{color,w,h}
-  function lollipopChart(data,opts){opts=opts||{};var W=opts.w||420,H=opts.h||180,padL=120,padR=30,padT=20,padB=30;
+  function lollipopChart(data,opts){opts=opts||{};var W=opts.w||460,H=opts.h||200,padL=155,padR=100,padT=20,padB=30;
     var plotW=W-padL-padR,plotH=H-padT-padB,n=data.length,gap=plotH/(n+1);
-    var max=Math.max.apply(null,data.map(function(d){return parseFloat(d.value)||0;}))||1;
+    var circleX=padL+50;
     var svg='',defs='';
     data.forEach(function(d,i){
-      var val=parseFloat(d.value)||0,y=padT+gap*(i+1),x1=padL,x2=padL+val/max*plotW;
+      var y=padT+gap*(i+1),x1=circleX,x2=W-padR-10;
       var col=_col(i);var gid='lol'+i;
       defs+='<linearGradient id="'+gid+'" x1="0%" x2="100%"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.3"/><stop offset="100%" stop-color="'+col+'"/></linearGradient>';
-      svg+='<line x1="'+x1+'" y1="'+y+'" x2="'+x2.toFixed(1)+'" y2="'+y+'" stroke="url(#'+gid+')" stroke-width="3" stroke-linecap="round"/>';
-      svg+='<circle cx="'+x2.toFixed(1)+'" cy="'+y+'" r="5" fill="'+col+'"><title>'+d.label+': '+d.value+(d.unit||'')+'</title></circle>';
-      svg+='<text x="'+(padL-10)+'" y="'+(y+4)+'" fill="#93a6b8" font-size="11" font-family="var(--f-body)" text-anchor="end">'+d.label+'</text>';
-      svg+='<text x="'+(x2+10).toFixed(1)+'" y="'+(y+4)+'" fill="'+col+'" font-size="10" font-family="var(--f-mono)" font-weight="600">'+d.value+(d.unit||'')+'</text>';});
+      svg+='<line x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y+'" stroke="url(#'+gid+')" stroke-width="2.5" stroke-linecap="round"/>';
+      svg+='<circle cx="'+x1+'" cy="'+y+'" r="5" fill="'+col+'"><title>'+d.label+': '+d.value+(d.unit||'')+'</title></circle>';
+      svg+='<text x="'+(padL-12)+'" y="'+(y+4)+'" fill="#93a6b8" font-size="10.5" font-family="var(--f-body)" text-anchor="end">'+d.label+'</text>';
+      svg+='<text x="'+(x2+12)+'" y="'+(y+4)+'" fill="'+col+'" font-size="10.5" font-family="var(--f-mono)" font-weight="600">'+d.value+(d.unit||'')+'</text>';});
     return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img"><defs>'+defs+'</defs>'+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 圆环图（染色体分布）：data=[{label,value}], opts{color,w}
@@ -1127,21 +1220,21 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     return '<div class="chart-wrap" style="max-width:'+S+'px;margin:0 auto"><svg viewBox="0 0 '+S+' '+S+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+paths+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 气泡图（GO富集分析）：data=[{term,count,pvalue}], opts{w,h}
-  function bubbleChart(data,opts){opts=opts||{};var W=opts.w||480,H=opts.h||280,pad=50,top=30;
+  function bubbleChart(data,opts){opts=opts||{};var W=opts.w||520,H=opts.h||320,pad=50,top=30;
     var plotW=W-pad*2,plotH=H-pad-top;
     var maxCnt=Math.max.apply(null,data.map(function(d){return d.count;}))||1;
     var minP=Math.min.apply(null,data.map(function(d){return d.pvalue;}))||0.001;
-    var svg='<rect x="'+pad+'" y="'+top+'" width="'+plotW+'" height="'+plotH+'" fill="none" stroke="var(--line)" stroke-width="1"/>';
+    var svg='';
     var defs='';
     data.forEach(function(d,i){
-      var x=pad+10+(i%3)*((plotW-20)/3),y=top+10+Math.floor(i/3)*(plotH/Math.ceil(data.length/3));
-      var r=8+Math.sqrt(d.count/maxCnt)*18;
+      var x=pad+20+(i%3)*((plotW-40)/3),y=top+20+Math.floor(i/3)*(plotH/Math.ceil(data.length/3));
+      var r=10+Math.sqrt(d.count/maxCnt)*22;
       var col=_col(i);var gid='bub'+i;
-      defs+='<radialGradient id="'+gid+'"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.85"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0.4"/></radialGradient>';
-      svg+='<circle cx="'+x+'" cy="'+y+'" r="'+r.toFixed(1)+'" fill="url(#'+gid+')" stroke="'+col+'" stroke-width="1.5"><title>'+d.term+'\nCount: '+d.count+'\np-value: '+d.pvalue.toExponential(2)+'</title></circle>';
-      svg+='<text x="'+x+'" y="'+(y+3)+'" fill="#fff" font-size="9" font-family="var(--f-mono)" font-weight="600" text-anchor="middle">'+d.count+'</text>';
-      if(i<data.length&&y+r+15<H-pad){
-        svg+='<text x="'+x+'" y="'+(y+r+12)+'" fill="#93a6b8" font-size="8.5" font-family="var(--f-body)" text-anchor="middle">'+d.term.slice(0,10)+(d.term.length>10?'...':'')+'</text>';}});
+      defs+='<radialGradient id="'+gid+'"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.9"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0.4"/></radialGradient>';
+      svg+='<circle cx="'+x+'" cy="'+y+'" r="'+r.toFixed(1)+'" fill="url(#'+gid+')" stroke="'+col+'" stroke-width="2"><title>'+d.term+'\nCount: '+d.count+'\np-value: '+d.pvalue.toExponential(2)+'</title></circle>';
+      svg+='<text x="'+x+'" y="'+(y+4)+'" fill="#fff" font-size="10" font-family="var(--f-mono)" font-weight="700" text-anchor="middle">'+d.count+'</text>';
+      if(y+r+18<H-pad){
+        svg+='<text x="'+x+'" y="'+(y+r+14)+'" fill="#b5c5d4" font-size="9" font-family="var(--f-body)" text-anchor="middle">'+d.term.slice(0,12)+(d.term.length>12?'...':'')+'</text>';}});
     return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img"><defs>'+defs+'</defs>'+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 表达热图（组织/条件）：data={tissues:[],genes:[],matrix[[]]}, opts{w,h}
@@ -1160,7 +1253,7 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     return '<div class="chart-wrap" style="overflow-x:auto"><svg viewBox="0 0 '+W+' '+H+'" width="100%" style="min-width:'+Math.min(W,400)+'px" preserveAspectRatio="xMinYMin meet" role="img">'+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 雷达图：data=[{label,value,max}], opts{color,w,h}
-  function radarChart(data,opts){opts=opts||{};var col=_hx(opts.color),S=opts.w||260,cx=S/2,cy=S/2,R=S*0.38,n=data.length;
+  function radarChart(data,opts){opts=opts||{};var col=_hx(opts.color),S=opts.w||380,cx=S/2,cy=S/2,R=S*0.30,n=data.length;
     var svg='';
     // 背景圈（5层）
     for(var lv=1;lv<=5;lv++){var r=R*lv/5;
@@ -1170,8 +1263,8 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     for(var i=0;i<n;i++){var ang=Math.PI*2*i/n-Math.PI/2,ex=cx+R*Math.cos(ang),ey=cy+R*Math.sin(ang);
       svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="var(--line)" stroke-width="0.5" opacity="0.4"/>';
       var v=data[i].value/(data[i].max||100),px=cx+R*v*Math.cos(ang),py=cy+R*v*Math.sin(ang);pts.push(px+','+py);
-      var lx=cx+(R+22)*Math.cos(ang),ly=cy+(R+22)*Math.sin(ang),anch=ang>Math.PI/2&&ang<3*Math.PI/2?'end':'start';
-      svg+='<text x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" fill="#93a6b8" font-size="10" font-family="var(--f-body)" text-anchor="'+anch+'">'+data[i].label+'</text>';}
+      var lx=cx+(R+50)*Math.cos(ang),ly=cy+(R+50)*Math.sin(ang),anch=ang>Math.PI/2&&ang<3*Math.PI/2?'end':'start';
+      svg+='<text x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" fill="#b5c5d4" font-size="13" font-family="var(--f-body)" text-anchor="'+anch+'">'+data[i].label+'</text>';}
     svg+='<polygon points="'+pts.join(' ')+'" fill="'+col+'" fill-opacity="0.18" stroke="'+col+'" stroke-width="2" opacity="0.85"/>';
     pts.forEach(function(p){var xy=p.split(',');svg+='<circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="3.5" fill="'+col+'"/>';});
     return '<div class="chart-wrap" style="max-width:'+S+'px;margin:0 auto"><svg viewBox="0 0 '+S+' '+S+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+svg+'</svg>'+
@@ -1257,9 +1350,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
       // 环境适应性雷达图
       var envBlock='';
       if(s.envTol){var et=s.envTol,radarData=[
-        {label:'温度耐受',value:(et.temp[1]-et.temp[0]),max:35},{label:'盐度适应',value:(et.salinity[1]-et.salinity[0]),max:25},
-        {label:'溶氧需求',value:(et.oxygen[1]-et.oxygen[0]),max:15},{label:'抗病指数',value:et.disease,max:100}];
-        envBlock='<div class="msub">环境适应性 · ENVIRONMENTAL TOLERANCE</div>'+radarChart(radarData,{color:s.c,cap:'温度范围 '+et.temp[0]+'~'+et.temp[1]+'℃ · 盐度 '+et.salinity[0]+'~'+et.salinity[1]+'‰ · 溶氧 '+et.oxygen[0]+'~'+et.oxygen[1]+' mg/L · 示例'});}
+        {label:'温度',value:(et.temp[1]-et.temp[0]),max:35},{label:'盐度',value:(et.salinity[1]-et.salinity[0]),max:25},
+        {label:'溶氧',value:(et.oxygen[1]-et.oxygen[0]),max:15},{label:'渗透压',value:et.disease,max:100}];
+        envBlock='<div class="msub">环境适应性 · ENVIRONMENTAL TOLERANCE</div>'+radarChart(radarData,{color:s.c,cap:'温度 '+et.temp[0]+'~'+et.temp[1]+'℃ · 盐度 '+et.salinity[0]+'~'+et.salinity[1]+'‰ · 溶氧 '+et.oxygen[0]+'~'+et.oxygen[1]+' mg/L · 渗透压调节能力（0-100）· 示例'});}
       // GO富集分析 - 气泡图
       var goBlock='';
       if(s.go&&s.go.length){goBlock='<div class="msub">GO 富集分析 · GENE ONTOLOGY ENRICHMENT</div>'+bubbleChart(s.go,{cap:'生物学过程功能富集（气泡大小=基因数，p-value<0.001）· 示例'});}
