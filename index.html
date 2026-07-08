@@ -898,6 +898,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','2.84×10⁻³'],['LD 衰减距离','18.6 kb'],['有效群体 Ne','34,200'],['近交系数 Fis','0.012']],
      growth:{months:[3,6,9,12,15,18,24],shellLength:[18,32,48,62,74,82,94],weight:[2.8,12.5,28.4,52.6,78.3,95.2,128.6]},
      envTol:{temp:[2,25,8,22],salinity:[24,35,28,32],oxygen:[4.5,12,6.5,10],disease:75},
+     go:[{term:'壳色素代谢',count:42,pvalue:1.2e-8},{term:'生物矿化',count:38,pvalue:3.5e-7},{term:'肌肉收缩',count:28,pvalue:5.8e-6},{term:'钙离子结合',count:35,pvalue:2.1e-5},{term:'应激反应',count:24,pvalue:6.4e-5},{term:'免疫应答',count:31,pvalue:1.8e-4}],
+     kegg:[{pathway:'钙信号通路',count:18,pvalue:2.4e-6},{pathway:'MAPK信号通路',count:22,pvalue:8.3e-5},{pathway:'黑色素生成',count:15,pvalue:3.2e-4}],
+     expr:{tissues:['鳃','闭壳肌','外套膜','消化腺'],genes:['Col1a1','Pif','Nacrein','Tyro','HSP70'],matrix:[[145.2,312.8,98.4,52.6],[68.4,28.2,186.5,42.8],[52.8,18.6,224.6,38.4],[38.2,12.4,158.3,92.6],[85.6,142.8,76.2,68.4]]},
      traits:['生长 · 壳长壳高体重','壳色 · 獐子岛红/紫','规格分化','闭壳肌重']},
     {key:'cucumber',cn:'仿刺参',la:'Apostichopus japonicus',cls:'海参纲 · HOLOTHUROIDEA',c:'red',img:'cucumber',photo:'仿刺参.png',
      note:'长海四海区群体，生长性状与产地溯源。',n:'n=160',badge:'已重测序',done:true,geo:true,
@@ -905,6 +908,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','3.21×10⁻³'],['LD 衰减距离','24.8 kb'],['有效群体 Ne','28,600'],['近交系数 Fis','0.028']],
      growth:{months:[4,8,12,16,20,24,30],shellLength:[0,0,0,0,0,0,0],weight:[8,28,62,105,148,185,240]},
      envTol:{temp:[3,28,10,25],salinity:[26,38,30,35],oxygen:[5,14,7,11],disease:68},
+     go:[{term:'再生修复',count:58,pvalue:3.2e-9},{term:'免疫防御',count:48,pvalue:1.5e-7},{term:'胶原合成',count:36,pvalue:4.8e-6},{term:'抗氧化',count:32,pvalue:8.6e-6},{term:'自噬调控',count:28,pvalue:2.3e-5},{term:'细胞增殖',count:42,pvalue:5.7e-5}],
+     kegg:[{pathway:'PI3K-Akt通路',count:24,pvalue:1.8e-6},{pathway:'ECM受体互作',count:19,pvalue:6.5e-5},{pathway:'Toll样受体通路',count:16,pvalue:2.4e-4}],
+     expr:{tissues:['体壁','呼吸树','肠','体腔液'],genes:['Col3a1','Defensin','SOD','HSP90','Caspase3'],matrix:[[268.4,84.2,128.6,45.8],[124.6,186.4,92.8,158.2],[98.4,142.6,68.2,88.6],[156.8,112.4,84.2,96.4],[76.2,94.8,148.6,68.4]]},
      traits:['生长 · 体质量','腐皮综合征抗性','四海区分化','体壁品质']},
     {key:'whelk',cn:'香螺',la:'Neptunea cumingii',cls:'腹足纲 · GASTROPODA',c:'rose',img:'whelk',photo:'香螺.png',
      note:'高值螺类，野生资源调查与增殖。',n:'n=42',badge:'资源调查',done:false,
@@ -912,6 +918,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','4.15×10⁻³'],['LD 衰减距离','12.4 kb'],['有效群体 Ne','18,400'],['近交系数 Fis','-0.008']],
      growth:{months:[6,12,18,24,30,36],shellLength:[22,45,68,88,104,118],weight:[5.2,18.6,42.8,72.4,98.6,125.8]},
      envTol:{temp:[0,22,6,18],salinity:[25,36,28,33],oxygen:[5.5,13,7.5,11],disease:62},
+     go:[{term:'壳形成',count:28,pvalue:5.4e-7},{term:'神经传导',count:34,pvalue:2.8e-6},{term:'肌肉运动',count:26,pvalue:6.2e-6},{term:'消化酶活性',count:22,pvalue:1.5e-5},{term:'毒素代谢',count:18,pvalue:4.2e-5},{term:'生长调控',count:24,pvalue:8.8e-5}],
+     kegg:[{pathway:'神经活性配体',count:14,pvalue:4.6e-5},{pathway:'钙信号通路',count:12,pvalue:1.8e-4},{pathway:'蛋白消化吸收',count:10,pvalue:3.5e-4}],
+     expr:{tissues:['足','消化腺','鳃','神经节'],genes:['Shank','Pept','AchE','MMP9','Serotonin'],matrix:[[198.6,68.4,82.6,124.8],[86.4,242.6,54.2,48.6],[64.2,92.8,186.4,76.2],[52.8,68.4,84.6,158.4],[78.4,42.6,68.2,196.8]]},
      traits:['生长 · 壳高','野生资源','增殖','软体部重']},
     {key:'urchin',cn:'海胆',la:'Echinoidea',cls:'海胆纲 · ECHINOIDEA',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
      note:'黄渤海主养海胆，含马粪海胆与紫海胆两个品种。',n:'n=122',badge:'重测序中',done:false,
@@ -919,6 +928,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','3.68×10⁻³'],['LD 衰减距离','15.2 kb'],['有效群体 Ne','22,800'],['近交系数 Fis','0.018']],
      growth:{months:[4,8,12,16,20,24],shellLength:[0,0,0,0,0,0],weight:[3.5,12.8,26.4,42.8,58.6,72.4]},
      envTol:{temp:[4,26,12,22],salinity:[28,36,30,34],oxygen:[6,14,8,12],disease:70},
+     go:[{term:'性腺发育',count:52,pvalue:1.8e-9},{term:'类胡萝卜素代谢',count:38,pvalue:4.2e-7},{term:'配子发生',count:44,pvalue:7.6e-7},{term:'脂质合成',count:34,pvalue:2.8e-6},{term:'免疫识别',count:28,pvalue:5.4e-6},{term:'棘刺生长',count:24,pvalue:1.2e-5}],
+     kegg:[{pathway:'类固醇生物合成',count:16,pvalue:3.6e-6},{pathway:'卵母细胞成熟',count:14,pvalue:8.2e-5},{pathway:'补体凝集素通路',count:12,pvalue:2.8e-4}],
+     expr:{tissues:['性腺','体腔液','管足','肠'],genes:['Vasa','Vtg','Carot','ApoB','C3'],matrix:[[324.6,68.4,42.8,58.2],[286.4,94.6,52.8,76.4],[158.2,72.4,86.6,64.8],[124.8,86.2,68.4,158.6],[96.4,214.8,78.6,112.4]]},
      traits:['性腺产量与品质','生长','抗逆','壳径棘长'],
      sub:[
        {key:'urchin_h',cn:'马粪海胆',la:'Hemicentrotus pulcherrimus',c:'amber',img:'urchin_h',photo:'马粪海胆.png',
@@ -942,6 +954,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','2.56×10⁻³'],['LD 衰减距离','22.4 kb'],['有效群体 Ne','42,600'],['近交系数 Fis','0.008']],
      growth:{months:[6,12,18,24,30,36,42],shellLength:[15,38,62,84,102,116,128],weight:[1.8,8.4,22.6,46.8,78.4,112.6,145.2]},
      envTol:{temp:[0,26,8,20],salinity:[26,36,29,34],oxygen:[5,12,7,10],disease:78},
+     go:[{term:'低温适应',count:46,pvalue:2.4e-8},{term:'贝壳珍珠层',count:42,pvalue:6.8e-8},{term:'肌肉收缩',count:36,pvalue:1.5e-6},{term:'呼吸链',count:32,pvalue:4.2e-6},{term:'钙离子转运',count:28,pvalue:8.6e-6},{term:'抗氧化',count:24,pvalue:2.4e-5}],
+     kegg:[{pathway:'氧化磷酸化',count:18,pvalue:1.8e-6},{pathway:'钙信号通路',count:16,pvalue:5.4e-5},{pathway:'PPAR信号通路',count:12,pvalue:1.8e-4}],
+     expr:{tissues:['足肌','外套膜','鳃','消化腺'],genes:['Myosin','Nacrein','COX1','Amylase','HSP70'],matrix:[[286.4,84.6,98.4,62.8],[68.4,248.6,92.8,58.4],[142.6,86.4,224.8,78.2],[76.4,68.2,84.6,186.4],[98.6,112.4,158.2,84.8]]},
      traits:['生长 · 壳长','耐低温','存活率','肌肉产量']},
     {key:'oyster',cn:'长牡蛎',la:'Crassostrea gigas',cls:'双壳纲 · BIVALVIA',c:'steel',img:'oyster',photo:'太平洋牡蛎.png',
      note:'高温胁迫适应性与糖代谢权衡研究。',n:'n=96',badge:'已重测序',done:true,
@@ -949,6 +964,9 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
      popgen:[['核苷酸多样性 π','4.82×10⁻³'],['LD 衰减距离','8.6 kb'],['有效群体 Ne','56,400'],['近交系数 Fis','-0.018']],
      growth:{months:[3,6,9,12,15,18],shellLength:[24,48,68,86,98,108],weight:[4.2,18.6,42.8,76.4,108.6,138.2]},
      envTol:{temp:[5,32,15,28],salinity:[18,38,25,35],oxygen:[4,16,6,13],disease:82},
+     go:[{term:'高温应激',count:54,pvalue:8.6e-10},{term:'糖代谢调控',count:48,pvalue:2.4e-8},{term:'渗透压调节',count:38,pvalue:6.8e-7},{term:'HSP表达',count:42,pvalue:1.2e-6},{term:'线粒体功能',count:36,pvalue:3.8e-6},{term:'免疫防御',count:32,pvalue:7.2e-6}],
+     kegg:[{pathway:'糖酵解/糖异生',count:22,pvalue:1.2e-7},{pathway:'蛋白质加工',count:18,pvalue:4.8e-6},{pathway:'MAPK信号通路',count:16,pvalue:1.6e-5}],
+     expr:{tissues:['鳃','外套膜','闭壳肌','消化腺'],genes:['HSP90','Glut1','Trehal','SOD','IL17'],matrix:[[248.6,186.4,142.8,98.6],[168.4,124.6,86.2,196.4],[124.8,98.6,112.4,158.2],[186.2,142.8,98.4,124.6],[98.4,112.6,78.4,142.8]]},
      traits:['高温胁迫适应','糖代谢','生长','出肉率']}
   ];
   // 战略储备品种（轻量清单，DEMO 占位）
@@ -1092,6 +1110,39 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
     svg+='<text x="'+cx+'" y="'+(cy+12)+'" fill="#93a6b8" font-size="10" font-family="var(--f-mono)" text-anchor="middle">'+(opts.centerLabel||'TOTAL')+'</text>';
     return '<div class="chart-wrap" style="max-width:'+S+'px;margin:0 auto"><svg viewBox="0 0 '+S+' '+S+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+paths+svg+'</svg>'+
       (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 气泡图（GO富集分析）：data=[{term,count,pvalue}], opts{w,h}
+  function bubbleChart(data,opts){opts=opts||{};var W=opts.w||480,H=opts.h||280,pad=50,top=30;
+    var plotW=W-pad*2,plotH=H-pad-top;
+    var maxCnt=Math.max.apply(null,data.map(function(d){return d.count;}))||1;
+    var minP=Math.min.apply(null,data.map(function(d){return d.pvalue;}))||0.001;
+    var svg='<rect x="'+pad+'" y="'+top+'" width="'+plotW+'" height="'+plotH+'" fill="none" stroke="var(--line)" stroke-width="1"/>';
+    var defs='';
+    data.forEach(function(d,i){
+      var x=pad+10+(i%3)*((plotW-20)/3),y=top+10+Math.floor(i/3)*(plotH/Math.ceil(data.length/3));
+      var r=8+Math.sqrt(d.count/maxCnt)*18;
+      var col=_col(i);var gid='bub'+i;
+      defs+='<radialGradient id="'+gid+'"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.85"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0.4"/></radialGradient>';
+      svg+='<circle cx="'+x+'" cy="'+y+'" r="'+r.toFixed(1)+'" fill="url(#'+gid+')" stroke="'+col+'" stroke-width="1.5"><title>'+d.term+'\nCount: '+d.count+'\np-value: '+d.pvalue.toExponential(2)+'</title></circle>';
+      svg+='<text x="'+x+'" y="'+(y+3)+'" fill="#fff" font-size="9" font-family="var(--f-mono)" font-weight="600" text-anchor="middle">'+d.count+'</text>';
+      if(i<data.length&&y+r+15<H-pad){
+        svg+='<text x="'+x+'" y="'+(y+r+12)+'" fill="#93a6b8" font-size="8.5" font-family="var(--f-body)" text-anchor="middle">'+d.term.slice(0,10)+(d.term.length>10?'...':'')+'</text>';}});
+    return '<div class="chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img"><defs>'+defs+'</defs>'+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
+  // 表达热图（组织/条件）：data={tissues:[],genes:[],matrix[[]]}, opts{w,h}
+  function exprHeatmap(data,opts){opts=opts||{};var tissues=data.tissues,genes=data.genes,matrix=data.matrix;
+    var cellW=45,cellH=22,padL=80,padT=60,W=padL+tissues.length*cellW+20,H=padT+genes.length*cellH+10;
+    var maxV=0;matrix.forEach(function(r){r.forEach(function(v){if(v>maxV)maxV=v;});});maxV=maxV||1;
+    var svg='',cols=[SCI.indigo,SCI.purple,SCI.magenta,SCI.orange,SCI.yellow];
+    function getColor(val){var idx=Math.floor(val/maxV*4.99);return cols[idx];}
+    tissues.forEach(function(t,j){svg+='<text x="'+(padL+j*cellW+cellW/2)+'" y="'+(padT-8)+'" fill="#93a6b8" font-size="9" font-family="var(--f-body)" text-anchor="middle" transform="rotate(-45,'+(padL+j*cellW+cellW/2)+','+(padT-8)+')">'+t+'</text>';});
+    genes.forEach(function(g,i){
+      svg+='<text x="'+(padL-6)+'" y="'+(padT+i*cellH+cellH/2+3)+'" fill="#93a6b8" font-size="9" font-family="var(--f-mono)" text-anchor="end">'+g+'</text>';
+      tissues.forEach(function(t,j){
+        var val=matrix[i][j],x=padL+j*cellW,y=padT+i*cellH,col=getColor(val);
+        svg+='<rect x="'+x+'" y="'+y+'" width="'+cellW+'" height="'+cellH+'" fill="'+col+'" opacity="'+(0.3+val/maxV*0.65)+'" stroke="#0a1120" stroke-width="1"><title>'+g+' @ '+t+': '+val.toFixed(1)+'</title></rect>';
+        svg+='<text x="'+(x+cellW/2)+'" y="'+(y+cellH/2+3)+'" fill="#eaf2f6" font-size="8" font-family="var(--f-mono)" font-weight="600" text-anchor="middle">'+val.toFixed(1)+'</text>';});});
+    return '<div class="chart-wrap" style="overflow-x:auto"><svg viewBox="0 0 '+W+' '+H+'" width="100%" style="min-width:'+Math.min(W,400)+'px" preserveAspectRatio="xMinYMin meet" role="img">'+svg+'</svg>'+
+      (opts.cap?'<div class="chart-cap">'+opts.cap+'</div>':'')+'</div>';}
   // 雷达图：data=[{label,value,max}], opts{color,w,h}
   function radarChart(data,opts){opts=opts||{};var col=_hx(opts.color),S=opts.w||260,cx=S/2,cy=S/2,R=S*0.38,n=data.length;
     var svg='';
@@ -1193,8 +1244,19 @@ section{position:relative;padding:clamp(90px,13vh,168px) clamp(20px,5vw,64px)}
         {label:'温度耐受',value:(et.temp[1]-et.temp[0]),max:35},{label:'盐度适应',value:(et.salinity[1]-et.salinity[0]),max:25},
         {label:'溶氧需求',value:(et.oxygen[1]-et.oxygen[0]),max:15},{label:'抗病指数',value:et.disease,max:100}];
         envBlock='<div class="msub">环境适应性 · ENVIRONMENTAL TOLERANCE</div>'+radarChart(radarData,{color:s.c,cap:'温度范围 '+et.temp[0]+'~'+et.temp[1]+'℃ · 盐度 '+et.salinity[0]+'~'+et.salinity[1]+'‰ · 溶氧 '+et.oxygen[0]+'~'+et.oxygen[1]+' mg/L · 示例'});}
+      // GO富集分析 - 气泡图
+      var goBlock='';
+      if(s.go&&s.go.length){goBlock='<div class="msub">GO 富集分析 · GENE ONTOLOGY ENRICHMENT</div>'+bubbleChart(s.go,{cap:'生物学过程功能富集（气泡大小=基因数，p-value<0.001）· 示例'});}
+      // KEGG通路 - 横向柱状图
+      var keggBlock='';
+      if(s.kegg&&s.kegg.length){
+        var keggData=s.kegg.map(function(k){return {label:k.pathway.slice(0,6),value:k.count};});
+        keggBlock='<div class="msub">KEGG 通路注释 · PATHWAY ANNOTATION</div>'+barChart(keggData,{gradient:true,cap:'关键代谢/信号通路富集（基因数）· 示例'});}
+      // 转录组表达热图
+      var exprBlock='';
+      if(s.expr){exprBlock='<div class="msub">组织表达谱 · TISSUE EXPRESSION PROFILE</div>'+exprHeatmap(s.expr,{cap:'关键基因在不同组织的相对表达量（FPKM）· 示例'});}
       body='<div class="msub">种质基因组指标 · GENOME METRICS</div><div class="mstats">'+stats+'</div>'+popgenBlock+
-        '<div class="msub">SNP 密度概要 · SNP DENSITY</div>'+snpChart+mafChart+growthBlock+envBlock+
+        '<div class="msub">SNP 密度概要 · SNP DENSITY</div>'+snpChart+mafChart+growthBlock+envBlock+goBlock+keggBlock+exprBlock+
         '<div class="msub">目标性状 · TARGET TRAITS</div><div class="mchips">'+chips+'</div>'+
         '<div class="msub">代表性关联位点 · MARKERS</div><table class="mtable"><thead><tr><th>位点 ID</th><th>染色体</th><th>位置</th><th>关联性状</th><th>效应值</th></tr></thead><tbody>'+rows+'</tbody></table>';
     }
